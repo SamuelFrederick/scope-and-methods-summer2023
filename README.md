@@ -1,7 +1,3 @@
----
-permalink: /index.html
----
-
 # Scope and Methods (Spring 2023)
 ## [Sam Frederick](mailto:sdf2128@columbia.edu)
 
