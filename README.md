@@ -6,3 +6,9 @@ This is the official repository for Scope and Methods discussion section. Slides
 Office hours will be held weekly on ___ from ___ until ___.  
 
 The sign-up sheet for office hours can be found [here](). 
+
+
+| Date | Slides | Topics |
+| :--- | :--- | :--- |
+| Jan. 24 | [Intro to R](section-1/section-1.html)| Setting Working Directory and RProjects; RScripts and RMarkdown files; basic functions in R| 
+
