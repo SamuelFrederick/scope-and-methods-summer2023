@@ -10,5 +10,5 @@ The sign-up sheet for office hours can be found [here]().
 
 | Date | Slides | Topics |
 | :--- | :--- | :--- |
-| Jan. 24 | [Intro to R](section-1/section-1.html)| Setting Working Directory and RProjects; RScripts and RMarkdown files; basic functions in R| 
+| Jan. 24 | [Intro to R](https://samuelfrederick.github.io/scope-and-methods-spring2023/section-1/section-1.html)| Setting Working Directory and RProjects; RScripts and RMarkdown files; basic functions in R| 
 
