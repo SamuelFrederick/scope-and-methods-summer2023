@@ -1,0 +1,11 @@
+project:
+    render:
+        - section-2.qmd
+
+title: "Section 2"
+author: "Sam Frederick"
+date: "1/31/23"
+format: revealjs
+
+
+

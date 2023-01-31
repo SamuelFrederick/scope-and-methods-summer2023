@@ -1,0 +1,692 @@
+---
+title: "Section 2. Introduction to R"
+author: "Sam Frederick"
+format: 
+  revealjs:
+    css: [footer.css]
+    theme: [default, custom.scss]
+    chalkboard: true
+    progress: true
+    include-after-body: footer.html 
+    footer: "Introduction to R"
+knitr: 
+  opts_chunk: 
+      echo: true
+---
+
+
+## Last Section
+
+-   Setting Working Directory to Course Folder
+    -   `setwd("/path/to/your/folder")`
+    -   RProjects
+
+. . .
+
+-   RScript and RMarkdown files
+
+. . .
+
+-   Beginning functions in R
+    -   e.g., `sum()`, `mean()`, `min()`, `max()`, `sqrt()`
+
+## Last Section
+
+-   Vectors
+    -   `c()`
+
+. . .
+
+-   Objects
+    -   `x <- 1:3`
+
+## Today's Section {auto-animate=true}
+
+- Types of Objects in R
+
+- Summarizing Data in One Variable
+
+- Working with Real Data in R
+
+
+# Today's Section {auto-animate=true}
+
+- Types of Objects in R
+  - Numeric
+  - Categorical
+  - Logical
+  
+:::{style="color: rgba(0, 0, 0, 0.5);"}
+- Summarizing Data in One Variable
+
+- Working with Real Data in R
+:::
+
+
+## Numeric Data
+
+-   Integers `int` type
+
+-   Doubles
+
+-   Ways of Summarizing (Univariate):
+
+    -   Mean, median, min, max, range, IQR, standard deviation
+    -   `summary()` function
+    -   Histograms: `hist()`
+
+-   Ways of Summarizing (Bivariate):
+
+    -   Scatterplot
+
+## Summary Statistics - Central Tendency: Mean
+
+-   Mean/Average:
+    -   $\bar{x} = \frac{x_1 + x_2+...+x_n}{n} = \frac{1}{n}\sum_{i=1}^{n}x_i$
+
+. . .
+
+```{r}
+x <- c(1, 100, 7, 6, 5)
+sum(x)/length(x)
+mean(x)
+```
+
+## Summary Statistics - Central Tendency: Median
+
+-   Median
+    -   arrange vector in numerical order
+    -   find the middle value (50% above and 50% below)
+    -   not susceptible to outliers like the mean/average
+    
+-   What's the median of this vector?
+
+```{r}
+x <- c(1, 100, 7,6,5)
+```
+
+. . .
+
+```{r}
+#| output-location: column-fragment
+quantile(x, prob = 0.5)
+```
+
+
+```{r}
+#| output-location: column-fragment
+median(x)
+```
+
+## Summary Statistics: Measures of Spread {auto-animate=true}
+
+- Standard Deviation
+  - Measures spread around mean
+  - Square root of the variance
+
+. . . 
+
+$Var(x) = \sigma^2 = \frac{1}{n-1}\sum_{i=1}^n(x_i - \bar{x})^2$
+
+$sd(x) = \sigma = \sqrt{\frac{1}{n-1}\sum_{i=1}^n(x_i - \bar{x})^2}$
+
+## Summary Statistics: Measures of Spread {auto-animate=true}
+
+:::{.fragment .semi-fade-out}
+$Var(x) = \sigma^2 = \frac{1}{n-1}\sum_{i=1}^n(x_i - \bar{x})^2$
+
+```{r}
+sum((x - mean(x))^2)/(length(x) -1)
+var(x)
+
+```
+:::
+
+:::{.fragment .fade-in}
+$sd(x) = \sigma = \sqrt{\frac{1}{n-1}\sum_{i=1}^n(x_i - \bar{x})^2}$
+
+```{r}
+sqrt(var(x))
+```
+
+```{r}
+sqrt(sum((x - mean(x))^2)/(length(x) -1))
+```
+
+```{r}
+sd(x)
+```
+:::
+
+## Summary Statistics: Measures of Spread
+
+- Range (minimum, maximum)
+
+```{r}
+range(x)
+min(x)
+max(x)
+```
+
+## Summary Statistics: Measures of Spread
+
+- Interquartile Range (IQR)
+  - Arrange in numerical order 
+  - Find values below which 25\% and 75\% of the data lie
+
+```{r}
+quantile(x, prob = c(0.25, 0.75))
+IQR(x)
+```
+
+## Summary Statistics
+
+- `summary()` function
+  - min, max, median, mean, IQR, # of missing observations
+
+```{r}
+summary(x)
+```
+
+## Tidyverse Digression
+
+- Install tidyverse
+
+```{r, eval = F}
+install.packages("tidyverse")
+```
+
+- Load tidyverse for use
+
+```{r}
+library(tidyverse)
+```
+
+## Tidyverse Digression
+
+- Pipe Operator: `x %>% function()`
+  - Basically puts the object x into the function
+  - More like writing/reading left to right
+
+## Tidyverse Digression
+
+- Tibbles:
+  - Tidyverse version of data.frame
+  - A lot of helpful functions that perform various operations
+    - Example: `mutate()` to create and change column(s)
+  
+```{r}
+#| output-location: column-fragment
+df <- tibble(x = x, y = 1:5)
+df <- df %>%
+  mutate(z = 6:10)
+df
+```
+
+## Plotting in R: ggplot
+
+- Data 
+
+- Plot Foundation: `ggplot(data, aes())`
+  - Creates a plot base
+  - Can add items on top of base with `+`
+
+- `aes()`: aesthetic arguments
+  - Take information from data and put into plot
+  - Examples: x, y, col (color)
+
+## Visually Summarizing Data {auto-animate=true}
+
+```{r}
+df %>% 
+  ggplot(aes(x)) 
+```
+
+## Visually Summarizing Data {auto-animate=true}
+
+```{r}
+df %>% 
+  ggplot(aes(x)) + 
+  geom_histogram()
+```
+
+## Visually Summarizing Data {auto-animate=true}
+
+```{r}
+df %>% 
+  ggplot(aes(x)) + 
+  geom_histogram(fill = "blue")
+```
+
+## Visually Summarizing Data {auto-animate=true}
+
+```{r}
+df %>% 
+  ggplot(aes(x)) + 
+  geom_histogram(fill = "blue") + 
+  labs(x = "X", y = "Count", title = "Histogram of X")
+```
+
+## Categorical Data
+
+-   Character `chr` data
+
+-   Factors
+
+-   Ways of Summarizing (Univariate):
+
+    -   Tables
+    -   Barplots
+
+-   Ways of Summarizing (Bivariate):
+    - Cross-tabs
+    - Box-and-whisker plots
+
+## Factors
+
+-   Usually turn character data into factors for analysis
+    -   `factor()`
+-   R often turns these into dummy/indicator variables
+    -   Indicator variables: take on a value of 1 if some condition is met, 0 otherwise
+    -   e.g., Male (1 if individual identifies as a man, 0 otherwise)
+-   Come in specific order (i.e., alphabetical or numerical order)
+
+## Factors
+
+-   `factor(variable, levels = c(...), labels = c(...))`
+    -   levels argument:
+        -   must match exact spelling of categories
+        -   can be used to reorder the levels/categories
+    -   labels argument:
+        -   doesn't have to match spelling (can be anything)
+        -   must be same length as number of levels/categories
+
+## Factors
+
+```{r}
+grp <- c(rep("A", 3), rep("B", 6), rep("C", 8))
+grp
+```
+
+. . . 
+
+```{r}
+grp <- factor(grp)
+grp
+```
+
+. . . 
+
+```{r}
+grp <- factor(grp, levels = c("C", "B", "A"))
+grp
+```
+
+. . . 
+
+```{r}
+grp <- factor(grp, 
+              levels = c("C", "B", "A"), 
+              labels = c("Group C", "Group B", "Group A"))
+grp
+```
+
+
+## Tables and Proportion Tables
+
+- `table()`
+  - Number of observations in each category
+
+```{r}
+#| output-location: column-fragment
+table(grp)
+```
+
+. . .
+
+- `prop.table()`
+  - Proportion of total observations in each category
+
+```{r}
+#| output-location: column-fragment
+prop.table(table(grp))
+```
+
+
+## Visual Summaries of Categorical Data
+
+- Barplots 
+
+```{r}
+df <- tibble(grp = grp)
+df %>% 
+  ggplot(aes(grp)) + 
+  geom_bar() 
+```
+
+## Visual Summaries of Categorical Data
+
+- Barplots 
+
+```{r}
+df <- tibble(grp = grp)
+df %>% 
+  ggplot(aes(grp, fill = grp)) + 
+  geom_bar() + 
+  labs(x = "Group", y = "Count", 
+       title = "Barplot of Groups")
+```
+
+## Logical Operators
+
+- Logical Operators
+  - Check whether condition is TRUE/FALSE
+
+- `x==y`
+  - Is x equal to y?
+
+- `x<y`
+  - Is x less than y?
+  
+- `x>=y`
+  - Is x greater than or equal to y?
+
+## Logical Operators
+
+```{r, echo = F}
+test <- tibble(Operator = c("==", "<", ">", "<=", ">=", "%in%"), Meaning = c("equal to", "less than", "greater than", "less than or equal to", "greater than or equal to", "in"))
+
+
+knitr::kable(test) %>%
+  kableExtra::kable_classic()
+```
+
+## Logical Data
+
+- TRUE or FALSE
+  - can also be abbreviated T or F
+
+- NA also technically logical
+  - Indicates missing observation
+
+- Can be used for subsetting data
+
+## Subsetting Data
+
+- Brackets `[]`
+  - For vectors, indicates position in vector you want
+  - For data frames and matrices, `[row, column]`
+  
+```{r}
+#| output-location: fragment
+seq(0, 50, by = 2)[4]
+```
+```{r}
+#| output-location: fragment
+df[2,1]
+```
+
+## Subsetting Data
+
+- `$`
+  - In data frames/tibbles, gives variable after `$` as vector
+
+```{r}
+df$grp
+```
+
+## Subsetting Data
+
+```{r}
+#| output-location: column-fragment
+
+subset(df, 
+       subset = grp=="Group A")
+
+```
+
+```{r}
+#| output-location: column-fragment
+df %>% 
+  filter(grp=="Group A")
+```
+
+
+## Working with Data in R
+
+- Download survey responses from Courseworks
+  - "Section 2" > "intro_survey.csv"
+  
+- Put file into course folder
+
+- Set working directory in R or open course RProject
+
+- Read file into R using tidyverse:
+
+```{r, eval = F}
+intro <- read_csv("intro_survey.csv")
+```
+
+## Summarizing Data {auto-animate=true} 
+
+- What is the median number of hours of sleep students in this section get each night? How about the standard deviation and range?
+
+- See if you can reproduce this plot:
+
+```{r, echo = F, eval = F}
+intro %>%
+  ggplot(aes(sleep)) + 
+  geom_histogram() + 
+  labs(x = "Hours of Sleep per Night", 
+       y = "Number",
+       title = "Histogram of Number of Hours of Sleep")
+```
+
+
+## Summarizing Data {auto-animate=true} 
+
+- What is the median number of hours of sleep students in this section get each night? How about the standard deviation and range?
+
+```{r,eval = F}
+#| output-location: column
+median(intro$sleep)
+```
+
+```{r,eval = F}
+#| output-location: column
+quantile(intro$sleep, prob = 0.5)
+```
+
+```{r,eval = F}
+#| output-location: column
+sd(intro$sleep)
+
+```
+
+```{r,eval = F}
+#| output-location: column
+range(intro$sleep)
+
+```
+
+
+
+## Summarizing Data {auto-animate=true}
+
+- See if you can reproduce this plot:
+
+```{r, echo = F, eval = F}
+intro %>%
+  ggplot(aes(sleep)) + 
+  geom_histogram() + 
+  labs(x = "Hours of Sleep per Night", 
+       y = "Number",
+       title = "Histogram of Number of Hours of Sleep")
+```
+
+## Summarizing Data {auto-animate=true}
+
+- See if you can reproduce this plot:
+
+```{r, echo = T, eval = F}
+intro %>%
+  ggplot(aes(sleep)) + 
+  geom_histogram() + 
+  labs(x = "Hours of Sleep per Night", 
+       y = "Number",
+       title = "Histogram of Number of Hours of Sleep")
+```
+
+
+## Summarizing Data {auto-animate=true}
+
+- Make the variable `year` into a factor, and reorder in proper order 
+  - Hint: remember the `mutate()` function
+
+- Make a proportion table from the new factor variable `year`
+
+- Try making a barplot for the factor variable `year` with each year in a different color
+
+## Summarizing Data {auto-animate=true}
+
+- Make the variable `year` into a factor, and reorder in proper order 
+
+```{r, eval = F}
+intro <- intro %>% 
+  mutate(year= factor(year,levels =  c("First Year", "Sophomore", 
+                              "Junior", "Senior")))
+```
+
+- Make a proportion table from the new factor variable `year`
+
+- Try making a barplot for the factor variable `year` with each year in a different color
+
+## Summarizing Data {auto-animate=true}
+
+- Make the variable `year` into a factor, and reorder in proper order 
+
+```{r, eval = F}
+intro <- intro %>% 
+  mutate(year= factor(year,levels =  c("First Year", "Sophomore", 
+                              "Junior", "Senior")))
+```
+
+- Make a proportion table from the new factor variable `year`
+
+```{r, eval = F}
+prop.table(table(intro$year))
+```
+
+- Try making a barplot for the factor variable `year` with each year in a different color
+
+## Summarizing Data {auto-animate=true}
+
+- Try making a barplot for the factor variable `year` with each year in a different color
+
+:::{.fragment}
+```{r eval = F}
+intro %>%
+  ggplot(aes(year, col = year)) + 
+  geom_bar() + 
+  labs(x = "Year", y = "Count", 
+       title = "Barplot of Year")
+```
+:::
+
+## Making Nice Tables in R
+
+- Install `modelsummary` package
+
+```{r, eval = F}
+install.packages("modelsummary")
+```
+
+- Load the `modelsummary` package
+
+```{r}
+library(modelsummary)
+```
+
+
+## Making Nice Tables in R
+
+```{r eval = F}
+datasummary_skim(data = intro)
+```
+
+## Missing Data
+
+- 
+
+
+## Recap
+
+```{dot}
+digraph G {
+    // n0 [label = "1 Variable"]
+    // n1 [label = "1 Variable"]
+    stats1 [label = "Summary Statistics"]
+    stats0 [label = "Summary Statistics"]
+    vis0 [label = "Visual Summaries"]
+    vis1 [label = "Visual Summaries"]
+    centtend[shape = box, label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f0"><B>Central Tendency</B></TD></TR>
+                    <TR><TD PORT="f1">Mean</TD></TR>
+                    <TR><TD PORT="f2">Median</TD></TR>
+                </TABLE>>]
+    spread [shape = box, label = <<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f0"><B>Spread</B></TD></TR>
+                    <TR><TD PORT="f1">Standard Deviation</TD></TR>
+                    <TR><TD PORT="f2">Variance</TD></TR>
+                    <TR><TD PORT="f3">Range</TD></TR>
+                    <TR><TD PORT="f4">Interquartile Range</TD></TR>
+                </TABLE>>]
+    vislist [shape = box, label = "Histogram"]
+    tabs[shape = box,  label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f1">Table</TD></TR>
+                    <TR><TD PORT="f2">Prop. Table</TD></TR>
+                </TABLE>>]
+    vislist1 [shape = box, label = "Barplot"]
+    Data -> Numeric; 
+    Data -> Categorical; 
+    // Numeric -> n0;
+    // Categorical -> n1; 
+    Numeric -> stats0;
+    Numeric -> vis0; 
+    Categorical -> stats1;
+    Categorical -> vis1; 
+    stats0 -> centtend;
+    stats0 -> spread;
+    vis0 -> vislist;
+    stats1 -> tabs; 
+    vis1 -> vislist1;
+    
+}
+```
+
+## Recap
+
+- Tidyverse
+  - Tibbles
+    - Create new columns with `mutate()`
+    - Subset with `filter()` and logical conditions
+  - Plotting
+    - Foundation for plot with `ggplot(data, aes())`
+    - Build on top of foundation with `+`
+
+## Recap
+
+- Factors
+  - Used `factor(variable, levels = c(...), labels = c(...))`
+
+- Missing Data
+  - Be aware of how many missing data there are
+  - Can **usually** remove using `na.rm=TRUE` argument
+
+## Next Section
+
+- Summarizing more than one variable
+
+- "If" Statements
+
+- For Loops
