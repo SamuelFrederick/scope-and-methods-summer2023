@@ -463,7 +463,7 @@ df %>%
 
 - Read file into R using tidyverse:
 
-```{r, eval = F}
+```{r}
 intro <- read_csv("intro_survey.csv")
 ```
 
@@ -473,7 +473,7 @@ intro <- read_csv("intro_survey.csv")
 
 - See if you can reproduce this plot:
 
-```{r, echo = F, eval = F}
+```{r, echo = F}
 intro %>%
   ggplot(aes(sleep)) + 
   geom_histogram() + 
@@ -487,23 +487,23 @@ intro %>%
 
 - What is the median number of hours of sleep students in this section get each night? How about the standard deviation and range?
 
-```{r,eval = F}
+```{r}
 #| output-location: column
 median(intro$sleep)
 ```
 
-```{r,eval = F}
+```{r}
 #| output-location: column
 quantile(intro$sleep, prob = 0.5)
 ```
 
-```{r,eval = F}
+```{r}
 #| output-location: column
 sd(intro$sleep)
 
 ```
 
-```{r,eval = F}
+```{r}
 #| output-location: column
 range(intro$sleep)
 
@@ -515,7 +515,7 @@ range(intro$sleep)
 
 - See if you can reproduce this plot:
 
-```{r, echo = F, eval = F}
+```{r, echo = F}
 intro %>%
   ggplot(aes(sleep)) + 
   geom_histogram() + 
@@ -528,7 +528,7 @@ intro %>%
 
 - See if you can reproduce this plot:
 
-```{r, echo = T, eval = F}
+```{r, echo = T}
 intro %>%
   ggplot(aes(sleep)) + 
   geom_histogram() + 
@@ -551,7 +551,7 @@ intro %>%
 
 - Make the variable `year` into a factor, and reorder in proper order 
 
-```{r, eval = F}
+```{r}
 intro <- intro %>% 
   mutate(year= factor(year,levels =  c("First Year", "Sophomore", 
                               "Junior", "Senior")))
@@ -565,7 +565,7 @@ intro <- intro %>%
 
 - Make the variable `year` into a factor, and reorder in proper order 
 
-```{r, eval = F}
+```{r}
 intro <- intro %>% 
   mutate(year= factor(year,levels =  c("First Year", "Sophomore", 
                               "Junior", "Senior")))
@@ -573,7 +573,7 @@ intro <- intro %>%
 
 - Make a proportion table from the new factor variable `year`
 
-```{r, eval = F}
+```{r}
 prop.table(table(intro$year))
 ```
 
@@ -584,7 +584,7 @@ prop.table(table(intro$year))
 - Try making a barplot for the factor variable `year` with each year in a different color
 
 :::{.fragment}
-```{r eval = F}
+```{r}
 intro %>%
   ggplot(aes(year, col = year)) + 
   geom_bar() + 
@@ -610,14 +610,31 @@ library(modelsummary)
 
 ## Making Nice Tables in R
 
-```{r eval = F}
+```{r}
 datasummary_skim(data = intro)
 ```
 
 ## Missing Data
 
-- 
+- Often data incomplete or missing altogether
 
+- R shows as `NA`
+
+- Some functions will only output missing data if NAs are present
+
+```{r}
+#| output-location: column
+mean(intro$homework)
+```
+
+:::{fragment}
+- Solution: `na.rm` argument
+
+```{r}
+#| output-location: column
+mean(intro$homework, na.rm = T)
+```
+:::
 
 ## Recap
 
