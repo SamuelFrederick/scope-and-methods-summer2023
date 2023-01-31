@@ -5,7 +5,7 @@ This is the official repository for Scope and Methods discussion section. Slides
 
 Office hours will be held weekly on Wednesdays 2-4 p.m.
 
-The sign-up sheet for office hours can be found [here](). 
+The sign-up sheet for office hours can be found [here](https://samuelfrederick.github.io/scope-and-methods-spring2023/officehours.html). 
 
 
 | Date | Slides | Topics | Data |
