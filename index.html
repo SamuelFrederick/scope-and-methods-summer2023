@@ -1,15 +1,22 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Scope and Methods (Spring 2023)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@300&display=swap" rel="stylesheet">
+    <!--<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300&display=swap" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css2?family=Francois+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!--<link rel="stylesheet" href="https://kit.fontawesome.com/cfe4a8c3cd.css" crossorigin="anonymous">-->
     <style>
       body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f2f2f2;
+        font-family: 'Fira Sans Condensed', sans-serif;
+        background-color: white;
       }
       .header {
         display: flex;
@@ -20,42 +27,44 @@
         color: #fff;
       }
       h1 {
+        font-family: 'Francois One', sans-serif;
         font-size: 36px;
         margin: 0;
-        font-weight: 600;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+        font-weight: 40;
       }
       h2 {
-        font-size: 28px;
-        font-weight: 500;
+        font-size: 18px;
+        font-weight: 400;
         margin: 0;
-/*         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25); */
       }
+     ul {
+         list-style-type:none;
+     }
       .container {
         max-width: 1170px;
         margin: 0 auto;
-        padding: 40px;
+        padding: 20px;
         text-align: center;
       }
+      .course-details{
+          max-width:50%;
+          margin: 20px 20px;
+          text-align: left;
+      }
+      .instructor-details{
+          max-width:50%;
+          margin: 20px 20px;
+          text-align:left;
+      }
       .intro {
-        font-size: 18px;
+        font-size: 16px;
         margin: 0 0;
         text-align: left;
       }
       .office-hours {
         margin: 20px 0;
-        font-size: 18px;
+        font-size: 16px;
         text-align: left;
-      }
-      .sign-up {
-        margin: 20px 0;
-        font-size: 18px;
-        text-align: left;
-      }
-      .sign-up a {
-        font-size: 18px;
-        color: #00b0ff;
-        text-decoration: none;
       }
       .table {
         width: 100%;
@@ -71,6 +80,20 @@
       th {
         background-color: #00b0ff;
         color: #fff;
+      }
+      .course-container {
+          display: flex;
+          justify-content:space-between;
+          padding: 20px 30px 0;
+      }
+    .course-container table:last-child{
+        margin-right:0;
+    }
+    .course-info{
+          border: none;
+          padding: 1px;
+          text-align: left;
+          font-size: 18px;
       }
       .author-link {
         color: black;
@@ -94,8 +117,6 @@
     nav {
         background-image: linear-gradient(to right, #00b0ff, #0091ea);
         color: #fff
-        /*background-color: #24292e;*/
-        /*color: white;*/
         display: flex;
         justify-content: space-between;
         padding: 0px;
@@ -124,27 +145,57 @@
             <li><a class = "active" href="index.html">Home</a></li>
             <li><a href="officehours.html">Office Hours</a></li>
             <li><a href="schedule.html">Schedule</a></li>
-
         </ul>
     </nav>
     <div class="header">
       <div class="container">
         <h1>Scope and Methods</h1>
+        <p></p>
+        <h2 style = "font-size:22px">Columbia University</h2>
         <h2><a class="author-link" href="mailto:sdf2128@columbia.edu">Sam Frederick</a></h2>
         <h2> Spring 2023</h2>
       </div>
     </div>
+    <div class="course-container">
+        <table style="float:left;" >
+            <tr>
+                <td class="course-info"><i class="bi bi-geo-alt-fill"></i>Hamilton 413
+                </td>
+            </tr>
+            <tr>
+                <td class="course-info">
+                <i class="bi bi-clock"></i> Tues. 4:10-5:00</td>
+            </tr>
+            <tr><td class="course-info"> </td></tr> 
+            <tr><td class="course-info"> </td></tr> 
+        </table>
+        <table style="float:right;" >
+            <tr>
+                <td class="course-info"><i class="bi bi-person-fill"></i>
+Sam Frederick</td>
+            </tr>
+            <tr>
+                <td class="course-info">
+                    <i class="bi bi-envelope"> </i><a style="color:black" href="mailto:sdf2128@columbia.edu">sdf2128@columbia.edu</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="course-info">
+                    <i class="bi bi-calendar-plus"> </i><a style="color:black" href="https://samuelfrederick.github.io/scope-and-methods-spring2023/officehours.html">Office Hours</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="course-info">
+                    <i class="bi bi-camera-video-fill"> </i><a style= "color:black" href = "https://columbiauniversity.zoom.us/j/5986709771">Zoom Meeting Room</a>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="container">
-      <div class="intro">
-        <p>This is the official repository for Scope and Methods discussion section. Slides will be posted here as they become available throughout the semester.</p>
-      </div>
-      <div class="office-hours">
-<p>Office hours will be held weekly on Wednesdays 2-4 p.m. </p>
+        This is the official repository for discussion section materials from Research Design: Scope and Methods. Feel free to send me an email if you have any questions throughout the semester. 
+    </div>
 </div>
-<div class="sign-up">
-<p>The sign-up sheet for office hours can be found <a href="officehours.html">here</a>.</p>
-</div>
-<h2 style="text-align: center; color: black;font-size:20px;text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);">Section Materials</h2>
+<h2 style="text-align: center; color: black;font-size:20px;">Section Materials</h2>
 <table class="table">
 <tr>
 <th>Date</th>
