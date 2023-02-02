@@ -11,5 +11,5 @@ The sign-up sheet for office hours can be found [here](https://samuelfrederick.g
 | Date | Slides | Topics | Data |
 | :--- | :--- | :--- | :---|
 | Jan. 24 | [Intro to R](https://samuelfrederick.github.io/scope-and-methods-spring2023/section-1/section-1.html)| Setting Working Directory and RProjects; RScripts and RMarkdown files; basic functions in R| |
-| Jan. 31 | [Intro to R](https://samuelfrederick.github.io/scope-and-methods-spring2023/section-2/section-2.html) | Types of data in R; summary statistics; visual summaries of data; Tidyverse; missing data | [Intro Survey](https://samuelfrederick.github.io/scope-and-methods-spring2023/main/blob/section-2/survey.csv)|
+| Jan. 31 | [Intro to R](https://samuelfrederick.github.io/scope-and-methods-spring2023/section-2/section-2.html) | Types of data in R; summary statistics; visual summaries of data; Tidyverse; missing data | [Intro Survey](https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-2/intro_survey.csv)|
 
