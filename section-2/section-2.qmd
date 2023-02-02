@@ -583,15 +583,26 @@ prop.table(table(intro$year))
 
 - Try making a barplot for the factor variable `year` with each year in a different color
 
-:::{.fragment}
-```{r}
+```{r, eval=F, out.height="10%"}
 intro %>%
-  ggplot(aes(year, col = year)) + 
+  ggplot(aes(year, fill = year)) + 
   geom_bar() + 
   labs(x = "Year", y = "Count", 
        title = "Barplot of Year")
 ```
-:::
+
+
+
+## Summarizing Data {auto-animate=true}
+
+```{r, out.height="10%"}
+intro %>%
+  ggplot(aes(year, fill = year)) + 
+  geom_bar() + 
+  labs(x = "Year", y = "Count", 
+       title = "Barplot of Year")
+```
+
 
 ## Making Nice Tables in R
 
@@ -610,8 +621,9 @@ library(modelsummary)
 
 ## Making Nice Tables in R
 
-```{r}
-datasummary_skim(data = intro)
+```{r }
+datasummary_skim(data = intro %>% select(sleep, homework), 
+                  histogram=F)
 ```
 
 ## Missing Data
