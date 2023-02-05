@@ -287,7 +287,7 @@ nominate <- read_csv("HSall_members.csv")
 - Click on data for today
 
 ```{r eval = F}
-nominate <- read_csv("")
+nominate <- read_csv("https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv")
 ```
 
 ## Cleaning Data {auto-animate=true}
