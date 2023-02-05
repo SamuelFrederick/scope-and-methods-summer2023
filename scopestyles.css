@@ -1,6 +1,9 @@
 .mobile-header {
       display: none;
   }
+.footnote{
+     font-size:smaller;
+}
 .desktop-header {
       display: flex;
       justify-content: center;
