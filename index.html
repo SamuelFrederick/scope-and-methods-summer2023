@@ -28,6 +28,18 @@
         }            
     });
 </script>
+    <script>
+      function copyLink(element) {
+        var link = element.getAttribute("href");
+        var tempInput = document.createElement("input");
+        tempInput.style= "position: absolute; left:-1000px; top:-1000px";
+        tempInput.value=link;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert("Link copied to clipboard");
+    </script>
   </head>
   <body>
       <nav>
@@ -190,7 +202,7 @@ Sam Frederick</td>
   <td>Feb. 7</td>
   <td><a style="color:#00b0ff;text-decoration:none;" href="https://samuelfrederick.github.io/scope-and-methods-spring2023/section-3/section-3.html">Summarizing Data</a></td>
   <td>Summarizing relationships between 2+ variables; logical conditions</td>
-  <td><a style="color:#00b0ff;text-decoration:none;" href="https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv">NOMINATE*<i class="bi bi-download"></i></a></td>
+  <td><a style="color:#00b0ff;text-decoration:none;" onclick="copyLink(this)" href="https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv">NOMINATE*<i class="bi bi-download"></i></a></td>
   </tr>
 </table>
   <div class="footnote">
