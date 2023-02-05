@@ -1,0 +1,654 @@
+---
+title: "Section 3. Summarizing Data, If Statements, Loops"
+author: "Sam Frederick"
+format: 
+  revealjs:
+    css: [footer.css]
+    theme: [default, custom.scss]
+    chalkboard: true
+    progress: true
+    include-after-body: footer.html 
+    footer: "Introduction to R"
+knitr: 
+  opts_chunk: 
+      echo: true
+---
+
+```{css, echo=FALSE, include = F}
+.panel-tabset .panel-tabset-tabby{
+  font-size: 20px;
+}
+.panel-tabset .tab-content{
+  font-size:20px
+}
+
+
+```
+
+```{r, include = F, echo = F}
+library(tidyverse)
+library(kableExtra)
+```
+
+## Last Week
+
+- Tibbles:
+  - Changing and creating columns: `mutate()`
+  - Subset data: `filter()`
+-Plotting:
+  - `ggplot(data, aes())`
+  - build on top of foundation
+
+## Last Week
+
+- Factors: `factor(variable, levels = c(...), labels = c(...))`
+
+- Logical Data: `TRUE` or `FALSE`
+
+- Remove missing data with `na.rm = TRUE` arugment
+
+## Last Week
+
+```{dot}
+digraph G {
+    // n0 [label = "1 Variable"]
+    // n1 [label = "1 Variable"]
+    stats1 [label = "Summary Statistics"]
+    stats0 [label = "Summary Statistics"]
+    vis0 [label = "Visual Summaries"]
+    vis1 [label = "Visual Summaries"]
+    centtend[shape = box, label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f0"><B>Central Tendency</B></TD></TR>
+                    <TR><TD PORT="f1">Mean</TD></TR>
+                    <TR><TD PORT="f2">Median</TD></TR>
+                </TABLE>>]
+    spread [shape = box, label = <<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f0"><B>Spread</B></TD></TR>
+                    <TR><TD PORT="f1">Standard Deviation</TD></TR>
+                    <TR><TD PORT="f2">Variance</TD></TR>
+                    <TR><TD PORT="f3">Range</TD></TR>
+                    <TR><TD PORT="f4">Interquartile Range</TD></TR>
+                </TABLE>>]
+    vislist [shape = box, label = "Histogram"]
+    tabs[shape = box,  label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f1">Table</TD></TR>
+                    <TR><TD PORT="f2">Prop. Table</TD></TR>
+                </TABLE>>]
+    vislist1 [shape = box, label = "Barplot"]
+    Data -> Numeric; 
+    Data -> Categorical; 
+    // Numeric -> n0;
+    // Categorical -> n1; 
+    Numeric -> stats0;
+    Numeric -> vis0; 
+    Categorical -> stats1;
+    Categorical -> vis1; 
+    stats0 -> centtend;
+    stats0 -> spread;
+    vis0 -> vislist;
+    stats1 -> tabs; 
+    vis1 -> vislist1;
+    
+}
+```
+
+## Summarizing Bivariate Relationships
+
++-----------------------+-----------------------+---------------------------------+
+|                       | Categorical           | Numeric                         |
++:======================+:======================+:================================+
+| **Categorical**       | - Cross-Tabs          | - Box-and-Whisker Plots         |
+|                       | - Facetted Barplots   | - Facetted/Filled Histograms    |
++-----------------------+-----------------------+---------------------------------+
+| **Numeric**           |                       | - Scatterplots                  |
+|                       |                       | - Line Plots                    |
++-----------------------+-----------------------+---------------------------------+
+
+
+## Categorical-Categorical Data: Cross-Tabs
+
+```{r}
+library(modelsummary)
+df <- read_csv("https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-2/intro_survey.csv")
+datasummary_crosstab(r_exp~python_exp, statistic = 1~1+N, data = df)
+```
+
+## Categorical-Categorical Data: Cross-Tabs
+
+```{r}
+datasummary_crosstab(r_exp~python_exp, statistic = 1~1+Percent(), 
+                     data = df)
+```
+
+## Categorical-Categorical Data: Barplots with Facets
+
+```{r}
+df %>% 
+  ggplot(aes(code_experience, fill = factor(code_experience))) + 
+  geom_bar() +
+  facet_wrap(~american_pol, nrow = 1) +
+  labs(x = "Code Experience", y = "Count", 
+       title = "Barplot of Coding Experience By Interest", 
+       fill = "Coding Experience")
+  
+```
+
+
+## Categorical-Numeric: Box-and-Whisker Plots
+
+```{r}
+df %>%
+  ggplot(aes(x = code_experience, y = sleep)) + 
+  geom_boxplot() +
+  labs(x = "Coding Experience", y = "Sleep", title = "Sleep by Prior Coding Experience") 
+```
+
+## Categorical-Numeric: Box-and-Whisker Plots
+
+- Box-and-Whisker Plots:
+  - Show several important summary statistics
+    - Median (Bold line inside the Box)
+    - Interquartile Range (Box)
+    - Minimum/Maximum or 1.5*IQR (Whiskers)
+    
+## Categorical-Numeric: Histograms
+
+```{r}
+df %>% 
+  ggplot(aes(sleep)) + 
+  geom_histogram() + 
+  facet_wrap(~code_experience, nrow = 2)
+```
+
+## Categorical-Numeric: Density Plots
+
+```{r}
+df %>% 
+  ggplot(aes(sleep, fill = code_experience)) + 
+  geom_density(alpha = 0.5, position = "identity") 
+```
+
+## Numeric-Numeric Data: Scatterplots
+
+```{r}
+#| output-location: fragment
+df %>%
+  mutate(Timestamp = lubridate::as_datetime(Timestamp), 
+         time = lubridate::hour(Timestamp)) %>%
+  ggplot(aes(time, sleep)) + geom_point() +
+  labs(x = "Time of Day Completed Survey", y = "Hours of Sleep")
+```
+
+## Conditional Logic in Data: If Statements
+
+- Logical data and Subsetting
+
+- Often, we want to check if some condition holds for data and perform operation if that condition holds
+  - e.g., check if ideology is below the median, and label that person liberal if so
+
+- Use `ifelse()` function
+  - `ifelse(condition, output, output2)`
+    - if condition is TRUE, returns "output"
+    - otherwise, returns "output2"
+
+## ifelse() function
+
+```{r}
+x <- 1:10
+ifelse(x<=5, "Below Median", "Above Median")
+df <- df %>% 
+  mutate(nocturnal = ifelse(lubridate::hour(Timestamp)<12, 
+                            "morning person", 
+                            "nocturnal"))
+df$nocturnal
+```
+
+## Multiple Conditions
+
+- Sometimes we have more than one condition we want to evaluate
+  - `condition1&condition2` checks whether condition1 AND condition2 are TRUE
+  - `condition1|condition2` checks whether condition1 OR condition2 is TRUE
+
+```{r}
+df <- df %>% 
+  mutate(nocturnal_coder = ifelse(
+    lubridate::hour(Timestamp)<12&code_experience=="Yes", 
+                            "Not Nocturnal Coder", 
+                            "Nocturnal Coder"))
+df$nocturnal_coder[1:7]
+
+```
+
+
+# Negating Conditions
+
+- Sometimes we want to check whether a condition is not `TRUE`
+  - `!condition` means NOT condition (condition does not hold)
+
+```{r}
+df <- df %>% 
+  mutate(not_american_politics = ifelse(!american_pol==1, 
+                            "Not interested in AP", 
+                            "Interested in AP"))
+df$not_american_politics[1:7]
+```
+
+## case_when()
+
+- `case_when()`: tidyverse function to check multiple conditions sequentially
+
+```{r eval = F}
+#| code-line-numbers: "1|2|3|4"
+
+case_when(cond1~output1, 
+          cond2~output2, 
+          cond3~output3, 
+          TRUE~NA_typeofoutput)
+```
+
+## case_when()
+
+```{r}
+df <- df %>% 
+  mutate(code_interests = 
+           case_when(code_experience=="Yes"&american_pol==1~"AP Coder", 
+                     code_experience=="Yes"&comparative_pol==1~"CP Coder", 
+                     code_experience=="Yes"&international_rel==1~"IR Coder", 
+                     T~"Other")) 
+df$code_interests
+```
+
+## Tidyverse Digression: Selecting Columns
+
+- Often only want certain columns
+- Specify with `select()`
+
+```{r}
+#| output-location: column
+df %>% select(year, python_exp) %>% head(2)
+```
+
+- If columns have specific patterns or types, can select with `dplyr` functions
+
+## Working with Real Data 
+
+- Navigate to voteview.com
+- Click the `data` tab
+- Click `Download Data`
+- Move to course folder
+
+```{r eval =T}
+nominate <- read_csv("HSall_members.csv")
+```
+
+## Working with Real Data
+
+- Navigate to course page
+- Click on data for today
+
+```{r eval = F}
+nominate <- read_csv("")
+```
+
+## Cleaning Data {auto-animate=true}
+
+- Filter/subset the data, so it only contains members of the House and Senate from the 97th Congress to the current Congress
+- Change the `party_code` variable, so it reads "D", "R" instead of "100", "200"
+- Select only the variables we will use for this analysis:  
+  - party_code, congress, chamber, state_abbrev, nominate_dim1, nominate_dim2
+
+## Cleaning Data {auto-animate=true}
+
+- Filter/subset the data, so it only contains members of the House and Senate from the 97th Congress to the current Congress
+
+```{r}
+nominate <- nominate %>% filter(chamber%in%c("House", "Senate")&
+                                  congress>=97)
+```
+
+- Change the `party_code` variable, so it reads "D", "R" instead of "100", "200"
+- Select only the variables we will use for this analysis:
+  - party_code, congress, chamber, state_abbrev, nominate_dim1, nominate_dim2
+
+## Cleaning Data {auto-animate=true}
+
+- Filter/subset the data, so it only contains members of the House and Senate from the 97th Congress to the current Congress
+
+```{r}
+nominate <- nominate %>% filter(chamber%in%c("House", "Senate")&
+                                  congress>=97)
+```
+
+- Change the `party_code` variable, so it reads "D", "R" instead of "100", "200"
+
+```{r}
+nominate <- nominate %>%
+  mutate(party_code = case_when(party_code==100~"D", 
+                                party_code==200~"R",
+                                T~NA_character_))
+```
+
+
+## Cleaning Data {auto-animate=true}
+
+- Select only the variables we will use for this analysis: 
+  - party_code, congress, chamber, state_abbrev, nominate_dim1, nominate_dim2
+
+```{r}
+nominate <- nominate %>% 
+  select(party_code, congress, chamber, 
+         state_abbrev, nominate_dim1, nominate_dim2)
+```
+
+```{r echo = F}
+nominate <- nominate %>% drop_na(party_code)
+```
+
+## Putting It Together
+
+```{r, eval = F}
+#| code-line-numbers: "|8"
+
+nominate <- nominate %>% 
+  filter(chamber%in%c("House", "Senate")&congress>=97) %>%
+  mutate(party_code = case_when(party_code==100~"D", 
+                                party_code==200~"R",
+                                T~NA_character_)) %>%
+  select(party_code, congress, chamber, 
+       state_abbrev, nominate_dim1, nominate_dim2) %>%
+  drop_na(party_code)
+```
+
+## Summarizing Data: Univariate {auto-animate=true}
+
+- Create a barplot of party membership with fill set to party variable
+  - Hint: you might have to re-level the factor variable
+- Create a histogram of `nominate_dim1`
+  - What stands out to you in this histogram?
+- Use `datasummary_skim()` to summarize the numeric variables
+  - Reminder: you will likely have to load the `modelsummary` package
+  
+## Summarizing Data: Univariate {auto-animate=true}
+
+- Create a barplot of party membership with fill set to party variable
+```{r}
+nominate <- nominate  %>% mutate(party_code = factor(party_code, 
+                             levels = c("R", "D")))
+nominate %>%
+  ggplot(aes(party_code, fill = party_code)) + 
+  geom_bar() + 
+  labs(x = "Party", y = "Count", fill = "Party")
+```
+
+## Summarizing Data: Univariate {auto-animate=true}
+
+- Create a histogram of `nominate_dim1`
+  - What stands out to you in this histogram?
+
+```{r}
+nominate %>%
+  ggplot(aes(nominate_dim1)) +
+  geom_histogram() + 
+  labs(x = "NOMINATE-Dim. 1", y = "Count")
+```
+
+## Summarizing Data: Univariate {auto-animate=true}
+
+- Use `datasummary` to summarize `nominate_dim1` and `nominate_dim2`
+  - Reminder: you will likely have to load the `modelsummary` package
+  
+```{r}
+datasummary((nominate_dim1 + nominate_dim2) ~ Min + Median + Mean + 
+              Max + SD, 
+                 nominate, histogram = F, type = "numeric")
+```
+
+## Summarizing Data: Bivariate and Beyond {auto-animate=true}
+
+- Categorical-Numeric:
+  - Create a density plot of `nominate_dim1` filled by party
+
+- Categorical-Categorical-Numeric:
+  - Facet the above density plot by chamber of Congress
+
+- Numeric-Numeric:
+  - Create a scatterplot of `nominate_dim2` against `nominate_dim1`
+  
+- Numeric-Numeric-Categorical
+  - Color the above scatterplot by party
+
+## {auto-animate=true}
+::: {.panel-tabset}
+## Histogram
+
+```{r out.height=400}
+nominate %>%
+  ggplot(aes(nominate_dim1, y = ..density.., fill = party_code)) + 
+  geom_histogram(alpha = 0.5, position = "identity") + 
+  labs(x = "NOMINATE-Dim. 1", y = "Density", fill = "Party")
+```
+## Density Plot
+
+```{r out.height=400}
+
+nominate %>%
+  ggplot(aes(nominate_dim1, fill = party_code)) + 
+  geom_density(alpha = 0.5, position = "identity") + 
+  labs(x = "NOMINATE-Dim. 1", y = "Density", fill = "Party")
+```
+
+:::
+
+
+## 
+
+:::{.panel-tabset}
+## Histogram 
+```{r out.height=400}
+#| code-line-numbers: "7"
+
+nominate %>%
+  ggplot(aes(nominate_dim1, y = ..density.., fill = party_code)) + 
+  geom_histogram(alpha = 0.5, position = "identity") + 
+  labs(x = "NOMINATE-Dim. 1", y = "Density", fill = "Party") +
+  facet_wrap(~chamber, nrow =2)
+```
+## Density Plot 
+```{r out.height=350}
+#| code-line-numbers: "7"
+
+nominate %>%
+  ggplot(aes(nominate_dim1, y = ..density.., fill = party_code)) + 
+  geom_density(alpha = 0.5, position = "identity") + 
+  labs(x = "NOMINATE-Dim. 1", y = "Density", fill = "Party") +
+  facet_wrap(~chamber, nrow =2)
+```
+:::
+
+## Summarizing Data: Bivariate and Beyond {auto-animate=true}
+
+- Numeric-Numeric:
+  - Create a scatterplot of `nominate_dim2` against `nominate_dim1`
+  
+```{r}
+nominate %>%
+  ggplot(aes(nominate_dim1, nominate_dim2)) + 
+  geom_point()+
+  labs(x = "NOMINATE-Dim. 1", y = "NOMINATE-Dim. 2")
+```
+
+## Summarizing Data: Bivariate and Beyond {auto-animate=true}
+
+- Numeric-Numeric-Categorical
+  - Color the above scatterplot by party
+
+```{r}
+#| code-line-numbers: "2,4"
+
+nominate %>%
+  ggplot(aes(nominate_dim1, nominate_dim2, col = party_code)) + 
+  geom_point()+
+  labs(x = "NOMINATE-Dim. 1", y = "NOMINATE-Dim. 2", col = "Party") 
+```
+
+## Tidyverse Digression: Grouping and Summarizing Data
+
+- Often want to figure out some quantity within a category
+  - e.g., ideology by party, average GDP per capita by country
+
+- Use `group_by()` function in `tidyverse` to group our data by given variables
+- Use `summarize()` and desired function to create new function
+  - Very similar to `mutate()`
+
+## Tidyverse Digress: Grouping and Summarizing
+
+- Example with our class survey data
+
+```{r}
+df %>%
+  group_by(code_experience)%>%
+  summarize(sleep = mean(sleep))
+```
+
+## Getting Ideology by Congress and Party
+
+:::{.fragment}
+- What would be the first step in getting the average of `nominate_dim1` by Congress and party?
+:::
+
+:::{.fragment}
+```{r}
+#| output-location: column
+
+nominate %>% 
+  group_by(congress, party_code) %>% head(c(2,2))
+```
+:::
+:::{.fragment}
+- What comes next?
+:::
+:::{.fragment}
+```{r}
+#| output-location: column
+
+nominate %>% 
+  group_by(congress, party_code) %>%
+  summarize(nominate_dim1 = 
+              mean(nominate_dim1, 
+                   na.rm = T)) %>%
+  head(4)
+```
+:::
+
+## Line Plots
+
+- How could we make a scatterplot from our summarized data of average NOMINATE score, colored by party, against the Congress number?
+
+
+## Line Plots
+
+```{r}
+nominate %>%
+  group_by(congress, party_code) %>% 
+  summarize(nominate_dim1_mean = mean(nominate_dim1, na.rm = T)) %>%
+  ggplot(aes(congress, nominate_dim1_mean, col = party_code)) +
+  geom_point()
+```
+
+## Line Plots {auto-animate=true}
+
+- To make a line plot, we just switch one line of code:
+
+```{r}
+#| code-line-numbers: "5"
+
+nominate %>%
+  group_by(congress, party_code) %>% 
+  summarize(nominate_dim1_mean = mean(nominate_dim1, na.rm = T)) %>%
+  ggplot(aes(congress, nominate_dim1_mean, col = party_code)) +
+  geom_point() +
+  labs(x = "Congress", y= "Mean NOMINATE-Dim. 1", col = "Party")
+```
+
+## Line Plots {auto-animate=true}
+
+- To make a line plot, we just switch one line of code:
+
+```{r}
+#| code-line-numbers: "5"
+
+nominate %>%
+  group_by(congress, party_code) %>% 
+  summarize(nominate_dim1_mean = mean(nominate_dim1, na.rm = T)) %>%
+  ggplot(aes(congress, nominate_dim1_mean, col = party_code)) +
+  geom_line() +
+  labs(x = "Congress", y= "Mean NOMINATE-Dim. 1", col = "Party")
+```
+
+## Recap
+
+```{dot}
+digraph G {
+    n0 [label = "1 Variable"]
+    n1 [label = "1 Variable"]
+    n2n [label = "2+ Variables"]
+    n2c [label = "2+ Variables"]
+
+    stats1 [label = "Summary Statistics"]
+    stats0 [label = "Summary Statistics"]
+    vis0 [label = "Visual Summaries"]
+    vis1 [label = "Visual Summaries"]
+    centtend[shape = box, label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f0"><B>Central Tendency</B></TD></TR>
+                    <TR><TD PORT="f1">Mean</TD></TR>
+                    <TR><TD PORT="f2">Median</TD></TR>
+                </TABLE>>]
+    spread [shape = box, label = <<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f0"><B>Spread</B></TD></TR>
+                    <TR><TD PORT="f1">Standard Deviation</TD></TR>
+                    <TR><TD PORT="f2">Variance</TD></TR>
+                    <TR><TD PORT="f3">Range</TD></TR>
+                    <TR><TD PORT="f4">Interquartile Range</TD></TR>
+                </TABLE>>]
+    vislist [shape = box, label = "Histogram"]
+    tabs[shape = box,  label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                    <TR><TD PORT="f1">Table</TD></TR>
+                    <TR><TD PORT="f2">Prop. Table</TD></TR>
+                </TABLE>>]
+    num2 [shape = box,  label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+              <TR><TD PORT="f1">Scatterplot</TD></TR>
+              <TR><TD PORT="f2">Line Plot</TD></TR>
+          </TABLE>>]
+    cat2 [shape = box,  label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+                <TR><TD PORT="f1">Cross-Tabs</TD></TR>
+                <TR><TD PORT="f2">Facetted Barplots</TD></TR>
+            </TABLE>>]
+      numcat [shape = box,  label =<<TABLE BORDER="0" CELLBORDER = "0" CELLSPACING="0">
+            <TR><TD PORT="f1">Facetted Histograms/Density Plots</TD></TR>
+            <TR><TD PORT="f2">Box-and-Whisker Plots</TD></TR>
+          </TABLE>>]
+    vislist1 [shape = box, label = "Barplot"]
+    Data -> Numeric; 
+    Data -> Categorical; 
+    Numeric -> n0;
+    Categorical -> n2c;
+    Categorical -> n1; 
+    Numeric -> n2n;
+    n2n -> num2; 
+    n2c -> cat2;
+    n2n -> numcat; 
+    n2c -> numcat;
+    n0 -> stats0;
+    n0 -> vis0; 
+    n1 -> stats1;
+    n1 -> vis1; 
+    stats0 -> centtend;
+    stats0 -> spread;
+    vis0 -> vislist;
+    stats1 -> tabs; 
+    vis1 -> vislist1;
+    
+}
+```
+
+
