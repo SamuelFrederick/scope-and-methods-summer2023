@@ -8,7 +8,7 @@ format:
     chalkboard: true
     progress: true
     include-after-body: footer.html 
-    footer: "Introduction to R"
+    footer: "Summarizing Data"
 knitr: 
   opts_chunk: 
       echo: true
@@ -19,9 +19,8 @@ knitr:
   font-size: 20px;
 }
 .panel-tabset .tab-content{
-  font-size:20px
+  font-size:20px;
 }
-
 
 ```
 
@@ -35,9 +34,10 @@ library(kableExtra)
 - Tibbles:
   - Changing and creating columns: `mutate()`
   - Subset data: `filter()`
+
 -Plotting:
-  - `ggplot(data, aes())`
-  - build on top of foundation
+  - Foundation: `ggplot(data, aes())`
+  - Build on top of foundation with `+`
 
 ## Last Week
 
@@ -179,23 +179,29 @@ df %>%
   labs(x = "Time of Day Completed Survey", y = "Hours of Sleep")
 ```
 
-## Conditional Logic in Data: If Statements
+## Conditional Logic in Data: ifelse()
 
-- Logical data and Subsetting
+- Check if some condition holds for data and perform operation if that condition holds
+  - e.g., check if ideology is below the median, and if so, label that person liberal
 
-- Often, we want to check if some condition holds for data and perform operation if that condition holds
-  - e.g., check if ideology is below the median, and label that person liberal if so
-
+:::{.fragment}
 - Use `ifelse()` function
   - `ifelse(condition, output, output2)`
     - if condition is TRUE, returns "output"
     - otherwise, returns "output2"
+:::
 
 ## ifelse() function
 
 ```{r}
 x <- 1:10
-ifelse(x<=5, "Below Median", "Above Median")
+ifelse(x<5.5, "Below Median", "Above Median")
+
+```
+
+## ifelse() function
+
+```{r}
 df <- df %>% 
   mutate(nocturnal = ifelse(lubridate::hour(Timestamp)<12, 
                             "morning person", 
@@ -203,11 +209,12 @@ df <- df %>%
 df$nocturnal
 ```
 
+
 ## Multiple Conditions
 
 - Sometimes we have more than one condition we want to evaluate
-  - `condition1&condition2` checks whether condition1 AND condition2 are TRUE
-  - `condition1|condition2` checks whether condition1 OR condition2 is TRUE
+  - `x&y` checks whether both x AND y are TRUE
+  - `x|y` checks whether either x OR y is TRUE
 
 ```{r}
 df <- df %>% 
@@ -220,10 +227,10 @@ df$nocturnal_coder[1:7]
 ```
 
 
-# Negating Conditions
+## Negating Conditions
 
-- Sometimes we want to check whether a condition is not `TRUE`
-  - `!condition` means NOT condition (condition does not hold)
+- Check whether a condition is not `TRUE`
+  - `!condition` means NOT condition 
 
 ```{r}
 df <- df %>% 
@@ -492,13 +499,17 @@ nominate %>%
 ```
 
 ## Tidyverse Digression: Grouping and Summarizing Data
-
+:::{.fragment semi-fade-out}
 - Often want to figure out some quantity within a category
   - e.g., ideology by party, average GDP per capita by country
-
+:::
+:::{.fragment}
 - Use `group_by()` function in `tidyverse` to group our data by given variables
+:::
+:::{.fragment}
 - Use `summarize()` and desired function to create new function
   - Very similar to `mutate()`
+:::
 
 ## Tidyverse Digress: Grouping and Summarizing
 

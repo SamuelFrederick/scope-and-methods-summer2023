@@ -412,11 +412,10 @@ Sam Frederick
 <li>Tibbles:
 <ul>
 <li>Changing and creating columns: <code>mutate()</code></li>
-<li>Subset data: <code>filter()</code> -Plotting:</li>
-<li><code>ggplot(data, aes())</code></li>
-<li>build on top of foundation</li>
+<li>Subset data: <code>filter()</code></li>
 </ul></li>
 </ul>
+<p>-Plotting: - Foundation: <code>ggplot(data, aes())</code> - Build on top of foundation with <code>+</code></p>
 </section>
 <section id="last-week-1" class="slide level2">
 <h2>Last Week</h2>
@@ -736,15 +735,17 @@ Categorical-&gt;vis1
 </div>
 </div>
 </section>
-<section id="conditional-logic-in-data-if-statements" class="slide level2">
-<h2>Conditional Logic in Data: If Statements</h2>
+<section id="conditional-logic-in-data-ifelse" class="slide level2">
+<h2>Conditional Logic in Data: ifelse()</h2>
 <ul>
-<li><p>Logical data and Subsetting</p></li>
-<li><p>Often, we want to check if some condition holds for data and perform operation if that condition holds</p>
+<li>Check if some condition holds for data and perform operation if that condition holds
 <ul>
-<li>e.g., check if ideology is below the median, and label that person liberal if so</li>
+<li>e.g., check if ideology is below the median, and if so, label that person liberal</li>
 </ul></li>
-<li><p>Use <code>ifelse()</code> function</p>
+</ul>
+<div class="fragment">
+<ul>
+<li>Use <code>ifelse()</code> function
 <ul>
 <li><code>ifelse(condition, output, output2)</code>
 <ul>
@@ -753,16 +754,22 @@ Categorical-&gt;vis1
 </ul></li>
 </ul></li>
 </ul>
+</div>
 </section>
 <section id="ifelse-function" class="slide level2">
 <h2>ifelse() function</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">ifelse</span>(x<span class="sc">&lt;=</span><span class="dv">5</span>, <span class="st">"Below Median"</span>, <span class="st">"Above Median"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">ifelse</span>(x<span class="sc">&lt;</span><span class="fl">5.5</span>, <span class="st">"Below Median"</span>, <span class="st">"Above Median"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "Below Median" "Below Median" "Below Median" "Below Median" "Below Median"
  [6] "Above Median" "Above Median" "Above Median" "Above Median" "Above Median"</code></pre>
 </div>
+</div>
+</section>
+<section id="ifelse-function-1" class="slide level2">
+<h2>ifelse() function</h2>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
 <span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">mutate</span>(<span class="at">nocturnal =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">hour</span>(Timestamp)<span class="sc">&lt;</span><span class="dv">12</span>, </span>
 <span id="cb10-3"><a href="#cb10-3"></a>                            <span class="st">"morning person"</span>, </span>
@@ -781,8 +788,8 @@ Categorical-&gt;vis1
 <ul>
 <li>Sometimes we have more than one condition we want to evaluate
 <ul>
-<li><code>condition1&amp;condition2</code> checks whether condition1 AND condition2 are TRUE</li>
-<li><code>condition1|condition2</code> checks whether condition1 OR condition2 is TRUE</li>
+<li><code>x&amp;y</code> checks whether both x AND y are TRUE</li>
+<li><code>x|y</code> checks whether either x OR y is TRUE</li>
 </ul></li>
 </ul>
 <div class="cell">
@@ -799,13 +806,12 @@ Categorical-&gt;vis1
 </div>
 </div>
 </section>
-<section>
-<section id="negating-conditions" class="title-slide slide level1 center">
-<h1>Negating Conditions</h1>
+<section id="negating-conditions" class="slide level2">
+<h2>Negating Conditions</h2>
 <ul>
-<li>Sometimes we want to check whether a condition is not <code>TRUE</code>
+<li>Check whether a condition is not <code>TRUE</code>
 <ul>
-<li><code>!condition</code> means NOT condition (condition does not hold)</li>
+<li><code>!condition</code> means NOT condition</li>
 </ul></li>
 </ul>
 <div class="cell">
@@ -1003,7 +1009,7 @@ Categorical-&gt;vis1
 <span id="cb28-6" class="hljs-ln-code"><a href="#cb28-6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Party"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, <span class="at">fill =</span> <span class="st">"Party"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="section-3_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
+<img data-src="section-3_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
 <section id="summarizing-data-univariate-2" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Summarizing Data: Univariate</h2>
 <ul>
@@ -1019,7 +1025,7 @@ Categorical-&gt;vis1
 <span id="cb29-4" class="hljs-ln-code"><a href="#cb29-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"NOMINATE-Dim. 1"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="section-3_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
+<img data-src="section-3_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
 <section id="summarizing-data-univariate-3" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Summarizing Data: Univariate</h2>
 <ul>
@@ -1101,7 +1107,7 @@ Categorical-&gt;vis1
 <span id="cb31-3"><a href="#cb31-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span> </span>
 <span id="cb31-4"><a href="#cb31-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"NOMINATE-Dim. 1"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">fill =</span> <span class="st">"Party"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="section-3_files/figure-revealjs/unnamed-chunk-28-1.png" width="960" height="400"></p>
+<p><img data-src="section-3_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" height="400"></p>
 </div>
 </div>
 </div>
@@ -1112,7 +1118,7 @@ Categorical-&gt;vis1
 <span id="cb32-3"><a href="#cb32-3"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span> </span>
 <span id="cb32-4"><a href="#cb32-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"NOMINATE-Dim. 1"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">fill =</span> <span class="st">"Party"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="section-3_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" height="400"></p>
+<p><img data-src="section-3_files/figure-revealjs/unnamed-chunk-30-1.png" width="960" height="400"></p>
 </div>
 </div>
 </div>
@@ -1132,7 +1138,7 @@ Categorical-&gt;vis1
 <span id="cb33-4"><a href="#cb33-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"NOMINATE-Dim. 1"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">fill =</span> <span class="st">"Party"</span>) <span class="sc">+</span></span>
 <span id="cb33-5"><a href="#cb33-5"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>chamber, <span class="at">nrow =</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="section-3_files/figure-revealjs/unnamed-chunk-30-1.png" width="960" height="400"></p>
+<p><img data-src="section-3_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" height="400"></p>
 </div>
 </div>
 </div>
@@ -1144,7 +1150,7 @@ Categorical-&gt;vis1
 <span id="cb34-4"><a href="#cb34-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"NOMINATE-Dim. 1"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">fill =</span> <span class="st">"Party"</span>) <span class="sc">+</span></span>
 <span id="cb34-5"><a href="#cb34-5"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>chamber, <span class="at">nrow =</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="section-3_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" height="350"></p>
+<p><img data-src="section-3_files/figure-revealjs/unnamed-chunk-32-1.png" width="960" height="350"></p>
 </div>
 </div>
 </div>
@@ -1166,7 +1172,7 @@ Categorical-&gt;vis1
 <span id="cb35-4" class="hljs-ln-code"><a href="#cb35-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"NOMINATE-Dim. 1"</span>, <span class="at">y =</span> <span class="st">"NOMINATE-Dim. 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="section-3_files/figure-revealjs/unnamed-chunk-32-1.png" width="960" class="r-stretch"></section>
+<img data-src="section-3_files/figure-revealjs/unnamed-chunk-33-1.png" width="960" class="r-stretch"></section>
 <section id="summarizing-data-bivariate-and-beyond-2" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Summarizing Data: Bivariate and Beyond</h2>
 <ul>
@@ -1182,20 +1188,10 @@ Categorical-&gt;vis1
 <span id="cb36-4" class="hljs-ln-code"><a href="#cb36-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"NOMINATE-Dim. 1"</span>, <span class="at">y =</span> <span class="st">"NOMINATE-Dim. 2"</span>, <span class="at">col =</span> <span class="st">"Party"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="section-3_files/figure-revealjs/unnamed-chunk-33-1.png" width="960" class="r-stretch"></section>
+<img data-src="section-3_files/figure-revealjs/unnamed-chunk-34-1.png" width="960" class="r-stretch"></section>
 <section id="tidyverse-digression-grouping-and-summarizing-data" class="slide level2">
 <h2>Tidyverse Digression: Grouping and Summarizing Data</h2>
-<ul>
-<li>Often want to figure out some quantity within a category
-<ul>
-<li>e.g., ideology by party, average GDP per capita by country</li>
-</ul></li>
-<li>Use <code>group_by()</code> function in <code>tidyverse</code> to group our data by given variables</li>
-<li>Use <code>summarize()</code> and desired function to create new function
-<ul>
-<li>Very similar to <code>mutate()</code></li>
-</ul></li>
-</ul>
+<p>:::{.fragment semi-fade-out} - Often want to figure out some quantity within a category - e.g., ideology by party, average GDP per capita by country ::: :::{.fragment} - Use <code>group_by()</code> function in <code>tidyverse</code> to group our data by given variables ::: :::{.fragment} - Use <code>summarize()</code> and desired function to create new function - Very similar to <code>mutate()</code> :::</p>
 </section>
 <section id="tidyverse-digress-grouping-and-summarizing" class="slide level2">
 <h2>Tidyverse Digress: Grouping and Summarizing</h2>
@@ -1284,7 +1280,7 @@ Categorical-&gt;vis1
 <span id="cb43-5"><a href="#cb43-5"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="section-3_files/figure-revealjs/unnamed-chunk-37-1.png" width="960" class="r-stretch"></section>
+<img data-src="section-3_files/figure-revealjs/unnamed-chunk-38-1.png" width="960" class="r-stretch"></section>
 <section id="line-plots-2" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Line Plots</h2>
 <ul>
@@ -1299,7 +1295,7 @@ Categorical-&gt;vis1
 <span id="cb44-6" class="hljs-ln-code"><a href="#cb44-6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Congress"</span>, <span class="at">y=</span> <span class="st">"Mean NOMINATE-Dim. 1"</span>, <span class="at">col =</span> <span class="st">"Party"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="section-3_files/figure-revealjs/unnamed-chunk-38-1.png" width="960" class="r-stretch"></section>
+<img data-src="section-3_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"></section>
 <section id="line-plots-3" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Line Plots</h2>
 <ul>
@@ -1314,7 +1310,7 @@ Categorical-&gt;vis1
 <span id="cb45-6" class="hljs-ln-code"><a href="#cb45-6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Congress"</span>, <span class="at">y=</span> <span class="st">"Mean NOMINATE-Dim. 1"</span>, <span class="at">col =</span> <span class="st">"Party"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="section-3_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"></section>
+<img data-src="section-3_files/figure-revealjs/unnamed-chunk-40-1.png" width="960" class="r-stretch"></section>
 <section id="recap" class="slide level2">
 <h2>Recap</h2>
 <div class="cell">
@@ -1485,9 +1481,9 @@ Categorical-&gt;n2c
 </div>
 </div>
 <div class="footer footer-default">
-<p>Introduction to R</p>
+<p>Summarizing Data</p>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
