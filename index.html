@@ -28,26 +28,20 @@
         }            
     });
 </script>
-<!--     <script>
-      function copyLink(element) {
-        var link = element.getAttribute("href");
-        var tempInput = document.createElement("input");
-        document.body.appendChild(tempInput);
-        tempInput.value=link;
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-        alert("Link copied to clipboard");
-    </script> -->
     <script>
-      function copyURI(evt) {
-        evt.preventDefault();
-        navigator.clipboard.writeText(evt.target.getAttribute('href')).then(() => {
-          /* clipboard successfully set */
-         }, () => {
-      /* clipboard write failed */
-        });
-      }
+    $('.copy_text').click(function (e) {
+    e.preventDefault();
+    var copyText = $(this).attr('href');
+
+   document.addEventListener('copy', function(e) {
+      e.clipboardData.setData('text/plain', copyText);
+      e.preventDefault();
+   }, true);
+
+   document.execCommand('copy');  
+   console.log('copied text : ', copyText);
+   alert('copied text: ' + copyText); 
+ });
     </script>
   </head>
   <body>
@@ -212,7 +206,7 @@ Sam Frederick</td>
   <td><a style="color:#00b0ff;text-decoration:none;" href="https://samuelfrederick.github.io/scope-and-methods-spring2023/section-3/section-3.html">Summarizing Data</a></td>
   <td>Summarizing relationships between 2+ variables; logical conditions</td>
   <td><a style="color:#00b0ff;text-decoration:none;" onclick="copyLink(this)" href="https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv">NOMINATE*<i class="bi bi-download"></i></a>
-    <a onclick="copyURI(event)" style="color:#00b0ff;text-decoration:none;" href="https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv"><i class="bi bi-clipboard"></a>
+    <a class="copy_text" data-toggle="tooltip" style="color:#00b0ff;text-decoration:none;" href="https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv"><i class="bi bi-clipboard"></i></a>
     </td>
   </tr>
 </table>
