@@ -225,7 +225,7 @@ copyLinks.forEach(function(copyLink) {
     event.preventDefault();
     const link = event.target;
     const icon = event.target.querySelector("i");
-    console.log(event.target.querySelector("#icon");
+    console.log(event.target.querySelector("#icon"));
     navigator.clipboard.writeText(copyLink.href).then(function() {
       icon.classList.remove("bi-clipboard");
       icon.style.color="#52D017";
