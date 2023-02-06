@@ -28,7 +28,7 @@
         }            
     });
 </script>
-    <script>
+<!--     <script>
       function copyLink(element) {
         var link = element.getAttribute("href");
         var tempInput = document.createElement("input");
@@ -38,6 +38,16 @@
         document.execCommand("copy");
         document.body.removeChild(tempInput);
         alert("Link copied to clipboard");
+    </script> -->
+    <script>
+      function copyURI(evt) {
+        evt.preventDefault();
+        navigator.clipboard.writeText(evt.target.getAttribute('href')).then(() => {
+          /* clipboard successfully set */
+         }, () => {
+      /* clipboard write failed */
+        });
+      }
     </script>
   </head>
   <body>
@@ -201,11 +211,13 @@ Sam Frederick</td>
   <td>Feb. 7</td>
   <td><a style="color:#00b0ff;text-decoration:none;" href="https://samuelfrederick.github.io/scope-and-methods-spring2023/section-3/section-3.html">Summarizing Data</a></td>
   <td>Summarizing relationships between 2+ variables; logical conditions</td>
-  <td><a style="color:#00b0ff;text-decoration:none;" onclick="copyLink(this)" href="https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv">NOMINATE*<i class="bi bi-download"></i></a></td>
+  <td><a style="color:#00b0ff;text-decoration:none;" onclick="copyLink(this)" href="https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv">NOMINATE*<i class="bi bi-download"></i></a>
+    <a onclick="copyURI(event)" style="color:#00b0ff;text-decoration:none;" href="https://raw.githubusercontent.com/SamuelFrederick/scope-and-methods-spring2023/main/section-3/HSall_members.csv"><i class="bi bi-clipboard"></a>
+    </td>
   </tr>
 </table>
   <div class="footnote">
-    * Note: Data from <a href="https://voteview.com">Voteview</a>
+    * Note: Data from <a style="color:#00b0ff;text-decoration:none;" href="https://voteview.com">Voteview</a>
   </div>
 </div>
   <footer>
