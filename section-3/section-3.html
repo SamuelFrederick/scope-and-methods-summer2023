@@ -414,8 +414,12 @@ Sam Frederick
 <li>Changing and creating columns: <code>mutate()</code></li>
 <li>Subset data: <code>filter()</code></li>
 </ul></li>
+<li>Plotting:
+<ul>
+<li>Foundation: <code>ggplot(data, aes())</code></li>
+<li>Build on top of foundation with <code>+</code></li>
+</ul></li>
 </ul>
-<p>-Plotting: - Foundation: <code>ggplot(data, aes())</code> - Build on top of foundation with <code>+</code></p>
 </section>
 <section id="last-week-1" class="slide level2">
 <h2>Last Week</h2>
@@ -1191,7 +1195,27 @@ Categorical-&gt;vis1
 <img data-src="section-3_files/figure-revealjs/unnamed-chunk-34-1.png" width="960" class="r-stretch"></section>
 <section id="tidyverse-digression-grouping-and-summarizing-data" class="slide level2">
 <h2>Tidyverse Digression: Grouping and Summarizing Data</h2>
-<p>:::{.fragment semi-fade-out} - Often want to figure out some quantity within a category - e.g., ideology by party, average GDP per capita by country ::: :::{.fragment} - Use <code>group_by()</code> function in <code>tidyverse</code> to group our data by given variables ::: :::{.fragment} - Use <code>summarize()</code> and desired function to create new function - Very similar to <code>mutate()</code> :::</p>
+<div class="fragment semi-fade-out">
+<ul>
+<li>Often want to figure out some quantity within a category
+<ul>
+<li>e.g., ideology by party, average GDP per capita by country</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Use <code>group_by()</code> function in <code>tidyverse</code> to group our data by given variables</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Use <code>summarize()</code> and desired function to create new function
+<ul>
+<li>Very similar to <code>mutate()</code></li>
+</ul></li>
+</ul>
+</div>
 </section>
 <section id="tidyverse-digress-grouping-and-summarizing" class="slide level2">
 <h2>Tidyverse Digress: Grouping and Summarizing</h2>

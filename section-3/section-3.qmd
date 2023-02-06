@@ -34,8 +34,7 @@ library(kableExtra)
 - Tibbles:
   - Changing and creating columns: `mutate()`
   - Subset data: `filter()`
-
--Plotting:
+- Plotting:
   - Foundation: `ggplot(data, aes())`
   - Build on top of foundation with `+`
 
@@ -499,13 +498,16 @@ nominate %>%
 ```
 
 ## Tidyverse Digression: Grouping and Summarizing Data
-:::{.fragment semi-fade-out}
+
+:::{.fragment .semi-fade-out}
 - Often want to figure out some quantity within a category
   - e.g., ideology by party, average GDP per capita by country
 :::
+
 :::{.fragment}
 - Use `group_by()` function in `tidyverse` to group our data by given variables
 :::
+
 :::{.fragment}
 - Use `summarize()` and desired function to create new function
   - Very similar to `mutate()`
