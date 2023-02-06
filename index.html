@@ -199,23 +199,44 @@ Sam Frederick</td>
   </tr>
 </table>
   <script>
-    const copyLink = document.querySelector("#copy-link");
-  const icon = document.querySelector("#icon");
+//     const copyLink = document.querySelector("#copy-link");
+//   const icon = document.querySelector("#icon");
     
+//   copyLink.addEventListener("click", function(event) {
+//   event.preventDefault();
+// //   const link = event.target;
+//   navigator.clipboard.writeText(copyLink.href).then(function() {
+//     icon.classList.remove("bi-clipboard");
+//     icon.style.color="#52D017";
+//     icon.classList.add("bi-clipboard-check-fill")
+//     setTimeout(function() {
+//       icon.classList.remove("bi-clipboard-check-fill");
+//       icon.style.color="#00b0ff";
+//       icon.classList.add("bi-clipboard");
+//     }, 3000);
+//   }, function(err) {
+//     console.error("Failed to copy text: ", err);
+//   });
+// });
+    const copyLinks = document.querySelectorAll(".copy-link");
+
+copyLinks.forEach(function(copyLink) {
   copyLink.addEventListener("click", function(event) {
-  event.preventDefault();
-//   const link = event.target;
-  navigator.clipboard.writeText(copyLink.href).then(function() {
-    icon.classList.remove("bi-clipboard");
-    icon.style.color="#52D017";
-    icon.classList.add("bi-clipboard-check-fill")
-    setTimeout(function() {
-      icon.classList.remove("bi-clipboard-check-fill");
-      icon.style.color="#00b0ff";
-      icon.classList.add("bi-clipboard");
-    }, 3000);
-  }, function(err) {
-    console.error("Failed to copy text: ", err);
+    event.preventDefault();
+    const link = event.target;
+    const icon = link.querySelector(".icon");
+    navigator.clipboard.writeText(copyLink.href).then(function() {
+      icon.classList.remove("bi-clipboard");
+      icon.style.color="#52D017";
+      icon.classList.add("bi-clipboard-check-fill");
+      setTimeout(function() {
+        icon.classList.remove("bi-clipboard-check-fill");
+        icon.style.color="#00b0ff";
+        icon.classList.add("bi-clipboard");
+      }, 3000);
+    }, function(err) {
+      console.error("Failed to copy text: ", err);
+    });
   });
 });
     </script>
