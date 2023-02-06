@@ -205,8 +205,8 @@ Sam Frederick</td>
   event.preventDefault();
 //   const link = event.target;
   navigator.clipboard.writeText(copyLink.href).then(function() {
-    icon.classList.remove("bi bi-clipboard");
-    icon.classList.add("bi bi-clipboard-check-fill")
+    icon.classList.remove("bi-clipboard");
+    icon.classList.add("bi-clipboard-check-fill")
 //     console.log("Copying to clipboard was successful!");
   }, function(err) {
     console.error("Failed to copy text: ", err);
