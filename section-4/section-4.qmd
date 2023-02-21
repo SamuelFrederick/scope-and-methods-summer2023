@@ -1,0 +1,151 @@
+---
+title: "Section 4: Statistical Relationships"
+author: "Sam Frederick"
+institute: "Columbia University"
+format: 
+  revealjs:
+    css: [footer.css]
+    theme: [default, custom.scss]
+    chalkboard: true
+    progress: true
+    include-after-body: footer.html 
+    footer: "Statistical Relationships"
+knitr: 
+  opts_chunk: 
+      echo: true
+---
+
+## Today's Section
+
+- Correlation Coefficients
+
+- Law of Large Numbers
+
+- The Central Limit Theorem
+
+- Hypothesis Testing
+
+## Correlation Coefficients
+
+:::{.fragment}
+- Statistically summarize relationships between numeric variables
+:::
+:::{.fragment}
+- Range from -1 to 1
+:::
+:::{.fragment}
+- Values closer to -1 or 1 indicate stronger relationships
+:::
+
+## Correlation Coefficients
+
+$Cor(X, Y) = \frac{Cov(X,Y)}{\sqrt{Var(X)*Var(Y)}} = \frac{\frac{1}{n-1}\sum_{i=1}^n(X-\bar{X})(Y-\bar{Y})}{\sqrt{\frac{1}{n-1}\sum_{i=1}^n(X-\bar{X})^2 *\frac{1}{n-1} \sum_{i=1}^n(Y-\bar{Y})^2}}$
+
+Equivalently:
+
+$Cor(X,Y) = \frac{\sum_{i=1}^n (X-\bar{X})*(Y-\bar{Y})}{ \sqrt{\sum_{i=1}^n(X-\bar{X})^2 *\sum_{i=1}^n(Y-\bar{Y})^2}}$
+
+## Correlation Coefficients in R
+
+```{r}
+x <- c(1, 3, 5, 7, 9)
+y <- c(1, 4, 7, 2 , 10)
+```
+
+:::{.fragment}
+- By hand: 
+
+```{r}
+numerator <- sum((x-mean(x))*(y - mean(y)))
+denominator <- sqrt(sum((x-mean(x))^2)*sum((y - mean(y))^2))
+round(numerator/denominator, 3)
+```
+:::
+:::{.fragment}
+- Using R functions:
+
+```{r}
+round(cov(x, y)/sqrt(var(x)*var(y)), 3)
+```
+:::
+:::{.fragment}
+- Using one R function:
+
+```{r}
+round(cor(x, y), 3)
+```
+:::
+
+## Law of Large Numbers
+
+As $n \to \infty$, sample mean approaches true population mean:
+
+```{r, echo = F}
+library(tidyverse)
+set.seed(123)
+pop <- rnorm(1000000, 375, 1000)
+samp_sizes <- seq(1, 10000, 5)
+samp_means <- sapply(samp_sizes, 
+       function(x) mean(sample(pop, size = x, replace = T)))
+tibble(samp_mean = samp_means, 
+       samp_size = samp_sizes) %>%
+  ggplot(aes(samp_size, samp_mean)) + geom_line() +
+  geom_hline(yintercept = mean(pop), col = "red", lty = "dashed") +
+  labs(x = "Sample Size", y = "Sample Mean", title = "Law of Large Numbers") 
+```
+
+## Central Limit Theorem
+
+- As $n \to \infty$, $\bar{X}_n \to N(\mu, \frac{\sigma^2}{\sqrt{n}})$
+
+```{r, echo = F}
+set.seed(12345)
+pop <- sample(1:30, 1000000, replace = T)
+clt <- lapply(c(1:30, 50,75, 100,250, 500, 
+                1000,2500,  5000, 7500, 10000, 100000), 
+       function(x) replicate(200, mean(sample(pop, size = x, replace = T))))
+
+```
+
+## Central Limit Theorem
+
+- What's more,  As $n \to \infty$, $\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \to N(0, 1)$
+
+```{r, echo = F}
+a <- tibble(sample = unlist(clt),
+       sampsize = rep(c(1:30, 50,75, 100,250, 500, 1000,2500,  5000, 7500, 10000, 100000), lengths(clt))) %>%
+  group_by(sampsize) %>%
+  mutate(sd_samp = sd(pop)/sqrt(sampsize)) %>%
+  ungroup() %>%
+  mutate(sample =(sample - mean(pop))/(sd_samp), 
+         sampsize = factor(sampsize)) %>% 
+  ggplot(aes(sample)) + 
+    geom_histogram(aes(y = ..density..)) +
+    stat_function(fun = dnorm, color = "red") + 
+    labs(x = "Sample Means", y = "Density", title = "Sample Size: {closest_state}")+
+  # facet_wrap(~sampsize)
+    gganimate::transition_states(sampsize,transition_length = 0)
+gganimate::animate(a, duration = 10)
+```
+
+## Hypothesis Testing
+
+- Start with a hypothesis (e.g., about the mean ideology in the population)
+- Collect data
+:::{.fragment}
+- Calculate the Z-Score based on null hypothesis:
+  - $ Z = \frac{\bar{X} - \mu_{0}}{\sigma/\sqrt{n}}$
+:::
+:::{.fragment}
+- Test the null hypothesis
+  - Calculate the p-value 
+- P-value: the probability of observing a Z-Score at least as large as that actually observed, if the null hypothesis is true
+:::
+
+## Hypothesis Testing
+
+- In R, can use the `t.test()` function
+
+- ...or you can calculate "by hand" and use the `pt()` or `pnorm()` functions
+
+
