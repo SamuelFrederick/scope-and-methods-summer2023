@@ -111,7 +111,7 @@ clt <- lapply(c(1:30, 50,75, 100,250, 500,
 
 - What's more,  As $n \to \infty$, $\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \to N(0, 1)$
 
-```{r, echo = F}
+```{r, echo = F, cache = T}
 a <- tibble(sample = unlist(clt),
        sampsize = rep(c(1:30, 50,75, 100,250, 500, 1000,2500,  5000, 7500, 10000, 100000), lengths(clt))) %>%
   group_by(sampsize) %>%
@@ -132,15 +132,18 @@ gganimate::animate(a, duration = 10)
 
 - Start with a hypothesis (e.g., about the mean ideology in the population)
 - Collect data
+
 :::{.fragment}
 - Calculate the Z-Score based on null hypothesis:
-  - $ Z = \frac{\bar{X} - \mu_{0}}{\sigma/\sqrt{n}}$
+  - $Z = \frac{\bar{X} - \mu_{0}}{\sigma/\sqrt{n}}$
 :::
-:::{.fragment}
-- Test the null hypothesis
+
+## Hypothesis Testing 
+
+- Test the null hypothesis using the Z-Score
   - Calculate the p-value 
 - P-value: the probability of observing a Z-Score at least as large as that actually observed, if the null hypothesis is true
-:::
+
 
 ## Hypothesis Testing
 

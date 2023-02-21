@@ -506,19 +506,28 @@ Sam Frederick
 <h2>Hypothesis Testing</h2>
 <ul>
 <li>Start with a hypothesis (e.g., about the mean ideology in the population)</li>
-<li>Collect data :::{.fragment}</li>
+<li>Collect data</li>
+</ul>
+<div class="fragment">
+<ul>
 <li>Calculate the Z-Score based on null hypothesis:
 <ul>
-<li>$ Z = $ ::: :::{.fragment}</li>
+<li><span class="math inline">\(Z = \frac{\bar{X} - \mu_{0}}{\sigma/\sqrt{n}}\)</span></li>
 </ul></li>
-<li>Test the null hypothesis
+</ul>
+</div>
+</section>
+<section id="hypothesis-testing-1" class="slide level2">
+<h2>Hypothesis Testing</h2>
+<ul>
+<li>Test the null hypothesis using the Z-Score
 <ul>
 <li>Calculate the p-value</li>
 </ul></li>
-<li>P-value: the probability of observing a Z-Score at least as large as that actually observed, if the null hypothesis is true :::</li>
+<li>P-value: the probability of observing a Z-Score at least as large as that actually observed, if the null hypothesis is true</li>
 </ul>
 </section>
-<section id="hypothesis-testing-1" class="slide level2">
+<section id="hypothesis-testing-2" class="slide level2">
 <h2>Hypothesis Testing</h2>
 <ul>
 <li><p>In R, can use the <code>t.test()</code> function</p></li>
