@@ -481,15 +481,55 @@ Sam Frederick
 </div>
 </div>
 </section>
+<section id="custom-functions-in-r" class="slide level2">
+<h2>Custom Functions in R</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>name <span class="ot">&lt;-</span> <span class="cf">function</span>(arguments){</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  tasks</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">return</span>(output)</span>
+<span id="cb8-4"><a href="#cb8-4"></a>}</span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">name</span>(arguments)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="custom-functions-in-r-1" class="slide level2">
+<h2>Custom Functions in R</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>square <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">return</span>(x<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>}</span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">square</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">square</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16</code></pre>
+</div>
+</div>
+</section>
+<section id="custom-functions-in-r-2" class="slide level2">
+<h2>Custom Functions in R</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>correlation <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  numerator <span class="ot">&lt;-</span> <span class="fu">sum</span>((x<span class="sc">-</span><span class="fu">mean</span>(x))<span class="sc">*</span>(y <span class="sc">-</span> <span class="fu">mean</span>(y)))</span>
+<span id="cb13-3"><a href="#cb13-3"></a>  denominator <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((x<span class="sc">-</span><span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span><span class="fu">sum</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">return</span>(<span class="fu">round</span>(numerator<span class="sc">/</span>denominator, <span class="dv">3</span>))</span>
+<span id="cb13-5"><a href="#cb13-5"></a>}</span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="fu">correlation</span>(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.683</code></pre>
+</div>
+</div>
+</section>
 <section id="law-of-large-numbers" class="slide level2">
 <h2>Law of Large Numbers</h2>
 <p>As <span class="math inline">\(n \to \infty\)</span>, sample mean approaches true population mean:</p>
 
-<img data-src="section-4_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="central-limit-theorem" class="slide level2">
 <h2>Central Limit Theorem</h2>
 <ul>
-<li>As <span class="math inline">\(n \to \infty\)</span>, <span class="math inline">\(\bar{X}_n \to N(\mu, \frac{\sigma^2}{\sqrt{n}})\)</span></li>
+<li>As <span class="math inline">\(n \to \infty\)</span>, <span class="math inline">\(\sqrt{n}(\bar{X}_n-\mu) \to N(0, \sigma^2)\)</span></li>
 </ul>
 <div class="cell">
 
@@ -501,37 +541,250 @@ Sam Frederick
 <li>What’s more, As <span class="math inline">\(n \to \infty\)</span>, <span class="math inline">\(\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \to N(0, 1)\)</span></li>
 </ul>
 
-<img data-src="section-4_files/figure-revealjs/unnamed-chunk-7-1.gif" class="r-stretch"></section>
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-10-1.gif" class="r-stretch"></section>
 <section id="hypothesis-testing" class="slide level2">
 <h2>Hypothesis Testing</h2>
 <ul>
-<li>Start with a hypothesis (e.g., about the mean ideology in the population)</li>
-<li>Collect data</li>
-</ul>
-<div class="fragment">
+<li>Null Hypothesis:
 <ul>
-<li>Calculate the Z-Score based on null hypothesis:
+<li>Usually that true population mean equal to some value (<span class="math inline">\(\mu = x\)</span>)</li>
+<li>e.g., the true approval rate of Joe Biden is 50%</li>
+<li>e.g., the difference between the conservatism of Democrats and Republicans is 0</li>
+</ul></li>
+<li>Alternative Hypothesis:
 <ul>
-<li><span class="math inline">\(Z = \frac{\bar{X} - \mu_{0}}{\sigma/\sqrt{n}}\)</span></li>
+<li>Two-sided: <span class="math inline">\(\mu \neq x\)</span></li>
+<li>One-sided: <span class="math inline">\(\mu &gt; x\)</span> or <span class="math inline">\(\mu &lt; x\)</span></li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="hypothesis-testing-1" class="slide level2">
 <h2>Hypothesis Testing</h2>
 <ul>
-<li>Test the null hypothesis using the Z-Score
+<li>Calculate the Z-Score based on null hypothesis:
 <ul>
-<li>Calculate the p-value</li>
+<li><span class="math inline">\(Z = \frac{\bar{X} - \mu_{0}}{\sigma/\sqrt{n}}\)</span></li>
+<li>Two-Sample/Difference-in-Means Test:
+<ul>
+<li><span class="math inline">\(Z = \frac{(\bar{X} - \bar{Y}) - (\mu_{0x}-\mu_{0y})}{\sqrt{\sigma_x^2/n_x + \sigma_y^2/n_y}}\)</span></li>
 </ul></li>
-<li>P-value: the probability of observing a Z-Score at least as large as that actually observed, if the null hypothesis is true</li>
+</ul></li>
 </ul>
 </section>
 <section id="hypothesis-testing-2" class="slide level2">
 <h2>Hypothesis Testing</h2>
 <ul>
-<li><p>In R, can use the <code>t.test()</code> function</p></li>
-<li><p>…or you can calculate “by hand” and use the <code>pt()</code> or <code>pnorm()</code> functions</p></li>
+<li>Under the Central Limit Theorem, the Z-Score should be
+<ul>
+<li>distributed approximately standard normal
+<ul>
+<li><strong>if</strong> we repeated the sampling process many times with a large enough sample</li>
+<li>and <strong>if</strong> the null hypothesis is true</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="hypothesis-testing-3" class="slide level2">
+<h2>Hypothesis Testing</h2>
+<ul>
+<li>Standard Normal Distribution has known properties
+<ul>
+<li>Calculate probability of observing Z-Score at least as large as observed Z-Score
+<ul>
+<li><strong>if</strong> the null hypothesis is true</li>
+</ul></li>
+<li>This is the <strong>p-value</strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="hypothesis-testing-example" class="slide level2">
+<h2>Hypothesis Testing: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>nominate <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"~/Downloads/HSall_members.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">filter</span>(congress<span class="sc">==</span><span class="dv">118</span><span class="sc">&amp;</span>party_code<span class="sc">%in%</span><span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">200</span>)<span class="sc">&amp;</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>           chamber<span class="sc">!=</span><span class="st">"President"</span>) </span>
+<span id="cb15-4"><a href="#cb15-4"></a>dem <span class="ot">&lt;-</span> nominate <span class="sc">%&gt;%</span> <span class="fu">filter</span>(party_code<span class="sc">==</span><span class="dv">100</span>) <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(nominate_dim1)</span>
+<span id="cb15-5"><a href="#cb15-5"></a>rep <span class="ot">&lt;-</span> nominate<span class="sc">%&gt;%</span> <span class="fu">filter</span>(party_code<span class="sc">==</span><span class="dv">200</span>) <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(nominate_dim1)</span>
+<span id="cb15-6"><a href="#cb15-6"></a>diff_in_means <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep<span class="sc">$</span>nominate_dim1) <span class="sc">-</span> <span class="fu">mean</span>(dem<span class="sc">$</span>nominate_dim1)</span>
+<span id="cb15-7"><a href="#cb15-7"></a>denominator <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((<span class="fu">var</span>(rep<span class="sc">$</span>nominate_dim1, <span class="at">na.rm =</span> T)<span class="sc">/</span><span class="fu">nrow</span>(rep)) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>                      (<span class="fu">var</span>(dem<span class="sc">$</span>nominate_dim1)<span class="sc">/</span><span class="fu">nrow</span>(dem)))</span>
+<span id="cb15-9"><a href="#cb15-9"></a>z_score <span class="ot">&lt;-</span> diff_in_means<span class="sc">/</span>denominator</span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="fu">round</span>(z_score, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 73.525</code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-testing-example-1" class="slide level2">
+<h2>Hypothesis Testing: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm) <span class="sc">+</span> </span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>)) <span class="sc">+</span> </span>
+<span id="cb17-4"><a href="#cb17-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, </span>
+<span id="cb17-5"><a href="#cb17-5"></a>       <span class="at">title =</span> <span class="st">"Standard Normal Distribution"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<section id="hypothesis-testing-example-2" class="slide level2">
+<h2>Hypothesis Testing: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm) <span class="sc">+</span> </span>
+<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">100</span>,<span class="dv">100</span>)) <span class="sc">+</span> </span>
+<span id="cb18-4"><a href="#cb18-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, </span>
+<span id="cb18-5"><a href="#cb18-5"></a>       <span class="at">title =</span> <span class="st">"Standard Normal Distribution"</span>) <span class="sc">+</span> </span>
+<span id="cb18-6"><a href="#cb18-6"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> z_score, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<section id="hypothesis-testing-example-3" class="slide level2">
+<h2>Hypothesis Testing: Example</h2>
+<ul>
+<li>One-Sided Hypothesis Test: <span class="math inline">\(\mu_{0R} - \mu_{0D} &gt;0\)</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pnorm</span>(z_score, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<ul>
+<li>Two-Sided Hypothesis Test: <span class="math inline">\(\mu_{0R}- \mu_{0D} \neq 0\)</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">pnorm</span>(z_score, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-testing-t-distribution" class="slide level2">
+<h2>Hypothesis Testing: T-Distribution</h2>
+<ul>
+<li><p>Often use the t distribution instead of normal distribution</p>
+<ul>
+<li>especially with small sample sizes</li>
+</ul></li>
+<li><p>t-distribution places more probability in the tails</p></li>
+<li><p>In large samples, the t-distribution is equivalent to the normal distribution</p></li>
+</ul>
+</section>
+<section id="t-distribution" class="slide level2">
+<h2>T Distribution</h2>
+
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<section id="hypothesis-testing-4" class="slide level2">
+<h2>Hypothesis Testing</h2>
+<ul>
+<li>In R, can use the <code>t.test()</code> function</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">t.test</span>(rep<span class="sc">$</span>nominate_dim1, dem<span class="sc">$</span>nominate_dim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  rep$nominate_dim1 and dem$nominate_dim1
+t = 73.525, df = 500.98, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.8825648 0.9310273
+sample estimates:
+ mean of x  mean of y 
+ 0.5222045 -0.3845916 </code></pre>
+</div>
+</div>
+</section>
+<section id="confidence-intervals" class="slide level2">
+<h2>Confidence Intervals</h2>
+<ul>
+<li><p>We often want some idea of uncertainty in our estimates</p></li>
+<li><p>Use Central Limit Theorem to construct “confidence intervals” around our estimates</p></li>
+<li><p>Lower End: sample estimate - <span class="math inline">\(qnorm(0.975)*\)</span>Standard Error</p></li>
+<li><p>Upper End: sample estimate + <span class="math inline">\(qnorm(0.975)*\)</span>Standard Error</p></li>
+</ul>
+</section>
+<section id="confidence-intervals-example" class="slide level2">
+<h2>Confidence Intervals: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>dem_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(dem<span class="sc">$</span>nominate_dim1)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>dem_mean <span class="sc">-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)<span class="sc">*</span><span class="fu">sd</span>(dem<span class="sc">$</span>nominate_dim1)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">nrow</span>(dem))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.399397</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>dem_mean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.3845916</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>dem_mean <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)<span class="sc">*</span><span class="fu">sd</span>(dem<span class="sc">$</span>nominate_dim1)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">nrow</span>(dem))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.3697862</code></pre>
+</div>
+</div>
+</section>
+<section id="confidence-intervals-example-1" class="slide level2">
+<h2>Confidence Intervals: Example</h2>
+
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<section id="confidence-intervals-example-2" class="slide level2">
+<h2>Confidence Intervals: Example</h2>
+
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<section id="confidence-intervals-1" class="slide level2">
+<h2>Confidence Intervals</h2>
+<ul>
+<li>Most common: 95% “Confidence Intervals”
+<ul>
+<li>Does <strong>NOT</strong> mean we are 95% confident that the true population value is in the interval</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Real meaning: if we repeat the sampling process 100 times, 95% of the 95% confidence intervals will contain the true population value (on average)</li>
+</ul>
+</div>
+</section>
+<section id="confidence-intervals-2" class="slide level2">
+<h2>Confidence Intervals</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb31-2"><a href="#cb31-2"></a>n <span class="ot">&lt;-</span> <span class="dv">100000</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>pop <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">15</span>, <span class="dv">10</span>)</span>
+<span id="cb31-4"><a href="#cb31-4"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(pop, <span class="at">size =</span> <span class="dv">100</span>)</span>
+<span id="cb31-5"><a href="#cb31-5"></a>samp_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(samp)</span>
+<span id="cb31-6"><a href="#cb31-6"></a>lb <span class="ot">&lt;-</span> samp_mean <span class="sc">-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(samp)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">100</span>)</span>
+<span id="cb31-7"><a href="#cb31-7"></a>ub <span class="ot">&lt;-</span> samp_mean <span class="sc">+</span><span class="fu">qnorm</span>(<span class="fl">0.975</span>, <span class="at">mean=</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(samp)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
+<section id="confidence-intervals-3" class="slide level2">
+<h2>Confidence Intervals</h2>
+<div class="cell">
+
+</div>
+
+<img data-src="section-4_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<section id="recap" class="slide level2">
+<h2>Recap</h2>
+<ul>
+<li><p>Central Limit Theorem (and Law of Large Numbers) central to many scientific tasks</p></li>
+<li><p>Used for calculating p-values, hypothesis testing, and constructing confidence intervals</p></li>
+<li><p>p-value: probability of observing a Z-score/t-statistic at least as large as the one actually observed <strong>if</strong> the null hypothesis is true</p></li>
+</ul>
+</section>
+<section id="recap-1" class="slide level2">
+<h2>Recap</h2>
+<ul>
+<li>Confidence Intervals:
+<ul>
+<li>lower bound: sample estimate - <span class="math inline">\(qnorm(0.975)*\)</span>Standard Error</li>
+<li>upper bound: sample estimate + <span class="math inline">\(qnorm(0.975)*\)</span>Standard Error</li>
+</ul></li>
+<li>We are <strong>NOT</strong> 95% confident that the true population value is in the interval
+<ul>
+<li>Only that, if we repeated the sampling process many times, roughly 95% of the intervals would contain the true population mean</li>
+</ul></li>
 </ul>
 <div class="footer footer-default">
 <p>Statistical Relationships</p>
