@@ -16,11 +16,11 @@ pop <- sample(1:100, 100000, replace = T)
 dnorm_limit <- function(x, htype, zscore) {
   y <- dnorm(x)
   if(htype==1){
-    y[x> -abs(zscore)&x<abs(zscore)] <- NA
+    y[x>= -abs(zscore)&x<=abs(zscore)] <- NA
   }else if(htype==2){
-    y[x<zscore] <- NA
+    y[x<=zscore] <- NA
   }else{
-    y[x>zscore] <- NA
+    y[x>=zscore] <- NA
   }
   return(y)
 }

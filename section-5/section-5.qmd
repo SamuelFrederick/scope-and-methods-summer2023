@@ -1,0 +1,606 @@
+---
+title: "Section 5: Sources of Error and Bias in Research"
+author: "Sam Frederick"
+institute: "Columbia University"
+date: "March 7, 2023"
+format: 
+  revealjs:
+    css: [footer.css]
+    theme: [default, custom.scss]
+    chalkboard: true
+    progress: true
+    include-after-body: footer.html 
+    footer: "Sources of Error"
+knitr: 
+  opts_chunk: 
+      echo: true
+---
+
+```{r setup, include = F, echo = F}
+library(tidyverse)
+```
+
+
+## Thinking about Bias and Error in Research {auto-animate=true}
+
+Research Process:
+
+```{dot}
+digraph G {
+    rankdir=LR;
+Question -> Theory; 
+Theory -> Hypotheses;
+Hypotheses -> dat; 
+dat -> ht;
+
+dat [label = "Data Collection"];
+ht [label = "Hypothesis Testing"];
+
+}
+```
+
+## Thinking about Bias and Error in Research {auto-animate=true}
+
+Measurement Error:
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    #ht[group=g1];
+    {rank=same; dat; msr[group=g2];}
+    #{rank=same; dat; sampling[group=g2];}
+
+#subgraph b{
+ #   dat -> sampling;
+#}
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> msr ;
+
+
+dat [label = "Data Collection"];
+#ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+
+}
+```
+
+## Measurement Error
+
+- Difference between measurements and true underlying concept
+
+- Steps to address measurement error: 
+  - think carefully about how we measure the concept of interest
+  - demonstrate validity of our measures
+
+## Thinking about Bias and Error in Research 
+
+Sampling Error: 
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    #ht[group=g1];
+    {rank=same; dat; msr[group=g2]; sampling[group=g2];}
+    #{rank=same; dat; sampling[group=g2];}
+
+#subgraph b{
+ #   dat -> sampling;
+#}
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> sampling;
+dat -> msr;
+
+
+dat [label = "Data Collection"];
+#ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+sampling[label="Sampling Error", fillcolor=red, style=filled, fontcolor=white];
+}
+```
+
+## Sampling Error
+
+:::{.incremental}
+- Data give unbiased estimates only if they are representative of the population of interest
+  - Researchers often use convenience samples
+- How do we get representative samples?
+  - Census
+    - Often infeasible
+  - Random sampling
+:::
+
+## Random Sampling {auto-animate=true}
+
+- Types of random sampling:
+  - Simple Random Sampling
+  - Stratified Random Sampling
+  - Cluster Random Sampling
+
+## Random Sampling {auto-animate=true}
+
+- Simple Random Sampling
+  - With replacement
+  - Without replacement
+  - differences negligible in large populations
+- Stratified Random Sampling
+- Cluster Random Sampling
+
+## Random Sampling {auto-animate=true}
+
+- Simple Random Sampling
+- Stratified Random Sampling
+  - take all groups in population and pull random samples from the groups
+  - used to prevent unusual samples
+    - e.g., a random sample that, by chance, only contains Democrats
+- Cluster Random Sampling
+
+## Random Sampling {auto-animate=true}
+
+- Simple Random Sampling
+- Stratified Random Sampling
+- Cluster Random Sampling
+  - randomly select groups, like cities, and randomly sample within the groups
+
+```{r, echo =F}
+set.seed(123)
+pop <- data.frame(MASS::mvrnorm(100, mu = c(0, 0), Sigma = matrix(c(1, 0, 0, 1), nrow = 2)))
+colnames(pop) <- c("X", "Y")
+```
+
+## Random Sampling {auto-animate=true}
+
+Start with population of size 100
+
+```{r, echo = F}
+ggplot(pop, aes(X, Y)) + 
+  geom_point()
+```
+
+## Random Sampling {auto-animate=true}
+
+Simple Random Sample Without Replacement
+
+```{r, echo = F}
+set.seed(123)
+samp <- sample(1:nrow(pop), size = 10, replace = F)
+pop$samp <- 0
+pop$samp[samp] <- 1
+pop %>% 
+  ggplot(aes(X, Y, color = factor(samp), alpha = factor(samp))) + 
+  geom_point() + 
+  geom_vline(xintercept = mean(pop$X[pop$samp==1]), col = "#00BFC4") + 
+  geom_hline(yintercept= mean(pop$Y[pop$samp==1]), col = "#00BFC4") + 
+  geom_vline(xintercept = mean(pop$X), col = "#F8766D", lty = "dashed") + 
+  geom_hline(yintercept = mean(pop$Y), col = "#F8766D", lty = "dashed")
+```
+
+## Random Sampling {auto-animate=true}
+
+Simple Random Sampling With Replacement
+
+```{r, echo = F}
+set.seed(123)
+samp <- sample(1:nrow(pop), size = 10, replace = T)
+pop$samp <- 0
+pop$samp[samp] <- 1
+
+pop %>% 
+  ggplot(aes(X, Y, col = factor(samp), alpha = ifelse(samp==0, 0.5, 1))) + 
+  guides(alpha = "none")+
+  geom_point() + 
+  geom_vline(xintercept = mean(pop$X[pop$samp==1]), col = "#00BFC4") + 
+  geom_hline(yintercept= mean(pop$Y[pop$samp==1]), col = "#00BFC4") + 
+  geom_vline(xintercept = mean(pop$X), col = "#F8766D", lty = "dashed") + 
+  geom_hline(yintercept = mean(pop$Y), col = "#F8766D", lty = "dashed")
+```
+
+## Random Sampling {auto-animate=true}
+
+Stratified Random Sampling
+
+```{r, echo = F}
+set.seed(123)
+pop <- pop %>% mutate(strat = case_when(X<0&Y<0~"G1", 
+                                        X<0&Y>0~"G2", 
+                                        X>0&Y<0~"G3", 
+                                        X>0&Y>0~"G4"))
+stratsamp <- randomizr::strata_rs(pop$strat, strata_n = c(2, 2, 3, 3))
+pop$stratsamp <- 0
+pop$stratsamp[stratsamp==1] <- 1
+stratmeans <- pop %>% 
+  group_by(strat) %>%
+  mutate(strat_n = n()) %>%
+  filter(stratsamp==1) %>%
+  group_by(strat_n) %>%
+  summarize(X = mean(X), 
+            Y = mean(Y)) 
+stratmeanx <- sum(stratmeans$strat_n*stratmeans$X)/nrow(pop)
+stratmeany <- sum(stratmeans$strat_n*stratmeans$Y)/nrow(pop)
+pop %>% 
+  ggplot(aes(X, Y, col = factor(stratsamp), alpha = factor(stratsamp))) + 
+  annotate("rect", xmin = 0, xmax = Inf, ymax = 0, ymin = -Inf, 
+           fill = "#F8766D", alpha = 0.4) +
+  annotate("rect", xmin = 0, xmax = Inf, ymax = 0, ymin = Inf, 
+           fill = "#7CAE00", alpha = 0.4) +
+  annotate("rect", xmin = 0, xmax = -Inf, ymax = 0, ymin = -Inf, 
+           fill = "#00BFC4", alpha = 0.4) +
+  annotate("rect", xmin = 0, xmax = -Inf, ymax = 0, ymin = Inf, 
+           fill = "#C77CFF", alpha = 0.4) +
+  geom_point() + 
+  geom_vline(xintercept = stratmeanx, col = "#00BFC4") + 
+  geom_hline(yintercept= stratmeany, col = "#00BFC4") + 
+  geom_vline(xintercept = mean(pop$X), col = "#F8766D", lty = "dashed") + 
+  geom_hline(yintercept = mean(pop$Y), col = "#F8766D", lty = "dashed")
+```
+
+## Random Sampling {auto-animate=true}
+
+Cluster Random Sampling
+
+```{r, echo = F}
+pop <- pop %>% mutate(clust = stratsamp==1&strat%in%c("G2", "G3"))
+clustmeans <- pop %>% 
+  filter(clust) %>% group_by(strat) %>% 
+  summarize(X = mean(X), Y = mean(Y)) %>% 
+  mutate(M = ifelse(strat=="G2", 23, 28)) %>% 
+  summarize(X = sum(X*M)/sum(M), Y = sum(Y*M)/sum(M))
+pop %>%
+  ggplot(aes(X, Y, col = factor(clust), alpha = factor(clust))) + 
+  annotate("rect", xmin = 0, xmax = Inf, ymax = 0, ymin = -Inf, 
+           fill = "#C77CFF", alpha = 0.4) +
+  annotate("rect", xmin = 0, xmax = -Inf, ymax = 0, ymin = Inf, 
+           fill = "#C77CFF", alpha = 0.4) +
+  geom_point() + 
+  geom_vline(xintercept = clustmeans$X, col = "#00BFC4") + 
+  geom_hline(yintercept= clustmeans$Y, col = "#00BFC4") + 
+  geom_vline(xintercept = mean(pop$X), col = "#F8766D", lty = "dashed") + 
+  geom_hline(yintercept = mean(pop$Y), col = "#F8766D", lty = "dashed")
+```
+
+## Simple Random Sampling
+
+1000 random samples of size 30 from World Bank data, without replacement
+
+```{r, echo = F}
+country_codes <- rvest::read_html("https://statisticstimes.com/geography/countries-by-continents.php")%>% 
+  rvest::html_nodes("table") %>% .[3] %>% rvest::html_table() %>%
+  .[[1]]
+wb_data <- read_csv("~/scope-and-methods-spring2023/section-5/wb_data.csv") %>%
+  mutate(gdppc21 = ifelse(gdppc21=="..", NA, gdppc21), 
+         gdppc = as.numeric(gdppc21))
+wb_data <- wb_data%>% 
+  left_join(country_codes, by = c("Country Code" = "ISO-alpha3 Code"))
+wb_data <- wb_data %>% drop_na(Continent)
+set.seed(123)
+srs_wor <- data.table::rbindlist(lapply(1:1000, FUN = function(x) {
+  samp <- sample(1:nrow(wb_data), size = 30, replace = F)
+  samp <- wb_data[samp,]
+  return(data.frame(prop.table(table(samp$Continent))))
+}))
+
+as_tibble(srs_wor) %>% 
+  rename("continent" = "Var1", "prop" = "Freq") %>% 
+  group_by(continent) %>% 
+  summarize(mean = mean(prop), 
+            q.025 = quantile(prop, 0.025), 
+            q97.5 = quantile(prop, 0.975))%>%
+  mutate(pop_val = "Sample Estimate") %>%
+  rbind(wb_data %>% group_by(Continent)%>%
+          summarize(mean = n()/nrow(wb_data)) %>% rename("continent" = "Continent") %>%mutate( q.025 = NA, q97.5 = NA, pop_val = "True Population Value"))%>%
+  drop_na(continent) %>%
+  ggplot(aes(continent, mean, fill = pop_val)) + 
+  geom_col(position = position_dodge(0.5), width = 0.5) + 
+  geom_errorbar(aes(continent, ymin = q.025, 
+                    ymax = q97.5), width = 0.1, 
+                position = position_dodge(0.5))
+```
+
+## Random Sampling
+
+```{r, echo = F}
+set.seed(123)
+srs_wr <-sapply(
+  1:1000, function(x) {
+    samp <- sample(1:nrow(wb_data),size = 60, replace = T)
+    return(mean(wb_data$gdppc[samp], na.rm = T))
+  }
+)
+srs_wor <- sapply(
+  1:1000, function(x) {
+    samp <- sample(1:nrow(wb_data),size = 60, replace = F)
+    return(mean(wb_data$gdppc[samp], na.rm = T))
+  }
+)
+stratrs <- sapply(
+  1:1000, function(x) {
+    samp <- randomizr::strata_rs(wb_data$Continent, n = 10)
+    samp <- wb_data %>% mutate(samp = samp) %>%
+      filter(samp==1) %>% group_by(Continent) %>% 
+      summarize(gdppc = mean(gdppc, na.rm = T)) %>% 
+      mutate(wt = case_when(Continent=="Africa"~0.251, 
+                            Continent=="Asia"~0.233, 
+                            Continent=="Europe"~0.214, 
+                            Continent=="North America"~0.158, 
+                            Continent=="Oceania"~0.0884, 
+                            Continent=="South America"~0.0558))
+    return(sum(samp$wt*samp$gdppc))
+  }
+)
+tibble(`Sampling Strategy` = rep(c("Simple Random WO Replacement", 
+                                   "Simple Random With Replacement", 
+                                   "Stratified Random Sampling"), each = 1000), 
+       samp_means = c(srs_wor, srs_wr, stratrs)) %>%
+  ggplot(aes(samp_means)) +
+  geom_histogram() + 
+  geom_vline(data = 
+               tibble(`Sampling Strategy` = rep(c("Simple Random WO Replacement", 
+                                   "Simple Random With Replacement", 
+                                   "Stratified Random Sampling"), each = 1000), 
+       samp_means = c(srs_wor, srs_wr, stratrs)) %>%
+         group_by(`Sampling Strategy`) %>%
+         summarize(samp_means = mean(samp_means)), 
+       aes(xintercept = samp_means), col = "blue", lty = "dotted")+
+  facet_wrap(~`Sampling Strategy`, nrow = 3) + 
+  geom_vline(xintercept = mean(wb_data$gdppc, na.rm = T), col = "red", lty = "dashed") +
+  annotate(geom = "text", x = 3000, y = 80, label = "True Population Value", 
+           color = "red") + 
+  annotate(geom = "text", x = 3000, y = 40, label = "Mean Sample Mean", 
+           color = "blue")
+```
+
+## Thinking About Bias and Error in Research
+
+Nonresponse Bias
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    {rank=same; dat; msr[group=g2]; sampling[group=g2]; nrb[group=g2]};
+
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> sampling;
+dat -> msr;
+dat -> nrb;
+
+
+dat [label = "Data Collection"];
+#ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+sampling[label="Sampling Error", fillcolor=red, style=filled, fontcolor=white];
+nrb [label = "Nonresponse Bias", fillcolor = red, style = filled, fontcolor=white]
+}
+```
+
+## Nonresponse Bias
+
+:::{.incremental}
+- Different types of people/countries have different probabilities of responding
+- Sample essentially non-random even if you have a random sample
+  - Analyses biased without assumptions
+- Usual fix: 
+  - weight data so that responders represent non-responders from their groups
+:::
+
+## Thinking About Bias and Error in Research
+
+Confounding Variables
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    ht [group=g1]
+    {rank=same; dat; msr[group=g2]; sampling[group=g2]; nrb[group=g2]};
+    {rank=same; ht; ovb[group= group3]};
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> sampling;
+dat -> msr;
+dat -> nrb;
+dat -> ht;
+ht->ovb;
+dat [label = "Data Collection"];
+ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+sampling[label="Sampling Error", fillcolor=red, style=filled, fontcolor=white];
+nrb [label = "Nonresponse Bias", fillcolor = red, style = filled, fontcolor=white];
+ovb [label="Confounding Variables", fillcolor=orange, style = filled];
+}
+```
+
+
+## Confounding Variables Bias
+
+- Want to make causal claims
+  - e.g., X *causes* Y
+  - GDP per capita *causes* health outcomes
+
+```{dot}
+//| fig-height: 4
+digraph G {
+rankdir=LR;
+  x -> y;
+}
+```
+
+## Confounding Variables
+
+- Observational data usually more like this
+- Z is a confounding variable 
+
+```{dot}
+//| fig-height: 4
+digraph G {
+rankdir=LR;
+x [group=g1];
+y [group = g1];
+{rank=same; z[group = g2]; x;};
+  z ->x; 
+  z-> y; 
+  x -> y;
+}
+```
+
+## Confounding Variables
+
+:::{.incremental}
+- Confounding variables: 
+  - cause both "treatment" (X) and outcome (Y) of interest
+  - make it appear that X and Y are related   
+    - one of the reasons correlation $\neq$ causation
+
+- Example:
+  - Ice cream consumption and swimming pool use correlated
+  - Confounding Variables: weather/temperature
+:::
+
+## Addressing Confounding Variables
+
+- Gold Standard: Randomized Experiments
+  - Randomization: removes influence of potential confounders
+  - Experimental Treatment: directly manipulate X variable
+
+## Randomized Experiments {auto-animate=true}
+
+```{dot}
+digraph G {
+rankdir=LR;
+x [group=g1];
+y [group = g1];
+{rank=same; z[group = g2]; x;};
+  z ->x;
+  z -> y;
+  x -> y;
+}
+```
+
+## Randomized Experiments {auto-animate=true}
+
+```{dot}
+digraph G {
+rankdir=LR;
+x [group=g1];
+y [group = g1];
+{rank=same; z[group = g2]; x;};
+  z ->x [color=white];
+  z -> y;
+  x -> y;
+}
+```
+
+## Randomized Experiments
+
+```{r, echo = F}
+res <- data.table::rbindlist(lapply(1:1000, function(x) {
+z <- sample(c(0,1), size = nrow(wb_data), replace = T)
+out <- data.frame(prop.table(table(wb_data$Continent, z))) %>%
+  rename("out" = "Freq") %>%
+  mutate(var = "continent") %>%
+  rbind(wb_data %>% mutate(z = z ) %>% group_by(z) %>% 
+  summarize(out = mean(gdppc, na.rm = T)) %>%
+  mutate(Var1 = NA, var = "GDPPC"))
+return(out)
+}))
+
+res %>% mutate(z = ifelse(z==1, "Treatment", "Control")) %>%
+    group_by(Var1, z, var) %>%
+    summarize(mean = mean(out), 
+              lower = quantile(out, 0.025), 
+              upper = quantile(out, 0.975)) %>%
+    mutate(Var1 = ifelse(is.na(Var1), "GDPPC", as.character(Var1)))%>%
+    ggplot(aes(Var1, mean, fill = z))+ 
+  geom_col(position = position_dodge(0.5), width =0.5) +
+  facet_wrap(~var, scales = "free") + 
+  geom_errorbar(aes(x = Var1, ymin = lower, ymax = upper), 
+                width = 0.1, position = position_dodge(0.5))
+
+```
+
+## Randomized Experiments
+
+:::{.incremental}
+- On average, only difference between treatment and control units is **treatment**
+- To analyze, we just need to compare treated and control units
+  - The difference is the *causal effect* of treatment on the outcome
+:::
+
+## Randomized Experiments
+
+:::{.incremental}
+- Average Treatment Effect (ATE):
+  - Difference in Means between treatment and control
+- Is the causal effect statistically significant?
+  - T-test!
+:::
+
+## Randomized Experiments 
+
+```{dot}
+digraph G {
+rankdir=LR;
+x [group=g1];
+y [group = g1];
+{rank=same; z[group = g2]; x;};
+  z ->x [color=white];
+  z -> y;
+  x -> y [label = "ATE"];
+}
+```
+
+## Thinking about Bias and Error in Research
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    ht [group=g1]
+    {rank=same; dat; msr[group=g2]; sampling[group=g2]; nrb[group=g2]};
+    {rank=same; ht; ovb[group= group3]};
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> sampling;
+dat -> msr;
+dat -> nrb;
+dat -> ht;
+ht->ovb;
+dat [label = "Data Collection"];
+ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+sampling[label="Sampling Error", fillcolor=red, style=filled, fontcolor=white];
+nrb [label = "Nonresponse Bias", fillcolor = red, style = filled, fontcolor=white];
+ovb [label="Confounding Variables", fillcolor=orange, style = filled];
+}
+```
+
+
