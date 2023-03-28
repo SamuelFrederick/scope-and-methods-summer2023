@@ -1,0 +1,522 @@
+---
+title: "Section 6: Linear Regression"
+author: "Sam Frederick"
+institute: "Columbia University"
+date: "March 28, 2023"
+format: 
+  revealjs:
+    css: [footer.css]
+    theme: [default, custom.scss]
+    chalkboard: true
+    progress: true
+    include-after-body: footer.html 
+    footer: "Linear Regression"
+knitr: 
+  opts_chunk: 
+      echo: true
+---
+
+```{r setup, include = F, echo = F}
+library(tidyverse)
+```
+
+## Last Section
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    ht [group=g1]
+    {rank=same; dat; msr[group=g2]; sampling[group=g2]; nrb[group=g2]};
+    {rank=same; ht; ovb[group= group3]};
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> sampling;
+dat -> msr;
+dat -> nrb;
+dat -> ht;
+ht->ovb;
+dat [label = "Data Collection"];
+ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+sampling[label="Sampling Error", fillcolor=red, style=filled, fontcolor=white];
+nrb [label = "Nonresponse Bias", fillcolor = red, style = filled, fontcolor=white];
+ovb [label="Confounding Variables", fillcolor=orange, style = filled];
+}
+```
+
+## Confounding Variables
+
+```{r, engine = 'tikz', echo = F}
+\begin{tikzpicture}
+  \node(treatment) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30, text width = 2.5cm] {Treatment}; 
+  \node(outcome) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30, text width = 2.5cm, right of = treatment, xshift = 2.25in] {Outcome}; 
+  \node(confound) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=black!20, text width = 2.5cm, above of = treatment, xshift = 1.25in, yshift = 1in] {Confounder}; 
+  \path[->, thick, line width = 1mm, >= stealth] (treatment) edge 
+    node[circle, fill = red!20]{$\tau$} (outcome);
+    \draw[ thick,->,line width = 0.5mm, >= stealth, dashed] (confound) -- (treatment);
+    \draw[ thick,->,line width = 0.5mm, >= stealth, dashed] (confound) -- (outcome);
+\end{tikzpicture}
+```
+
+## Randomized Experiments
+
+```{r, engine = 'tikz', echo = F}
+\begin{tikzpicture}
+  \node(treatment) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30, text width = 2.5cm] {Treatment}; 
+  \node(outcome) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30, text width = 2.5cm, right of = treatment, xshift = 2.25in] {Outcome}; 
+  \node(confound) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=black!20, text width = 2.5cm, above of = treatment, xshift = 1.25in, yshift = 1in] {Confounder}; 
+  \draw[red, line width=1mm] 
+    (confound.south west) -- (confound.north east)
+    (confound.south east) -- (confound.north west);
+  \path[->, thick, line width = 1mm, >= stealth] (treatment) edge 
+    node[circle, fill = red!20]{$\tau$} (outcome);
+    \draw[ thick,->,line width = 0.5mm, >= stealth, dashed] (confound) -- (treatment);
+    \draw[ thick,->,line width = 0.5mm, >= stealth, dashed] (confound) -- (outcome);
+\end{tikzpicture}
+```
+
+## Observational Data
+
+:::{.incremental}
+- Can't always randomly assign treatments of interest
+  - Governmental policies
+  - Individual characterstics
+  - Harmful occurrences/events (e.g., wars)
+- How can we study the effects of these "treatments" without randomization?
+  - Regression
+:::
+
+## Regression
+
+:::{.incremental}
+- Try to hold other variables constant
+  - Compare apples to apples (like units in "treatment" and "control" groups)
+- Requirement for estimation of causal effects in observational studies:
+  - No confounding variables
+    - "control" for all confounders/include them in the regression model
+:::
+
+## Confounding Variables
+
+- Usually cannot be sure that there are no confounders
+  - That's why experiments are ideal
+- Estimates can be badly **biased** if there are unobserved confounding variables
+  - Known as omitted variable bias
+
+## Regression
+
+:::{.incremental}
+- $y = \alpha + \beta X + \varepsilon$
+  - $y$ is the dependent/outcome variable
+  - $X$ is the independent/predictor variable
+  - $\alpha$ is the y-intercept (the average value of y when other variables are 0)
+  - $\beta$ is the slope or the coefficient estimate for X
+  - $\varepsilon$ is variation in outcome "unexplained" by the model
+::: 
+
+## Regression
+
+- Start with `experiment.csv`
+
+```{r}
+data1 <- read_csv("/Users/samfrederick/scope-and-methods-spring2023/section-6/experiment.csv")
+```
+
+- Simple experimental example 
+  - True equation is $y = 3 + 4*treatment + \varepsilon$
+  - Remember $y = \alpha + \beta X$
+  
+  
+```{r, include = F, eval = F}
+# set.seed(123)
+# s <- 10000
+# tmt <- rbinom(s, 1, 0.5)
+# y <- 3 + 4*tmt + rnorm(s, 0, 2)
+# data1<- tibble(y = y, tmt = tmt)
+# write_csv(data1, 
+#     "/Users/samfrederick/scope-and-methods-spring2023/section-6/data1.csv")
+```
+
+## Regression
+
+```{r}
+data1 %>% 
+  ggplot(aes(factor(tmt), y)) +
+  geom_boxplot()
+```
+
+## Regression
+
+- In the past, we used a t-test/calculated the difference-in-means estimate by hand
+
+```{r}
+with(data1, mean(y[tmt==1])- mean(y[tmt==0]))
+with(data1, t.test(y~tmt))
+```
+
+## Regression
+
+- We can accomplish this as well using regression
+
+- In R, run regressions using `lm()` command
+  - `lm(y~x, data = dataname)`
+
+## Regression
+
+```{r}
+mod <- lm(y~tmt, data = data1)
+
+```
+
+## Regression
+
+
+
+```{r}
+#| class-output: myClass
+#| class-source: myClass
+
+summary(mod)
+```
+
+## Regression 
+
+:::{.incremental}
+- What is regression doing?
+  - It is finding the line that minimizes the sum of squared residuals
+- Sum of Squared Residuals:
+  - Residual: difference between prediction from regression and true outcome variable value
+  - $SSR = \sum_{i=1}^n (\hat{y}_i - y_{i})^2$
+:::
+
+## Regression
+
+- Take a look at `regression_data.csv`
+
+```{r include = F, eval = F}
+# set.seed(123)
+# s <- 50
+# x <- rnorm(s, 3, 10)
+# y <- 3 + 2*x + rnorm(s, 0, 5)
+# data2 <- tibble(x = x, y = y)
+# write_csv(data2,
+#     "/Users/samfrederick/scope-and-methods-spring2023/section-6/regression_data.csv")
+```
+
+```{r}
+data2 <- read_csv("/Users/samfrederick/scope-and-methods-spring2023/section-6/regression_data.csv")
+```
+
+- True equation: $y = 3 + 2*x + \varepsilon$
+
+## Regression
+
+- Let's make a scatterplot of the data
+
+```{r}
+data2 %>% 
+  ggplot(aes(x, y)) + 
+  geom_point()
+```
+
+## Regression 
+
+```{r}
+mod2 <- lm(y~x, data = data2)
+```
+
+## Regression
+
+```{r}
+#| class-output: myClass
+#| class-source: myClass
+
+summary(mod2)
+```
+
+## Regression
+
+```{r echo = F}
+data2 <- data2 |> mutate(fitted = lm(y~x, data = data2)$fitted)
+data2 %>% 
+  ggplot(aes(x, y)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = F) +
+  geom_segment(aes(xend = x, yend = fitted))
+
+```
+
+## Regression
+
+```{r echo = F, cache = T}
+library(MASS)
+set.seed(123)
+ncoef <- 10
+samp_coef <- mvrnorm(10, c(coef(mod)[[1]], coef(mod)[[2]]), 
+        Sigma = matrix(c(3, 0.5, 0.5, 3), nrow = 2))
+samp_coef <- rbind(samp_coef, c(coef(mod)[[1]], coef(mod)[[2]]))
+temp <- cut(1:550, ncoef+1)
+res <- data.table::rbindlist(lapply(1:(ncoef+1), function(c) data2 |> mutate(intercept = samp_coef[c,1], slope = samp_coef[c, 2], fitted = intercept + slope*x , state = c))) |> 
+  group_by(state) |> 
+  mutate(ssr = sum((y - fitted)^2)) |> 
+  arrange(desc(ssr)) |> ungroup()
+res <- res|> 
+  mutate(equation = map2_chr(slope, intercept, 
+                             ~paste("y=", round(.y, 2), "+", round(.x,2), "*x")))
+res$state <- temp
+
+library(gganimate)
+res |> 
+  mutate(ssr_lab = map_chr(ssr, ~paste("SSR=", round(.x))))|> 
+  ggplot(aes(x, y)) + 
+  geom_point() + 
+  geom_abline(aes(intercept = intercept, slope = slope)) + 
+  geom_segment(aes(xend = x, yend = fitted), color = "red") + 
+  # geom_text(x = 0, y = 175, label = "TRUE EQUATION: y = 3 + 2*x", size = 10)+
+  geom_text(x = 0, y = 125, aes(label = equation), size = 10)+
+  geom_text(x = 0, y = 75, aes(label = ssr_lab), size = 10)+
+  gganimate::transition_states(state)
+
+```
+
+## Omitted Variables Bias
+
+:::{.incremental}
+- Why is it so bad if we are not controlling for all confounders? 
+  - Prevents us from determining the causal effect of X on Y
+  - Can badly bias coefficient estimates
+- Example: `confounding.csv`
+
+```{r}
+data3 <- read_csv("/Users/samfrederick/scope-and-methods-spring2023/section-6/confound.csv")
+```
+:::
+
+
+
+```{r include = F, eval = F}
+# set.seed(123)
+# s <- 10000
+# confound <- runif(s, 0, 100)
+# var1 <- rnorm(s, 7, 10)
+# x <- 2 + 2*confound + rnorm(s, 3, 4)
+# y <- 4 + 5*confound + 2*x + var1 + rnorm(s, 0, 6)
+# data3 <- tibble(x = x, y = y, var1 = var1, confound = confound)
+# write_csv(data3, 
+#   "/Users/samfrederick/scope-and-methods-spring2023/section-6/confound.csv")
+
+```
+
+
+## Omitted Variables Bias
+
+- True forms of data:
+  - $x = 2 + 2*confound + \gamma$
+  - $y = 4 + 5*confound + 2*x + var1 + \varepsilon$
+
+```{r}
+mod1 <- lm(y~x, data = data3)
+```
+
+## Omitted Variables Bias
+
+```{r}
+#| class-output: myClass
+#| class-source: myClass
+
+summary(mod1)
+```
+
+## Omitted Variables Bias
+
+```{r}
+mod2 <- lm(y~x + confound, data = data3)
+```
+
+## Omitted Variables Bias
+
+```{r}
+#| class-output: myClass
+#| class-source: myClass
+
+summary(mod2)
+```
+
+## Omitted Variables Bias
+
+```{r}
+mod3 <- lm(y~x + confound + var1, data = data3)
+```
+
+## Omitted Variables Bias
+
+```{r}
+#| class-output: myClass
+#| class-source: myClass
+
+summary(mod3)
+```
+
+## Omitted Variables Bias
+
+```{r, echo = F, output.height = "100%"}
+library(modelsummary)
+modelsummary::modelsummary(
+    models = list(mod1 = mod1, mod2 = mod2, mod3 = mod3), 
+    stars = T, 
+    gof_map = c( "r.squared", "adj.r.squared"), 
+    output = "kableExtra"
+) %>% 
+    kableExtra::kable_styling(latex_options = "scale_down", full_width = F, 
+                              font_size = 20) |> 
+    kableExtra::row_spec(1:2, background = "lightgray") |> 
+    kableExtra::row_spec(5:6, background = "lightgray") |> 
+  kableExtra::row_spec(8:10, background = "lightgray")
+```
+
+## Omitted Variables Bias
+
+```{r, engine = 'tikz', echo = F}
+\begin{tikzpicture}
+  \node(treatment) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30, text width = 2.5cm] {Treatment}; 
+  \node(outcome) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!30, text width = 2.5cm, right of = treatment, xshift = 2.25in] {Outcome}; 
+  \node(confound) [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=black!20, text width = 2.5cm, above of = treatment, xshift = 1.25in, yshift = 1in] {Confounder}; 
+  \node(full) [text centered, below of = treatment, xshift = 1.25in, yshift = -0.05in] {$outcome_i = \alpha + \tau*treatment_i + \beta*confounder_i + \varepsilon_i$};
+  \node(confounder) [ text centered, below of = full, yshift = 0.05in] {$confounder_i=\eta + \gamma*treatment_i$};
+  \node(confounded) [ text centered, below of = confounder, yshift = 0.05in] {$outcome_i=\nu + \lambda*treatment_i$};
+    \node(bias) [ text centered, below of = confounded, yshift = 0.05in] {$\lambda = \tau + \gamma*\beta$};
+  \path[->, thick, line width = 1mm, >= stealth] (treatment) edge 
+    node[circle, fill = red!20]{$\tau$} (outcome);
+    \path[->,dashed, thick, line width = 0.5mm, >= stealth] (confound) edge 
+    node[circle, fill = red!20]{$\gamma$} (treatment);
+      \path[->, dashed, thick, line width = 0.5mm, >= stealth] (confound) edge 
+    node[circle, fill = red!20]{$\beta$} (outcome);
+\end{tikzpicture}
+```
+
+## Regression Output
+
+```{r, engine = 'tikz', echo = F}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.9\textwidth]{"/Users/samfrederick/scope-and-methods-spring2023/section-6/regression_img.png"}};
+\end{tikzpicture}
+```
+
+## Regression Output
+
+$y = \alpha + \beta*x + \gamma*confound + \epsilon$
+
+- Summary statistics for residuals
+
+```{r, engine = 'tikz', echo = F}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.9\textwidth]{"/Users/samfrederick/scope-and-methods-spring2023/section-6/regression_img.png"}};
+        \draw[red,ultra thick,rounded corners] (0, 5) rectangle (7, 6.25);
+\end{tikzpicture}
+```
+
+## Regression Output: Intercept Estimate
+
+$y = \alpha + \beta*x + \gamma*confound + \epsilon$
+
+- Information about the intercept estimate ($\alpha$)
+
+```{r, engine = 'tikz', echo = F}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.9\textwidth]{"/Users/samfrederick/scope-and-methods-spring2023/section-6/regression_img.png"}};
+    \draw[red, ultra thick, rounded corners] (0, 3.4) rectangle (3.5, 3.9);
+\end{tikzpicture}
+```
+
+## Regression Output: Intercept Estimate
+
+- Tells us the predicted/average value of the outcome when other variables are 0
+
+## Regression Output: Coefficient Estimate
+
+$y = \alpha + \beta*x + \gamma*confound + \epsilon$
+
+- Information about the coefficient estimate ($\beta$)
+  
+```{r, engine = 'tikz', echo = F}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.9\textwidth]{"/Users/samfrederick/scope-and-methods-spring2023/section-6/regression_img.png"}};
+ \draw[red, ultra thick, rounded corners] (0, 3) rectangle (3.5, 3.4);
+\end{tikzpicture}
+```
+
+## Regression Output: Coefficient Estimate
+
+- Tells us that, holding the other variables in the regression constant,
+  - We would expect y to be higher by about $\beta$ when x is higher by one unit
+  - An increase of 1 in x is associated with a change in the outcome of about $\beta$
+  - The outcome variable is predicted to be higher by about $\beta$ for each unit increase in the x variable
+  
+## Regression Output: Hypothesis Testing
+
+- Are the coefficient estimates statistically significant?
+
+```{r, engine = 'tikz', echo = F}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.9\textwidth]{"/Users/samfrederick/scope-and-methods-spring2023/section-6/regression_img.png"}};
+ \draw[red, ultra thick, rounded corners] (0, 3) rectangle (3.5, 3.4);
+\draw[green, ultra thick, rounded corners] (3.8, 3) rectangle (9, 3.4);
+\end{tikzpicture}
+```
+
+## Regression Output: Hypothesis Testing
+
+- Same as standard hypothesis test:
+  - $H_0: \beta =0$; $H_A: \beta \neq 0$
+  - $t\textit{-}statistic=\frac{estimate- 0}{SE}$
+
+## Substantive vs. Statistical Significance
+
+:::{.incremental}
+- Statistical Signficance:
+  - How likely are we to observe the results we observe if the null hypothesis is true?
+
+- Substantive Significance:
+  - How large or meaningful is our estimate?
+:::
+
+## Substantive vs. Statistical Significance
+
+- Estimate can be:
+  - substantively significant without being statistically significant
+  - statistically significant without being substantively significant
+  - both
+  - neither
+
+## Tidy Regression Tables
+
+- Can use `modelsummary` package in R to make nice regression tables
+
+```{r, eval = F}
+library(modelsummary)
+modelsummary(mod1, gof_map = c("r.squared", "adj.r.squared", "nobs"), 
+             stars = T, estimate = "{estimate} [{conf.low}, {conf.high}]", 
+             statistic = NULL)
+```
+
+## Tidy Regression Tables
+
+```{r, echo = F}
+library(modelsummary)
+modelsummary(mod1, gof_map = c("r.squared", "adj.r.squared", "nobs"), 
+             stars = T, estimate = "{estimate} [{conf.low}, {conf.high}]", 
+             statistic = NULL)
+```
+
+
+
+
+
+
+
