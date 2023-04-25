@@ -1,0 +1,485 @@
+---
+title: "Section 7: Final Meeting"
+author: "Sam Frederick"
+institute: "Columbia University"
+date: "April 25, 2023"
+format: 
+  revealjs:
+    css: [footer.css]
+    theme: [default, custom.scss]
+    chalkboard: true
+    progress: true
+    include-after-body: footer.html 
+    footer: "Final Section"
+knitr: 
+  opts_chunk: 
+      echo: true
+---
+
+```{r setup, include = F, echo = F}
+library(tidyverse)
+```
+
+## Biases and Errors in Research
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    ht [group=g1]
+    {rank=same; dat; msr[group=g2]; sampling[group=g2]; nrb[group=g2]};
+    {rank=same; ht; ovb[group= group3]};
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> sampling;
+dat -> msr;
+dat -> nrb;
+dat -> ht;
+ht->ovb;
+dat -> ovb;
+dat [label = "Data Collection"];
+ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+sampling[label="Sampling Error", fillcolor=red, style=filled, fontcolor=white];
+nrb [label = "Nonresponse Bias", fillcolor = red, style = filled, fontcolor=white];
+ovb [label="Confounding Variables", fillcolor=orange, style = filled];
+}
+```
+
+## Biases and Errors in Research
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    ht [group=g1]
+    {rank=same; dat; msr[group=g2]; sampling[group=g2]; nrb[group=g2];rb[group=g2]};
+    {rank=same; ht; ovb[group= group3]};
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> sampling;
+dat -> msr;
+dat -> nrb;
+dat -> ht;
+ht->ovb;
+dat -> ovb; 
+dat-> rb;
+dat [label = "Data Collection"];
+ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+sampling[label="Sampling Error", fillcolor=red, style=filled, fontcolor=white];
+nrb [label = "Nonresponse Bias", fillcolor = red, style = filled, fontcolor=white];
+rb [label = "Response Bias", fillcolor = red, style = filled, fontcolor=white];
+ovb [label="Confounding Variables", fillcolor=orange, style = filled];
+}
+```
+
+## Response Bias: Social Desirability Bias
+
+:::{.incremental}
+- Did you vote in the last election? 
+  - Depending on who you're with, you might be more or less likely to answer this question honestly
+  
+:::
+
+
+```{r, include = F, echo = F, eval = F}
+ces <- haven::read_dta("/Users/samfrederick/Downloads/cumulative_2006-2021.dta")|> 
+  filter(year%%2==0) |> 
+  mutate(voted_turnout_self = case_when(voted_turnout_self==1~1, 
+                                        voted_turnout_self==2~0, 
+                                        T~NA_real_), 
+         voted_turnout_self_nona =
+           case_when(voted_turnout_self==1~1, 
+                    voted_turnout_self==0~0, 
+                    T~0))
+t06 <- read.csv("/Users/samfrederick/Downloads/2006 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, VEP.Highest.Office) |> 
+  filter(X=="United States")|> select(!X)
+t08 <- read.csv("/Users/samfrederick/Downloads/2008 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, VEP.Highest.Office)|> 
+  filter(X=="United States")|> select(!X)
+t10 <- read.csv("/Users/samfrederick/Downloads/2010 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, VEP.Highest.Office)|> 
+  filter(X=="United States")|> select(!X)
+t12 <- read.csv("/Users/samfrederick/Downloads/2012 November General Election v2.0 - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, VEP.Highest.Office)|> 
+  filter(X=="United States")|> select(!X)
+t14 <- read.csv("/Users/samfrederick/Downloads/2014 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, VEP.Highest.Office)|> 
+  filter(X=="United States")|> select(!X)
+t16 <- read.csv("/Users/samfrederick/Downloads/2016 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, VEP.Highest.Office)|> 
+  filter(X=="United States")|> select(!X)
+t18 <- read.csv("/Users/samfrederick/Downloads/2018 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, 
+                  X2018.Vote.for.Highest.Office.VEP.Turnout.Rate)|> 
+  filter(X=="United States")|> select(!X)
+t20 <- read.csv("/Users/samfrederick/Downloads/2020 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, VEP.Turnout.Rate..Highest.Office.)|> 
+  filter(X=="United States")|> select(!X)
+t22 <- read.csv("/Users/samfrederick/Downloads/2022 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, Preliminary.Turnout.Rate)|> 
+  filter(X=="United States")|> select(!X)
+to20 <- read.csv("/Users/samfrederick/Downloads/2020 November General Election - Turnout Rates.csv", skip = 1) |> 
+  as_tibble()|> select(X, VEP.Turnout.Rate..Highest.Office.)|> 
+  filter(!str_detect(X, "^* Notes")&
+           !X%in%c("District of Columbia", "United States"))|> 
+  mutate(X = str_remove_all(X, "[^A-Za-z ]"), 
+         VEP.Turnout.Rate..Highest.Office. = as.numeric(str_remove(VEP.Turnout.Rate..Highest.Office., "%"))) |> 
+  rename("state" = "X")
+ces <- haven::read_dta("/Users/samfrederick/Downloads/cumulative_2006-2021.dta")|> 
+  filter(year==2020) |> 
+  mutate(voted_turnout_self = case_when(voted_turnout_self==1~1, 
+                                        voted_turnout_self==2~0, 
+                                        T~NA_real_), 
+         voted_turnout_self_nona =
+           case_when(voted_turnout_self==1~1, 
+                    voted_turnout_self==0~0, 
+                    T~0))
+ces <- ces |> mutate(state_final = labelled::to_factor(state) |> 
+                as.character())|> 
+  group_by(state_final) |> 
+  summarize(voted_turnout_self_nona = 100*mean(voted_turnout_self_nona, na.rm =T))
+
+to20 <- to20 |> 
+  left_join(ces, by = c("state" = "state_final"))
+
+to20$state_abb <- state.abb[to22$state%in%state.name]
+
+write_csv(to20, 
+          "/Users/samfrederick/scope-and-methods-spring2023/turnout20.csv")
+
+to20 |> mutate(bias = voted_turnout_self_nona - VEP.Turnout.Rate..Highest.Office.) |> ggplot(aes(reorder(state_abb, bias), VEP.Turnout.Rate..Highest.Office.)) + geom_point() + geom_point(aes(reorder(state_abb, bias),voted_turnout_self_nona), color = "blue") + geom_point(aes(reorder(state_abb, bias), bias), color = "red")
+
+turnout <- tibble(year = seq(2006, 2022, 2), 
+                  turnout = c(t06$VEP.Highest.Office[1], 
+                              t08$VEP.Highest.Office[1], 
+                              t10$VEP.Highest.Office[1], 
+                              t12$VEP.Highest.Office[1], 
+                              t14$VEP.Highest.Office[1], 
+                              t16$VEP.Highest.Office[1], 
+                              t18$X2018.Vote.for.Highest.Office.VEP.Turnout.Rate[1], 
+                              t20$VEP.Turnout.Rate..Highest.Office.[1], 
+                              t22$Preliminary.Turnout.Rate[1])) |> 
+  mutate(turnout = as.numeric(str_remove(turnout, "%")))
+
+ces <-ces |> group_by(year) |> 
+  summarize(voted_turnout_self = 100*mean(voted_turnout_self, 
+                                          na.rm = T), 
+            voted_turnout_self_nona = 100*mean(voted_turnout_self_nona, na.rm = T))
+
+write_csv(ces, 
+          "/Users/samfrederick/scope-and-methods-spring2023/section-7/ces.csv")
+write_csv(turnout, 
+         "/Users/samfrederick/scope-and-methods-spring2023/section-7/turnout.csv" )
+
+```
+
+## Voter Turnout
+
+:::{.incremental}
+- Let's look at some survey results: 
+
+```{r, eval = F}
+ces <- read.csv("ces.csv")
+```
+
+- What do these results tell us about turnout in elections? 
+
+:::
+```{r, echo = F}
+ces <- read.csv("/Users/samfrederick/scope-and-methods-spring2023/section-7/ces.csv")
+```
+
+## Voter Turnout {auto-animate=true}
+
+- How would we make a scatterplot of turnout from the survey?
+
+```{r, eval = F}
+ces 
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, eval = F}
+ces |> 
+  ggplot(aes(year, voted_turnout_self_nona))
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, eval = F}
+ces |> 
+  ggplot(aes(year, voted_turnout_self_nona))+ 
+  geom_point()
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, eval = F}
+ces |> 
+  ggplot(aes(year, voted_turnout_self_nona))+ 
+  geom_point()+
+  ylim(c(0, 100))
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, eval = F}
+ces |> 
+  ggplot(aes(year, voted_turnout_self_nona))+ 
+  geom_point()+
+  ylim(c(0, 100))+
+  scale_x_continuous(seq(2006, 2022, 2))
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, eval = F}
+ces |> 
+  ggplot(aes(year, voted_turnout_self_nona))+ 
+  geom_point()+
+  ylim(c(0, 100))+
+  scale_x_continuous(seq(2006, 2022, 2))+
+  labs(x = "Year", y = "Turnout")
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, echo = F}
+ces |> 
+  ggplot(aes(year, voted_turnout_self_nona))+
+  geom_point()+
+  ylim(c(0, 100))+
+  scale_x_continuous(seq(2006, 2022, 2))+
+  labs(x = "Year", y = "Turnout")
+```
+
+## Voter Turnout
+
+:::{.incremental}
+- What about the true turnout? 
+
+```{r, eval = F}
+turnout <- read.csv("turnout.csv")
+ces <- ces |> 
+  left_join(turnout, by = "year")
+```
+
+:::
+
+```{r, echo = F}
+turnout <- read.csv("/Users/samfrederick/scope-and-methods-spring2023/section-7/turnout.csv")
+ces <- ces |> 
+  left_join(turnout, by = "year")
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, eval = F}
+#| code-line-numbers: "3"
+
+ces |>
+  ggplot(aes(year, voted_turnout_self_nona)) +
+  geom_point(aes(color = "Self-Reported Turnout")) +  
+  scale_x_continuous(breaks = seq(2006, 2020, 2)) +
+  ylim(c(0, 100))+
+  labs(x = "Year", y = "Turnout")
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, eval = F}
+ces |>
+  ggplot(aes(year, voted_turnout_self_nona)) +
+  geom_point(aes(color = "Self-Reported Turnout")) +  
+  scale_x_continuous(breaks = seq(2006, 2020, 2)) +
+  ylim(c(0, 100))+
+  labs(x = "Year", y = "Turnout")
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, eval =F}
+ces |>
+  ggplot(aes(year, voted_turnout_self_nona)) +
+  geom_point(aes(color = "Self-Reported Turnout")) +  
+  scale_x_continuous(breaks = seq(2006, 2020, 2)) +
+  ylim(c(0, 100))+
+  labs(x = "Year", y = "Turnout")+
+  geom_point(aes(year, turnout, color = "True Turnout"))
+```
+
+## Voter Turnout {auto-animate=true}
+
+```{r, echo =F}
+ces |>
+  ggplot(aes(year, voted_turnout_self_nona)) +
+  geom_point(aes(color = "Self-Reported Turnout")) +  
+  scale_x_continuous(breaks = seq(2006, 2020, 2)) +
+  ylim(c(0, 100))+
+  labs(x = "Year", y = "Turnout")+
+  geom_point(aes(year, turnout, color = "True Turnout"))
+```
+
+## Voter Turnout {auto-animate=true}
+
+:::{.incremental}
+- What's going on here? 
+  - Sampling Error
+  - Social Desirability Bias
+  - False/Incorrect Memories
+  
+:::
+
+```{r, echo =F}
+ces |>
+  ggplot(aes(year, voted_turnout_self_nona)) +
+  geom_point(aes(color = "Self-Reported Turnout")) +  
+  scale_x_continuous(breaks = seq(2006, 2020, 2)) +
+  ylim(c(0, 100))+
+  labs(x = "Year", y = "Turnout")+
+  geom_point(aes(year, turnout, color = "True Turnout"))
+```
+
+## Reducing Social Desirability Bias
+
+:::{.incremental}
+- Survey Medium (Face-to-Face, Phone, Online)
+- Question Wording
+- Anonymized Question Designs
+
+:::
+
+## Anonymized/Secret Question Designs
+
+:::{.incremental}
+- List Experiments:
+  - Generate a list of items, including the sensitive item you are really interested in 
+  - Randomly assign participants to "treatment" and "control"
+    - Treatment receives the sensitive item + other items
+    - Control receives only other items
+  - Ask participants how many of the items apply to them
+:::
+
+## Anonymized/Secret Question Designs
+
+:::{.incremental}
+- List Experiments:
+  - Difference in Means between treatment and control
+    - Proportion of people to whom the sensitive item applies
+    
+:::
+
+## Anonymized/Secret Question Designs
+
+:::{.incremental}
+- Things to look out for with List Experiments
+  - Ceiling Effects and Floor Effects: 
+    - Control items should be a mix of items that should be expected to both apply and not apply to people
+    - Violations of this principle removes anonymity
+    
+:::
+
+## Anonymized/Secret Question Designs
+
+:::{.incremental}
+- List Experiments
+- Coin flipping, rolling die
+  - Tell respondents to flip a coin
+  - If outcome heads, give a certain answer
+  - If outcome tails, give your true answer
+  - Know true proportion who flipped heads (0.5), so difference is true proportion on sensitive answer
+  
+:::
+
+## Qualitative or Case Study Designs
+
+:::{.incremental}
+- Choosing Cases:
+  - Think carefully about which cases will help you best test your theory   
+  - Select across the range of your independent variable(s)
+  - Be aware of the potential limitations of generalization and specific context of cases
+  - Consider cases where your theory doesn't hold
+    - Does theory need to be refined? 
+    - Do these cases suggest limitations/conditions of theory? 
+  
+:::
+
+## Qualitative or Case Study Designs
+
+:::{.incremental}
+- Combining Qualitative and Quantitative
+  - Can use mixed methods
+    - supplement case study with quantitative analysis
+  
+:::
+
+## Qualitative or Case Study Designs
+
+:::{.incremental}
+- Some Potential Benefits: 
+  - In-Depth knowledge about certain cases
+  - Better understanding of motivations of political actors
+  - Better understanding of context
+  - Can bring area-relevant background knowledge of language, culture, etc.
+  
+:::  
+
+## Qualitative or Case Study Designs
+
+:::{.incremental}
+- Some Potential Drawbacks:
+  - Representativeness/Generalizability
+  - Causal inference can be challenging
+    - Need more observations than causes
+    - Hard to establish counterfactuals
+
+:::
+
+## Biases and Errors in Research
+
+```{dot}
+digraph G {
+    rankdir=LR;
+    compound=true;
+    Question;
+    Theory;
+    Hypotheses [group=g1];
+    dat [group=g1];
+    ht [group=g1]
+    {rank=same; dat; msr[group=g2]; sampling[group=g2]; nrb[group=g2];rb[group=g2]};
+    {rank=same; ht; ovb[group= group3]};
+Question -> Theory; 
+Theory-> Hypotheses;
+Hypotheses-> dat;
+dat -> sampling;
+dat -> msr;
+dat -> nrb;
+dat -> ht;
+ht->ovb;
+dat -> ovb; 
+dat-> rb;
+dat [label = "Data Collection"];
+ht [label = "Hypothesis Testing"];
+msr[label = "Measurement Error", fillcolor=red, style =filled, fontcolor=white];
+sampling[label="Sampling Error", fillcolor=red, style=filled, fontcolor=white];
+nrb [label = "Nonresponse Bias", fillcolor = red, style = filled, fontcolor=white];
+rb [label = "Response Bias", fillcolor = red, style = filled, fontcolor=white];
+ovb [label="Confounding Variables", fillcolor=orange, style = filled];
+}
+```
+
+
+
