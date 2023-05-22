@@ -1,10 +1,17 @@
 ---
 title: "Introduction to Scope and Methods"
-author: Sam Frederick
-format: revealjs
-project:
-    type: website
-    output-dir: /Users/samfrederick/scope-and-methods-spring23
+author: "Sam Frederick"
+format: 
+  revealjs:
+    css: [footer.css]
+    theme: [default, custom.scss]
+    chalkboard: true
+    progress: true
+    include-after-body: footer.html 
+    footer: "Introduction to R"
+knitr: 
+  opts_chunk: 
+      echo: true
 ---
 ```{r setup, include = F}
 knitr::opts_chunk$set(echo = TRUE)
