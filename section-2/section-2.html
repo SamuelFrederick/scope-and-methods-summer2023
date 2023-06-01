@@ -385,9 +385,6 @@
       margin-right: 0; 
     }
   </style>
-  
-  <script src="section-2_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="section-2_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -481,23 +478,11 @@ Sam Frederick
 <ul>
 <li>Mean, median, min, max, range, IQR, standard deviation</li>
 <li><code>summary()</code> function</li>
-<li>Histograms: <code>hist()</code></li>
-</ul></li>
-<li><p>Ways of Summarizing (Bivariate):</p>
-<ul>
-<li>Scatterplot</li>
 </ul></li>
 </ul>
 </section>
 <section id="summary-statistics---central-tendency-mean" class="slide level2">
 <h2>Summary Statistics - Central Tendency: Mean</h2>
-<ul>
-<li>Mean/Average:
-<ul>
-<li><span class="math inline">\(\bar{x} = \frac{x_1 + x_2+...+x_n}{n} = \frac{1}{n}\sum_{i=1}^{n}x_i\)</span></li>
-</ul></li>
-</ul>
-<div class="fragment">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -507,7 +492,6 @@ Sam Frederick
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">mean</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 23.8</code></pre>
-</div>
 </div>
 </div>
 </section>
@@ -528,17 +512,7 @@ Sam Frederick
 <div class="fragment">
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">quantile</span>(x, <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>50% 
-  6 </code></pre>
-</div>
-</div>
-</div>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">median</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">median</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6</code></pre>
@@ -556,42 +530,26 @@ Sam Frederick
 <li>Square root of the variance</li>
 </ul></li>
 </ul>
-<div class="fragment">
-<p><span class="math inline">\(Var(x) = \sigma^2 = \frac{1}{n-1}\sum_{i=1}^n(x_i - \bar{x})^2\)</span></p>
-<p><span class="math inline">\(sd(x) = \sigma = \sqrt{\frac{1}{n-1}\sum_{i=1}^n(x_i - \bar{x})^2}\)</span></p>
-</div>
 </section>
 <section id="summary-statistics-measures-of-spread-1" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Summary Statistics: Measures of Spread</h2>
 <div class="fragment semi-fade-out">
-<p><span class="math inline">\(Var(x) = \sigma^2 = \frac{1}{n-1}\sum_{i=1}^n(x_i - \bar{x})^2\)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="fu">length</span>(x) <span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1819.7</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">var</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">var</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1819.7</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment fade-in">
-<p><span class="math inline">\(sd(x) = \sigma = \sqrt{\frac{1}{n-1}\sum_{i=1}^n(x_i - \bar{x})^2}\)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">sqrt</span>(<span class="fu">var</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">sqrt</span>(<span class="fu">var</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 42.65794</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="fu">length</span>(x) <span class="sc">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 42.65794</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">sd</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">sd</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 42.65794</code></pre>
 </div>
@@ -604,15 +562,15 @@ Sam Frederick
 <li>Range (minimum, maximum)</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">range</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">range</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]   1 100</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">min</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">min</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">max</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">max</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 100</code></pre>
 </div>
@@ -628,12 +586,12 @@ Sam Frederick
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">quantile</span>(x, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">quantile</span>(x, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>25% 75% 
   5   7 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">IQR</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">IQR</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2</code></pre>
 </div>
@@ -648,7 +606,7 @@ Sam Frederick
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">summary</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">summary</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
     1.0     5.0     6.0    23.8     7.0   100.0 </code></pre>
@@ -661,13 +619,13 @@ Sam Frederick
 <li>Install tidyverse</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Load tidyverse for use</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="tidyverse-digression-1" class="slide level2">
@@ -694,10 +652,10 @@ Sam Frederick
 </ul>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> x, <span class="at">y =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb34-2"><a href="#cb34-2"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="#cb34-3"></a>  <span class="fu">mutate</span>(<span class="at">z =</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span>
-<span id="cb34-4"><a href="#cb34-4"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> x, <span class="at">y =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>  <span class="fu">mutate</span>(<span class="at">z =</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb28-4"><a href="#cb28-4"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
@@ -712,58 +670,6 @@ Sam Frederick
 </div>
 </div>
 </section>
-<section id="plotting-in-r-ggplot" class="slide level2">
-<h2>Plotting in R: ggplot</h2>
-<ul>
-<li><p>Data</p></li>
-<li><p>Plot Foundation: <code>ggplot(data, aes())</code></p>
-<ul>
-<li>Creates a plot base</li>
-<li>Can add items on top of base with <code>+</code></li>
-</ul></li>
-<li><p><code>aes()</code>: aesthetic arguments</p>
-<ul>
-<li>Take information from data and put into plot</li>
-<li>Examples: x, y, col (color)</li>
-</ul></li>
-</ul>
-</section>
-<section id="visually-summarizing-data" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Visually Summarizing Data</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb36-1" class="hljs-ln-code"><a href="#cb36-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb36-2" class="hljs-ln-code"><a href="#cb36-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
-<section id="visually-summarizing-data-1" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Visually Summarizing Data</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb37-1" class="hljs-ln-code"><a href="#cb37-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2" class="hljs-ln-code"><a href="#cb37-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
-<span id="cb37-3" class="hljs-ln-code"><a href="#cb37-3"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
-<section id="visually-summarizing-data-2" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Visually Summarizing Data</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb38-1" class="hljs-ln-code"><a href="#cb38-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb38-2" class="hljs-ln-code"><a href="#cb38-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
-<span id="cb38-3" class="hljs-ln-code"><a href="#cb38-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
-<section id="visually-summarizing-data-3" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Visually Summarizing Data</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb39-1" class="hljs-ln-code"><a href="#cb39-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb39-2" class="hljs-ln-code"><a href="#cb39-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
-<span id="cb39-3" class="hljs-ln-code"><a href="#cb39-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
-<span id="cb39-4" class="hljs-ln-code"><a href="#cb39-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, <span class="at">title =</span> <span class="st">"Histogram of X"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
 <section id="categorical-data" class="slide level2">
 <h2>Categorical Data</h2>
 <ul>
@@ -772,12 +678,7 @@ Sam Frederick
 <li><p>Ways of Summarizing (Univariate):</p>
 <ul>
 <li>Tables</li>
-<li>Barplots</li>
-</ul></li>
-<li><p>Ways of Summarizing (Bivariate):</p>
-<ul>
-<li>Cross-tabs</li>
-<li>Box-and-whisker plots</li>
+<li>Proportion Tables</li>
 </ul></li>
 </ul>
 </section>
@@ -793,7 +694,7 @@ Sam Frederick
 <li>Indicator variables: take on a value of 1 if some condition is met, 0 otherwise</li>
 <li>e.g., Male (1 if individual identifies as a man, 0 otherwise)</li>
 </ul></li>
-<li>Come in specific order (i.e., alphabetical or numerical order)</li>
+<li>Come in default order (i.e., alphabetical or numerical order)</li>
 </ul>
 </section>
 <section id="factors-1" class="slide level2">
@@ -810,6 +711,7 @@ Sam Frederick
 <ul>
 <li>doesn’t have to match spelling (can be anything)</li>
 <li>must be same length as number of levels/categories</li>
+<li>must be in the same order as the levels argument</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -817,16 +719,16 @@ Sam Frederick
 <section id="factors-2" class="slide level2">
 <h2>Factors</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"A"</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">"B"</span>, <span class="dv">6</span>), <span class="fu">rep</span>(<span class="st">"C"</span>, <span class="dv">8</span>))</span>
-<span id="cb40-2"><a href="#cb40-2"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"A"</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">"B"</span>, <span class="dv">6</span>), <span class="fu">rep</span>(<span class="st">"C"</span>, <span class="dv">8</span>))</span>
+<span id="cb30-2"><a href="#cb30-2"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "A" "A" "A" "B" "B" "B" "B" "B" "B" "C" "C" "C" "C" "C" "C" "C" "C"</code></pre>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">factor</span>(grp)</span>
-<span id="cb42-2"><a href="#cb42-2"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">factor</span>(grp)</span>
+<span id="cb32-2"><a href="#cb32-2"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] A A A B B B B B B C C C C C C C C
 Levels: A B C</code></pre>
@@ -835,8 +737,8 @@ Levels: A B C</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">factor</span>(grp, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"C"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>))</span>
-<span id="cb44-2"><a href="#cb44-2"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">factor</span>(grp, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"C"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>))</span>
+<span id="cb34-2"><a href="#cb34-2"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] A A A B B B B B B C C C C C C C C
 Levels: C B A</code></pre>
@@ -845,10 +747,10 @@ Levels: C B A</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">factor</span>(grp, </span>
-<span id="cb46-2"><a href="#cb46-2"></a>              <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"C"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>), </span>
-<span id="cb46-3"><a href="#cb46-3"></a>              <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Group C"</span>, <span class="st">"Group B"</span>, <span class="st">"Group A"</span>))</span>
-<span id="cb46-4"><a href="#cb46-4"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">factor</span>(grp, </span>
+<span id="cb36-2"><a href="#cb36-2"></a>              <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"C"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>), </span>
+<span id="cb36-3"><a href="#cb36-3"></a>              <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Group C"</span>, <span class="st">"Group B"</span>, <span class="st">"Group A"</span>))</span>
+<span id="cb36-4"><a href="#cb36-4"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] Group A Group A Group A Group B Group B Group B Group B Group B Group B
 [10] Group C Group C Group C Group C Group C Group C Group C Group C
@@ -867,7 +769,7 @@ Levels: Group C Group B Group A</code></pre>
 </ul>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="fu">table</span>(grp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">table</span>(grp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>grp
@@ -885,7 +787,7 @@ Group C Group B Group A
 </ul>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(grp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(grp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>grp
@@ -896,597 +798,26 @@ Group C Group B Group A
 </div>
 </div>
 </section>
-<section id="visual-summaries-of-categorical-data" class="slide level2">
-<h2>Visual Summaries of Categorical Data</h2>
-<ul>
-<li>Barplots</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">grp =</span> grp)</span>
-<span id="cb52-2"><a href="#cb52-2"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb52-3"><a href="#cb52-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(grp)) <span class="sc">+</span> </span>
-<span id="cb52-4"><a href="#cb52-4"></a>  <span class="fu">geom_bar</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
-<section id="visual-summaries-of-categorical-data-1" class="slide level2">
-<h2>Visual Summaries of Categorical Data</h2>
-<ul>
-<li>Barplots</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">grp =</span> grp)</span>
-<span id="cb53-2"><a href="#cb53-2"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb53-3"><a href="#cb53-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(grp, <span class="at">fill =</span> grp)) <span class="sc">+</span> </span>
-<span id="cb53-4"><a href="#cb53-4"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
-<span id="cb53-5"><a href="#cb53-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Group"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, </span>
-<span id="cb53-6"><a href="#cb53-6"></a>       <span class="at">title =</span> <span class="st">"Barplot of Groups"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
-<section id="logical-operators" class="slide level2">
-<h2>Logical Operators</h2>
-<ul>
-<li>Logical Operators
-<ul>
-<li>Check whether condition is TRUE/FALSE</li>
-</ul></li>
-<li><code>x==y</code>
-<ul>
-<li>Is x equal to y?</li>
-</ul></li>
-<li><code>x&lt;y</code>
-<ul>
-<li>Is x less than y?</li>
-</ul></li>
-<li><code>x&gt;=y</code>
-<ul>
-<li>Is x greater than or equal to y?</li>
-</ul></li>
-</ul>
-</section>
-<section id="logical-operators-1" class="slide level2">
-<h2>Logical Operators</h2>
-<div class="cell">
-<div class="cell-output-display">
-
-<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> Operator </th>
-   <th style="text-align:left;"> Meaning </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> == </td>
-   <td style="text-align:left;"> equal to </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> &lt; </td>
-   <td style="text-align:left;"> less than </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> &gt; </td>
-   <td style="text-align:left;"> greater than </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> &lt;= </td>
-   <td style="text-align:left;"> less than or equal to </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> &gt;= </td>
-   <td style="text-align:left;"> greater than or equal to </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> %in% </td>
-   <td style="text-align:left;"> in </td>
-  </tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</section>
-<section id="logical-data" class="slide level2">
-<h2>Logical Data</h2>
-<ul>
-<li>TRUE or FALSE
-<ul>
-<li>can also be abbreviated T or F</li>
-</ul></li>
-<li>NA also technically logical
-<ul>
-<li>Indicates missing observation</li>
-</ul></li>
-<li>Can be used for subsetting data</li>
-</ul>
-</section>
-<section id="subsetting-data" class="slide level2">
-<h2>Subsetting Data</h2>
-<ul>
-<li>Brackets <code>[]</code>
-<ul>
-<li>For vectors, indicates position in vector you want</li>
-<li>For data frames and matrices, <code>[row, column]</code></li>
-</ul></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="at">by =</span> <span class="dv">2</span>)[<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 6</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a>df[<span class="dv">2</span>,<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 1
-  grp    
-  &lt;fct&gt;  
-1 Group A</code></pre>
-</div>
-</div>
-</section>
-<section id="subsetting-data-1" class="slide level2">
-<h2>Subsetting Data</h2>
-<ul>
-<li><code>$</code>
-<ul>
-<li>In data frames/tibbles, gives variable after <code>$</code> as vector</li>
-</ul></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>df<span class="sc">$</span>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] Group A Group A Group A Group B Group B Group B Group B Group B Group B
-[10] Group C Group C Group C Group C Group C Group C Group C Group C
-Levels: Group C Group B Group A</code></pre>
-</div>
-</div>
-</section>
-<section id="subsetting-data-2" class="slide level2">
-<h2>Subsetting Data</h2>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">subset</span>(df, </span>
-<span id="cb60-2"><a href="#cb60-2"></a>       <span class="at">subset =</span> grp<span class="sc">==</span><span class="st">"Group A"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 1
-  grp    
-  &lt;fct&gt;  
-1 Group A
-2 Group A
-3 Group A</code></pre>
-</div>
-</div>
-</div>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb62-2"><a href="#cb62-2"></a>  <span class="fu">filter</span>(grp<span class="sc">==</span><span class="st">"Group A"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 1
-  grp    
-  &lt;fct&gt;  
-1 Group A
-2 Group A
-3 Group A</code></pre>
-</div>
-</div>
-</div>
-</section>
 <section id="working-with-data-in-r" class="slide level2">
 <h2>Working with Data in R</h2>
 <ul>
-<li><p>Download survey responses from Courseworks</p>
+<li><p>Download 2020 House elections results from Courseworks</p>
 <ul>
-<li>“Section 2” &gt; “intro_survey.csv”</li>
+<li>“Files” &gt; “house2020_elections.csv”</li>
 </ul></li>
 <li><p>Put file into course folder</p></li>
 <li><p>Set working directory in R or open course RProject</p></li>
 <li><p>Read file into R using tidyverse:</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a>intro <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"intro_survey.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>intro <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"intro_survey.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="summarizing-data" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<ul>
-<li><p>What is the median number of hours of sleep students in this section get each night? How about the standard deviation and range?</p></li>
-<li><p>See if you can reproduce this plot:</p></li>
-</ul>
-
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-34-1.png" width="960" class="r-stretch"></section>
-<section id="summarizing-data-1" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<ul>
-<li>What is the median number of hours of sleep students in this section get each night? How about the standard deviation and range?</li>
-</ul>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a><span class="fu">median</span>(intro<span class="sc">$</span>sleep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 7</code></pre>
-</div>
-</div>
-</div>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="fu">quantile</span>(intro<span class="sc">$</span>sleep, <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output cell-output-stdout">
-<pre><code>50% 
-  7 </code></pre>
-</div>
-</div>
-</div>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a><span class="fu">sd</span>(intro<span class="sc">$</span>sleep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7813942</code></pre>
-</div>
-</div>
-</div>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a><span class="fu">range</span>(intro<span class="sc">$</span>sleep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5 8</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="summarizing-data-2" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<ul>
-<li>See if you can reproduce this plot:</li>
-</ul>
-
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"></section>
-<section id="summarizing-data-3" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<ul>
-<li>See if you can reproduce this plot:</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb73-1" class="hljs-ln-code"><a href="#cb73-1"></a>intro <span class="sc">%&gt;%</span></span>
-<span id="cb73-2" class="hljs-ln-code"><a href="#cb73-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(sleep)) <span class="sc">+</span> </span>
-<span id="cb73-3" class="hljs-ln-code"><a href="#cb73-3"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
-<span id="cb73-4" class="hljs-ln-code"><a href="#cb73-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Hours of Sleep per Night"</span>, </span>
-<span id="cb73-5" class="hljs-ln-code"><a href="#cb73-5"></a>       <span class="at">y =</span> <span class="st">"Number"</span>,</span>
-<span id="cb73-6" class="hljs-ln-code"><a href="#cb73-6"></a>       <span class="at">title =</span> <span class="st">"Histogram of Number of Hours of Sleep"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="section-2_files/figure-revealjs/unnamed-chunk-40-1.png" width="960" class="r-stretch"></section>
-<section id="summarizing-data-4" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<ul>
-<li><p>Make the variable <code>year</code> into a factor, and reorder in proper order</p>
-<ul>
-<li>Hint: remember the <code>mutate()</code> function</li>
-</ul></li>
-<li><p>Make a proportion table from the new factor variable <code>year</code></p></li>
-<li><p>Try making a barplot for the factor variable <code>year</code> with each year in a different color</p></li>
-</ul>
-</section>
-<section id="summarizing-data-5" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<ul>
-<li>Make the variable <code>year</code> into a factor, and reorder in proper order</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb74-1" class="hljs-ln-code"><a href="#cb74-1"></a>intro <span class="ot">&lt;-</span> intro <span class="sc">%&gt;%</span> </span>
-<span id="cb74-2" class="hljs-ln-code"><a href="#cb74-2"></a>  <span class="fu">mutate</span>(<span class="at">year=</span> <span class="fu">factor</span>(year,<span class="at">levels =</span>  <span class="fu">c</span>(<span class="st">"First Year"</span>, <span class="st">"Sophomore"</span>, </span>
-<span id="cb74-3" class="hljs-ln-code"><a href="#cb74-3"></a>                              <span class="st">"Junior"</span>, <span class="st">"Senior"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<ul>
-<li><p>Make a proportion table from the new factor variable <code>year</code></p></li>
-<li><p>Try making a barplot for the factor variable <code>year</code> with each year in a different color</p></li>
-</ul>
-</section>
-<section id="summarizing-data-6" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<ul>
-<li>Make the variable <code>year</code> into a factor, and reorder in proper order</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1"></a>intro <span class="ot">&lt;-</span> intro <span class="sc">%&gt;%</span> </span>
-<span id="cb75-2"><a href="#cb75-2"></a>  <span class="fu">mutate</span>(<span class="at">year=</span> <span class="fu">factor</span>(year,<span class="at">levels =</span>  <span class="fu">c</span>(<span class="st">"First Year"</span>, <span class="st">"Sophomore"</span>, </span>
-<span id="cb75-3"><a href="#cb75-3"></a>                              <span class="st">"Junior"</span>, <span class="st">"Senior"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<ul>
-<li>Make a proportion table from the new factor variable <code>year</code></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(intro<span class="sc">$</span>year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-First Year  Sophomore     Junior     Senior 
-0.00000000 0.07692308 0.92307692 0.00000000 </code></pre>
-</div>
-</div>
-<ul>
-<li>Try making a barplot for the factor variable <code>year</code> with each year in a different color</li>
-</ul>
-</section>
-<section id="summarizing-data-7" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<ul>
-<li>Try making a barplot for the factor variable <code>year</code> with each year in a different color</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb78-1" class="hljs-ln-code"><a href="#cb78-1"></a>intro <span class="sc">%&gt;%</span></span>
-<span id="cb78-2" class="hljs-ln-code"><a href="#cb78-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, <span class="at">fill =</span> year)) <span class="sc">+</span> </span>
-<span id="cb78-3" class="hljs-ln-code"><a href="#cb78-3"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
-<span id="cb78-4" class="hljs-ln-code"><a href="#cb78-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, </span>
-<span id="cb78-5" class="hljs-ln-code"><a href="#cb78-5"></a>       <span class="at">title =</span> <span class="st">"Barplot of Year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="summarizing-data-8" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Summarizing Data</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb79-1" class="hljs-ln-code"><a href="#cb79-1"></a>intro <span class="sc">%&gt;%</span></span>
-<span id="cb79-2" class="hljs-ln-code"><a href="#cb79-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, <span class="at">fill =</span> year)) <span class="sc">+</span> </span>
-<span id="cb79-3" class="hljs-ln-code"><a href="#cb79-3"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
-<span id="cb79-4" class="hljs-ln-code"><a href="#cb79-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, </span>
-<span id="cb79-5" class="hljs-ln-code"><a href="#cb79-5"></a>       <span class="at">title =</span> <span class="st">"Barplot of Year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img data-src="section-2_files/figure-revealjs/unnamed-chunk-45-1.png" style="height:10.0%" width="960"></p>
-</div>
-</div>
-</section>
-<section id="making-nice-tables-in-r" class="slide level2">
-<h2>Making Nice Tables in R</h2>
-<ul>
-<li>Install <code>modelsummary</code> package</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a><span class="fu">install.packages</span>(<span class="st">"modelsummary"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<ul>
-<li>Load the <code>modelsummary</code> package</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1"></a><span class="fu">library</span>(modelsummary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="making-nice-tables-in-r-1" class="slide level2">
-<h2>Making Nice Tables in R</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a><span class="fu">datasummary_skim</span>(<span class="at">data =</span> intro <span class="sc">%&gt;%</span> <span class="fu">select</span>(sleep, homework), </span>
-<span id="cb82-2"><a href="#cb82-2"></a>                  <span class="at">histogram=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Unique (#) </th>
-   <th style="text-align:right;"> Missing (%) </th>
-   <th style="text-align:right;"> Mean </th>
-   <th style="text-align:right;"> SD </th>
-   <th style="text-align:right;"> Min </th>
-   <th style="text-align:right;"> Median </th>
-   <th style="text-align:right;"> Max </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> sleep </td>
-   <td style="text-align:right;"> 6 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 6.9 </td>
-   <td style="text-align:right;"> 0.8 </td>
-   <td style="text-align:right;"> 5.0 </td>
-   <td style="text-align:right;"> 7.0 </td>
-   <td style="text-align:right;"> 8.0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> homework </td>
-   <td style="text-align:right;"> 4 </td>
-   <td style="text-align:right;"> 77 </td>
-   <td style="text-align:right;"> 8.0 </td>
-   <td style="text-align:right;"> 4.4 </td>
-   <td style="text-align:right;"> 5.0 </td>
-   <td style="text-align:right;"> 6.0 </td>
-   <td style="text-align:right;"> 13.0 </td>
-  </tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</section>
-<section id="missing-data" class="slide level2">
-<h2>Missing Data</h2>
-<ul>
-<li><p>Often data incomplete or missing altogether</p></li>
-<li><p>R shows as <code>NA</code></p></li>
-<li><p>Some functions will only output missing data if NAs are present</p></li>
-</ul>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a><span class="fu">mean</span>(intro<span class="sc">$</span>homework)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] NA</code></pre>
-</div>
-</div>
-</div>
-<div class="{fragment}">
-<ul>
-<li>Solution: <code>na.rm</code> argument</li>
-</ul>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="fu">mean</span>(intro<span class="sc">$</span>homework, <span class="at">na.rm =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 8</code></pre>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="recap" class="slide level2">
-<h2>Recap</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<p>
-<svg width="960" height="480" viewbox="0.00 0.00 824.62 332.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style=" display: block; margin: auto auto auto auto">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 328)">
-<title>
-G
-</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-328 820.62,-328 820.62,4 -4,4"></polygon> <!-- stats1 --> <g id="node1" class="node">
-<title>
-stats1
-</title>
-<ellipse fill="none" stroke="black" cx="548.5" cy="-162" rx="85.76" ry="18"></ellipse> <text text-anchor="middle" x="548.5" y="-157.8" font-family="Times,serif" font-size="14.00">Summary Statistics</text> </g> <!-- tabs --> <g id="node8" class="node">
-<title>
-tabs
-</title>
-<polygon fill="none" stroke="black" points="591,-78 506,-78 506,-30 591,-30 591,-78"></polygon> <text text-anchor="start" x="533.07" y="-59.4" font-family="Times,serif" font-size="14.00">Table</text> <text text-anchor="start" x="516.34" y="-39.4" font-family="Times,serif" font-size="14.00">Prop. Table</text> </g> <!-- stats1&#45;&gt;tabs --> <g id="edge10" class="edge">
-<title>
-stats1-&gt;tabs
-</title>
-<path fill="none" stroke="black" d="M548.5,-143.97C548.5,-129.03 548.5,-106.86 548.5,-88.4"></path> <polygon fill="black" stroke="black" points="552,-88.31 548.5,-78.31 545,-88.31 552,-88.31"></polygon> </g> <!-- stats0 --> <g id="node2" class="node">
-<title>
-stats0
-</title>
-<ellipse fill="none" stroke="black" cx="176.5" cy="-162" rx="85.76" ry="18"></ellipse> <text text-anchor="middle" x="176.5" y="-157.8" font-family="Times,serif" font-size="14.00">Summary Statistics</text> </g> <!-- centtend --> <g id="node5" class="node">
-<title>
-centtend
-</title>
-<polygon fill="none" stroke="black" points="127,-88 0,-88 0,-20 127,-20 127,-88"></polygon> <text text-anchor="start" x="10.14" y="-70.4" font-family="Times,serif" font-weight="bold" font-size="14.00">Central Tendency</text> <text text-anchor="start" x="48.06" y="-49.4" font-family="Times,serif" font-size="14.00">Mean</text> <text text-anchor="start" x="42.62" y="-29.4" font-family="Times,serif" font-size="14.00">Median</text> </g> <!-- stats0&#45;&gt;centtend --> <g id="edge7" class="edge">
-<title>
-stats0-&gt;centtend
-</title>
-<path fill="none" stroke="black" d="M158.59,-144.2C144.65,-131.13 124.71,-112.42 106.68,-95.51"></path> <polygon fill="black" stroke="black" points="108.79,-92.68 99.1,-88.39 104,-97.79 108.79,-92.68"></polygon> </g> <!-- spread --> <g id="node6" class="node">
-<title>
-spread
-</title>
-<polygon fill="none" stroke="black" points="273.5,-108 145.5,-108 145.5,0 273.5,0 273.5,-108"></polygon> <text text-anchor="start" x="188.11" y="-90.4" font-family="Times,serif" font-weight="bold" font-size="14.00">Spread</text> <text text-anchor="start" x="155.26" y="-69.4" font-family="Times,serif" font-size="14.00">Standard Deviation</text> <text text-anchor="start" x="184.24" y="-49.4" font-family="Times,serif" font-size="14.00">Variance</text> <text text-anchor="start" x="191.62" y="-29.4" font-family="Times,serif" font-size="14.00">Range</text> <text text-anchor="start" x="155.27" y="-9.4" font-family="Times,serif" font-size="14.00">Interquartile Range</text> </g> <!-- stats0&#45;&gt;spread --> <g id="edge8" class="edge">
-<title>
-stats0-&gt;spread
-</title>
-<path fill="none" stroke="black" d="M181.8,-143.97C184.1,-136.6 186.94,-127.46 189.92,-117.88"></path> <polygon fill="black" stroke="black" points="193.31,-118.79 192.94,-108.2 186.62,-116.71 193.31,-118.79"></polygon> </g> <!-- vis0 --> <g id="node3" class="node">
-<title>
-vis0
-</title>
-<ellipse fill="none" stroke="black" cx="362.5" cy="-162" rx="82.23" ry="18"></ellipse> <text text-anchor="middle" x="362.5" y="-157.8" font-family="Times,serif" font-size="14.00">Visual Summaries</text> </g> <!-- vislist --> <g id="node7" class="node">
-<title>
-vislist
-</title>
-<polygon fill="none" stroke="black" points="400.1,-72 324.9,-72 324.9,-36 400.1,-36 400.1,-72"></polygon> <text text-anchor="middle" x="362.5" y="-49.8" font-family="Times,serif" font-size="14.00">Histogram</text> </g> <!-- vis0&#45;&gt;vislist --> <g id="edge9" class="edge">
-<title>
-vis0-&gt;vislist
-</title>
-<path fill="none" stroke="black" d="M362.5,-143.97C362.5,-127.38 362.5,-101.88 362.5,-82.43"></path> <polygon fill="black" stroke="black" points="366,-82.34 362.5,-72.34 359,-82.34 366,-82.34"></polygon> </g> <!-- vis1 --> <g id="node4" class="node">
-<title>
-vis1
-</title>
-<ellipse fill="none" stroke="black" cx="734.5" cy="-162" rx="82.23" ry="18"></ellipse> <text text-anchor="middle" x="734.5" y="-157.8" font-family="Times,serif" font-size="14.00">Visual Summaries</text> </g> <!-- vislist1 --> <g id="node9" class="node">
-<title>
-vislist1
-</title>
-<polygon fill="none" stroke="black" points="763.49,-72 705.51,-72 705.51,-36 763.49,-36 763.49,-72"></polygon> <text text-anchor="middle" x="734.5" y="-49.8" font-family="Times,serif" font-size="14.00">Barplot</text> </g> <!-- vis1&#45;&gt;vislist1 --> <g id="edge11" class="edge">
-<title>
-vis1-&gt;vislist1
-</title>
-<path fill="none" stroke="black" d="M734.5,-143.97C734.5,-127.38 734.5,-101.88 734.5,-82.43"></path> <polygon fill="black" stroke="black" points="738,-82.34 734.5,-72.34 731,-82.34 738,-82.34"></polygon> </g> <!-- Data --> <g id="node10" class="node">
-<title>
-Data
-</title>
-<ellipse fill="none" stroke="black" cx="455.5" cy="-306" rx="29.03" ry="18"></ellipse> <text text-anchor="middle" x="455.5" y="-301.8" font-family="Times,serif" font-size="14.00">Data</text> </g> <!-- Numeric --> <g id="node11" class="node">
-<title>
-Numeric
-</title>
-<ellipse fill="none" stroke="black" cx="362.5" cy="-234" rx="44.64" ry="18"></ellipse> <text text-anchor="middle" x="362.5" y="-229.8" font-family="Times,serif" font-size="14.00">Numeric</text> </g> <!-- Data&#45;&gt;Numeric --> <g id="edge1" class="edge">
-<title>
-Data-&gt;Numeric
-</title>
-<path fill="none" stroke="black" d="M437.57,-291.5C424.3,-281.51 405.96,-267.71 390.73,-256.25"></path> <polygon fill="black" stroke="black" points="392.73,-253.37 382.64,-250.16 388.52,-258.97 392.73,-253.37"></polygon> </g> <!-- Categorical --> <g id="node12" class="node">
-<title>
-Categorical
-</title>
-<ellipse fill="none" stroke="black" cx="548.5" cy="-234" rx="55.59" ry="18"></ellipse> <text text-anchor="middle" x="548.5" y="-229.8" font-family="Times,serif" font-size="14.00">Categorical</text> </g> <!-- Data&#45;&gt;Categorical --> <g id="edge2" class="edge">
-<title>
-Data-&gt;Categorical
-</title>
-<path fill="none" stroke="black" d="M473.43,-291.5C486.44,-281.72 504.31,-268.26 519.35,-256.94"></path> <polygon fill="black" stroke="black" points="521.48,-259.72 527.37,-250.91 517.27,-254.12 521.48,-259.72"></polygon> </g> <!-- Numeric&#45;&gt;stats0 --> <g id="edge3" class="edge">
-<title>
-Numeric-&gt;stats0
-</title>
-<path fill="none" stroke="black" d="M330.95,-221.13C302.18,-210.3 259.2,-194.12 225.88,-181.59"></path> <polygon fill="black" stroke="black" points="226.91,-178.23 216.32,-177.99 224.45,-184.78 226.91,-178.23"></polygon> </g> <!-- Numeric&#45;&gt;vis0 --> <g id="edge4" class="edge">
-<title>
-Numeric-&gt;vis0
-</title>
-<path fill="none" stroke="black" d="M362.5,-215.7C362.5,-207.98 362.5,-198.71 362.5,-190.11"></path> <polygon fill="black" stroke="black" points="366,-190.1 362.5,-180.1 359,-190.1 366,-190.1"></polygon> </g> <!-- Categorical&#45;&gt;stats1 --> <g id="edge5" class="edge">
-<title>
-Categorical-&gt;stats1
-</title>
-<path fill="none" stroke="black" d="M548.5,-215.7C548.5,-207.98 548.5,-198.71 548.5,-190.11"></path> <polygon fill="black" stroke="black" points="552,-190.1 548.5,-180.1 545,-190.1 552,-190.1"></polygon> </g> <!-- Categorical&#45;&gt;vis1 --> <g id="edge6" class="edge">
-<title>
-Categorical-&gt;vis1
-</title>
-<path fill="none" stroke="black" d="M583.49,-219.83C612.29,-208.99 653.45,-193.5 685.52,-181.43"></path> <polygon fill="black" stroke="black" points="687.04,-184.6 695.16,-177.8 684.57,-178.05 687.04,-184.6"></polygon> </g> </g>
-</svg>
-</p>
-</div>
-</div>
-</div>
-</section>
-<section id="recap-1" class="slide level2">
-<h2>Recap</h2>
-<ul>
-<li>Tidyverse
-<ul>
-<li>Tibbles
-<ul>
-<li>Create new columns with <code>mutate()</code></li>
-<li>Subset with <code>filter()</code> and logical conditions</li>
-</ul></li>
-<li>Plotting
-<ul>
-<li>Foundation for plot with <code>ggplot(data, aes())</code></li>
-<li>Build on top of foundation with <code>+</code></li>
-</ul></li>
-</ul></li>
-</ul>
-</section>
-<section id="recap-2" class="slide level2">
-<h2>Recap</h2>
-<ul>
-<li>Factors
-<ul>
-<li>Used <code>factor(variable, levels = c(...), labels = c(...))</code></li>
-</ul></li>
-<li>Missing Data
-<ul>
-<li>Be aware of how many missing data there are</li>
-<li>Can <strong>usually</strong> remove using <code>na.rm=TRUE</code> argument</li>
-</ul></li>
-</ul>
 </section>
 <section id="next-section" class="slide level2">
 <h2>Next Section</h2>
 <ul>
-<li><p>Summarizing more than one variable</p></li>
-<li><p>“If” Statements</p></li>
-<li><p>For Loops</p></li>
+<li><p>Types of Data in R</p></li>
+<li><p>Working with Data in R</p></li>
 </ul>
 <div class="footer footer-default">
 <p>Introduction to R</p>
