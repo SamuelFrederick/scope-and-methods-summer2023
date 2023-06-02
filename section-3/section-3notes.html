@@ -9,7 +9,7 @@
 <meta name="author" content="Sam Frederick">
 <meta name="dcterms.date" content="2023-05-31">
 
-<title>Section 3. Types of Data in R and dplyr</title>
+<title>Section 3. Types of Data in R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -132,13 +132,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul></li>
-  <li><a href="#introduction-to-dplyr" id="toc-introduction-to-dplyr" class="nav-link" data-scroll-target="#introduction-to-dplyr">Introduction to <code>dplyr</code></a>
-  <ul class="collapse">
-  <li><a href="#subsetting-rows-filter" id="toc-subsetting-rows-filter" class="nav-link" data-scroll-target="#subsetting-rows-filter">Subsetting Rows: <code>filter()</code></a></li>
-  <li><a href="#subsetting-columns-select" id="toc-subsetting-columns-select" class="nav-link" data-scroll-target="#subsetting-columns-select">Subsetting Columns: <code>select()</code></a></li>
-  <li><a href="#renaming-variables-rename" id="toc-renaming-variables-rename" class="nav-link" data-scroll-target="#renaming-variables-rename">Renaming variables: <code>rename()</code></a></li>
-  <li><a href="#changing-and-creating-variables-mutate" id="toc-changing-and-creating-variables-mutate" class="nav-link" data-scroll-target="#changing-and-creating-variables-mutate">Changing and Creating Variables: <code>mutate()</code></a></li>
-  </ul></li>
   </ul>
 </nav>
 </div>
@@ -146,7 +139,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Section 3. Types of Data in R and dplyr</h1>
+<h1 class="title">Section 3. Types of Data in R</h1>
 </div>
 
 
@@ -776,162 +769,6 @@ DEM REP
 </div>
 </div>
 </div>
-</div>
-</div>
-</section>
-</section>
-<section id="introduction-to-dplyr" class="level1">
-<h1>Introduction to <code>dplyr</code></h1>
-<p><code>dplyr</code> is a package within the <code>tidyverse</code> that is used for processing and cleaning data.</p>
-<section id="subsetting-rows-filter" class="level2">
-<h2 class="anchored" data-anchor-id="subsetting-rows-filter">Subsetting Rows: <code>filter()</code></h2>
-<p>Much like the <code>[]</code> and <code>$</code> operators, discussed above, we often want to analyze certain parts of our data. <code>dplyr</code> has a helpful command, <code>filter()</code>, which we can use to subset our data. <code>filter()</code> takes logical conditions as its arguments. We can use it to get only Republican candidates in our house data:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>house <span class="sc">%&gt;%</span> </span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(party<span class="sc">==</span><span class="st">"REP"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 348 × 8
-   party state district incumbent_challenge_full receipts disbur…¹ last  votes…²
-   &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
- 1 REP   AL           1 Open seat                2344517. 2232544. CARL    64.4 
- 2 REP   AL           5 Incumbent                 669026.  223707. BROO…   95.8 
- 3 REP   AR           1 Incumbent                 966801. 1095518. CRAW…  100   
- 4 REP   CA           3 Challenger                397099.  384584. HAMI…   45.3 
- 5 REP   CA           6 Challenger                 45504.   45286. BISH    26.7 
- 6 REP   CA           7 Challenger                 81732.   67330. PATT…   43.4 
- 7 REP   CA           8 Open seat                2028339. 1958786. OBER…   56.1 
- 8 REP   CA           9 Challenger                 52225    52225  AMAD…   42.4 
- 9 REP   CA          13 Challenger                  9879.    9944. PITE…    9.63
-10 REP   CA          11 Open seat                 186079.  182995. SHAR…   27.0 
-# … with 338 more rows, and abbreviated variable names ¹​disbursements,
-#   ²​voteshare</code></pre>
-</div>
-</div>
-<p>We can use it to get Republicans who received more than 50% of the vote in Texas:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>house <span class="sc">%&gt;%</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(party<span class="sc">==</span><span class="st">"REP"</span><span class="sc">&amp;</span>voteshare<span class="sc">&gt;</span><span class="dv">50</span><span class="sc">&amp;</span>state<span class="sc">==</span><span class="st">"TX"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 21 × 8
-   party state district incumbent_challenge_full receipts disbur…¹ last  votes…²
-   &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
- 1 REP   TX           4 Challenger                257176.   95068. FALL…    75.1
- 2 REP   TX          11 Open seat                2598806. 2004400. PFLU…    79.7
- 3 REP   TX          13 Open seat                2151194. 1764055. JACK…    79.4
- 4 REP   TX          22 Open seat                1818077. 1798160. NEHLS    51.5
- 5 REP   TX          23 Open seat                2882972. 2851613. GONZ…    50.6
- 6 REP   TX          17 Open seat                1485909. 1696588. SESS…    55.9
- 7 REP   TX          25 Incumbent                2446005. 3358151. WILL…    55.9
- 8 REP   TX          26 Incumbent                1827226. 2102030. BURG…    60.6
- 9 REP   TX          31 Incumbent                2168868. 2223167. CART…    53.4
-10 REP   TX           1 Incumbent                 564861.  592388. GOHM…    72.6
-# … with 11 more rows, and abbreviated variable names ¹​disbursements,
-#   ²​voteshare</code></pre>
-</div>
-</div>
-<p>Often, we want to store these subsets for later analysis, so we can create a new variable. For our Republican subset, we could run the following code:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>rep <span class="ot">&lt;-</span> house <span class="sc">%&gt;%</span> </span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(party<span class="sc">==</span><span class="st">"REP"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="subsetting-columns-select" class="level2">
-<h2 class="anchored" data-anchor-id="subsetting-columns-select">Subsetting Columns: <code>select()</code></h2>
-<p>We want to focus our analysis on specific columns. Again, like the <code>[]</code> or <code>$</code> operators above, <code>dplyr</code> has a helpful command to do this: the <code>select()</code> command. <code>select()</code> takes column names as its arguments.</p>
-<p>Say we want to focus only on incumbency status and voteshare in our house data, we can run the following code to get just these columns:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>house <span class="sc">%&gt;%</span> </span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(incumbent_challenge_full, voteshare)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 726 × 2
-   incumbent_challenge_full voteshare
-   &lt;chr&gt;                        &lt;dbl&gt;
- 1 Open seat                     64.4
- 2 Open seat                     35.5
- 3 Open seat                     34.7
- 4 Incumbent                     95.8
- 5 Incumbent                     97.2
- 6 Incumbent                    100  
- 7 Incumbent                     56.6
- 8 Challenger                    45.3
- 9 Challenger                    44.1
-10 Challenger                    26.7
-# … with 716 more rows</code></pre>
-</div>
-</div>
-</section>
-<section id="renaming-variables-rename" class="level2">
-<h2 class="anchored" data-anchor-id="renaming-variables-rename">Renaming variables: <code>rename()</code></h2>
-<p>Variables don’t always come with helpful names, so it’s often helpful to rename columns to something more useful. The <code>rename()</code> function takes an argument of the form <code>"new_name" = "old_name"</code>. If we want to rename multiple columns, we put the sequence of arguments like <code>"new_name" = "old_name"</code> into a vector.</p>
-<p>In our house data, we can rename the <code>incumbent_challenge_full</code> variable <code>incumbent</code> and the <code>disbursements</code> variable to <code>spending</code> instead.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>house <span class="sc">%&gt;%</span> </span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="fu">c</span>(<span class="st">"incumbent"</span> <span class="ot">=</span> <span class="st">"incumbent_challenge_full"</span>, </span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">"spending"</span> <span class="ot">=</span> <span class="st">"disbursements"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 726 × 8
-   party state district incumbent  receipts spending last        voteshare
-   &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
- 1 REP   AL           1 Open seat  2344517. 2232544. CARL             64.4
- 2 DEM   AL           1 Open seat    80095.   78973. AVERHART         35.5
- 3 DEM   AL           2 Open seat    57723.   57661. HARVEY-HALL      34.7
- 4 REP   AL           5 Incumbent   669026.  223707. BROOKS           95.8
- 5 DEM   AL           7 Incumbent  2171040. 1498832. SEWELL           97.2
- 6 REP   AR           1 Incumbent   966801. 1095518. CRAWFORD        100  
- 7 DEM   CA           7 Incumbent  1830741. 1126436. BERA             56.6
- 8 REP   CA           3 Challenger  397099.  384584. HAMILTON         45.3
- 9 DEM   CA           4 Challenger 3022017. 3018529. KENNEDY          44.1
-10 REP   CA           6 Challenger   45504.   45286. BISH             26.7
-# … with 716 more rows</code></pre>
-</div>
-</div>
-</section>
-<section id="changing-and-creating-variables-mutate" class="level2">
-<h2 class="anchored" data-anchor-id="changing-and-creating-variables-mutate">Changing and Creating Variables: <code>mutate()</code></h2>
-<p>Sometimes we have to create new variables or modify old variables to put them into a useful form. For example, we might want to change one of our variables into a factor variable with levels in a specific order. Or, we might want to change the labels of our factor. Or, we might want to create a new variable.</p>
-<p>We can change the order of our incumbent variable to “Incumbents”, “Challengers”, and then “Open-Seat Candidates”:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>house <span class="sc">%&gt;%</span> </span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">incumbent_challenge_full =</span> <span class="fu">factor</span>(incumbent_challenge_full, </span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Incumbent"</span>, <span class="st">"Challenger"</span>, <span class="st">"Open seat"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 726 × 8
-   party state district incumbent_challenge_full receipts disbur…¹ last  votes…²
-   &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;fct&gt;                       &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
- 1 REP   AL           1 Open seat                2344517. 2232544. CARL     64.4
- 2 DEM   AL           1 Open seat                  80095.   78973. AVER…    35.5
- 3 DEM   AL           2 Open seat                  57723.   57661. HARV…    34.7
- 4 REP   AL           5 Incumbent                 669026.  223707. BROO…    95.8
- 5 DEM   AL           7 Incumbent                2171040. 1498832. SEWE…    97.2
- 6 REP   AR           1 Incumbent                 966801. 1095518. CRAW…   100  
- 7 DEM   CA           7 Incumbent                1830741. 1126436. BERA     56.6
- 8 REP   CA           3 Challenger                397099.  384584. HAMI…    45.3
- 9 DEM   CA           4 Challenger               3022017. 3018529. KENN…    44.1
-10 REP   CA           6 Challenger                 45504.   45286. BISH     26.7
-# … with 716 more rows, and abbreviated variable names ¹​disbursements,
-#   ²​voteshare</code></pre>
-</div>
-</div>
-<p>We can also change the labels of our party variable:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>house <span class="sc">%&gt;%</span></span>
-<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">party =</span> <span class="fu">factor</span>(party, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Democrat"</span>, <span class="st">"Republican"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 726 × 8
-   party      state district incumbent_challenge…¹ recei…² disbu…³ last  votes…⁴
-   &lt;fct&gt;      &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
- 1 Republican AL           1 Open seat              2.34e6  2.23e6 CARL     64.4
- 2 Democrat   AL           1 Open seat              8.01e4  7.90e4 AVER…    35.5
- 3 Democrat   AL           2 Open seat              5.77e4  5.77e4 HARV…    34.7
- 4 Republican AL           5 Incumbent              6.69e5  2.24e5 BROO…    95.8
- 5 Democrat   AL           7 Incumbent              2.17e6  1.50e6 SEWE…    97.2
- 6 Republican AR           1 Incumbent              9.67e5  1.10e6 CRAW…   100  
- 7 Democrat   CA           7 Incumbent              1.83e6  1.13e6 BERA     56.6
- 8 Republican CA           3 Challenger             3.97e5  3.85e5 HAMI…    45.3
- 9 Democrat   CA           4 Challenger             3.02e6  3.02e6 KENN…    44.1
-10 Republican CA           6 Challenger             4.55e4  4.53e4 BISH     26.7
-# … with 716 more rows, and abbreviated variable names
-#   ¹​incumbent_challenge_full, ²​receipts, ³​disbursements, ⁴​voteshare</code></pre>
 </div>
 </div>
 </section>

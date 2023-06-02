@@ -1,5 +1,5 @@
 ---
-title: "Section 3. Types of Data in R and dplyr"
+title: "Section 3. Types of Data in R"
 author: "Sam Frederick"
 date: "May 31, 2023"
 format: 
@@ -397,82 +397,4 @@ house[house$incumbent_challenge_full=="Incumbent"|house$voteshare>60,]
 
 :::
 
-# Introduction to `dplyr`
-
-`dplyr` is a package within the `tidyverse` that is used for processing and cleaning data. 
-
-## Subsetting Rows: `filter()`
-
-Much like the `[]` and `$` operators, discussed above, we often want to analyze certain parts of our data. `dplyr` has a helpful command, `filter()`, which we can use to subset our data. `filter()` takes logical conditions as its arguments. We can use it to get only Republican candidates in our house data: 
-
-```{r}
-house %>% 
-  filter(party=="REP")
-```
-
-We can use it to get Republicans who received more than 50\% of the vote in Texas:
-
-```{r}
-house %>%
-  filter(party=="REP"&voteshare>50&state=="TX")
-```
-
-Often, we want to store these subsets for later analysis, so we can create a new variable. For our Republican subset, we could run the following code:
-
-```{r}
-rep <- house %>% 
-  filter(party=="REP")
-```
-
-
-## Subsetting Columns: `select()`
-
-We want to focus our analysis on specific columns. Again, like the `[]` or `$` operators above, `dplyr` has a helpful command to do this: the `select()` command. `select()` takes column names as its arguments. 
-
-Say we want to focus only on incumbency status and voteshare in our house data, we can run the following code to get just these columns:
-
-```{r}
-house %>% 
-  select(incumbent_challenge_full, voteshare)
-```
-
-## Renaming variables: `rename()`
-
-Variables don't always come with helpful names, so it's often helpful to rename columns to something more useful. The `rename()` function takes an argument of the form `"new_name" = "old_name"`. If we want to rename multiple columns, we put the sequence of arguments like `"new_name" = "old_name"` into a vector. 
-
-In our house data, we can rename the `incumbent_challenge_full` variable `incumbent` and the `disbursements` variable to `spending` instead.
-
-```{r}
-house %>% 
-  rename(c("incumbent" = "incumbent_challenge_full", 
-           "spending" = "disbursements"))
-```
-
-## Changing and Creating Variables: `mutate()`
-
-Sometimes we have to create new variables or modify old variables to put them into a useful form. For example, we might want to change one of our variables into a factor variable with levels in a specific order. Or, we might want to change the labels of our factor. Or, we might want to create a new variable. 
-
-We can change the order of our incumbent variable to "Incumbents", "Challengers", and then "Open-Seat Candidates":
-
-```{r}
-house %>% 
-  mutate(incumbent_challenge_full = factor(incumbent_challenge_full, 
-                                           levels = c("Incumbent", "Challenger", "Open seat")))
-```
-
-We can also change the labels of our party variable:
-
-```{r}
-house %>%
-  mutate(party = factor(party, labels = c("Democrat", "Republican")))
-```
-
-
-
-
-
-```{r include = F}
-#summarize, group_by, joins
-#casewhen, ifelse
-```
 
