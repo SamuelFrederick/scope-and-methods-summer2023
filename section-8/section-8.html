@@ -399,18 +399,9 @@ Note:        *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <p>Let’s take a look at an example of confounding and how that affects our regression results.</p>
 <p>These are fake data that come from a true model of <span class="math inline">\(y_i = 4+2*x_i+5*confound_i + var1_i + \varepsilon_i\)</span> and <span class="math inline">\(x_i = 2 + 2*confound_i + \gamma_i\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>confound <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"section-8/confound.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 10000 Columns: 4
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-dbl (4): x, y, var1, confound
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x, <span class="at">data =</span> confound)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>confound <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"section-8/confound.csv"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x, <span class="at">data =</span> confound)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -434,8 +425,8 @@ F-statistic: 2.806e+06 on 1 and 9998 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>Without accounting for the confounding variable, we get a coefficient estimate for <span class="math inline">\(\beta_1\)</span> of about 4.5 (remember the true coefficient for x is 2). What happens if we include the confounding variable in our regression model?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x<span class="sc">+</span>confound, <span class="at">data =</span> confound)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x<span class="sc">+</span>confound, <span class="at">data =</span> confound)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -461,10 +452,10 @@ F-statistic: 2.43e+06 on 2 and 9997 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>If we include the confounding variable in our model as a “control” variable, our estimate of the coefficient estimate for x decreases to about 2–an unbiased estimate of the true value (2).</p>
 <p>Finally, because <span class="math inline">\(var1\)</span> does not affect <strong>both</strong> x and y, its exclusion from our regression model does not bias our results.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x<span class="sc">+</span>confound<span class="sc">+</span>var1, <span class="at">data =</span> confound)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x<span class="sc">+</span>confound<span class="sc">+</span>var1, <span class="at">data =</span> confound)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mod1, mod2, mod3, <span class="at">type =</span> <span class="st">"html"</span>, </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"ser"</span>,  <span class="st">"f"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mod1, mod2, mod3, <span class="at">type =</span> <span class="st">"html"</span>, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"ser"</span>,  <span class="st">"f"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <table style="text-align:center">
 <tbody><tr>
@@ -715,9 +706,9 @@ Adjusted R<sup>2</sup>
 <h1>Example with House Data</h1>
 <p>Let’s do a full analysis with our House data. Let’s say we want to test the hypothesis that campaign spending leads to a better electoral performance. We can fit a simple regression of voteshare on logged campaign spending.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>house <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"house2020_elections.csv"</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>mod1_house <span class="ot">&lt;-</span> <span class="fu">lm</span>(voteshare<span class="sc">~</span><span class="fu">log</span>(disbursements), <span class="at">data =</span> house)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1_house)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>house <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"house2020_elections.csv"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mod1_house <span class="ot">&lt;-</span> <span class="fu">lm</span>(voteshare<span class="sc">~</span><span class="fu">log</span>(disbursements), <span class="at">data =</span> house)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1_house)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -742,8 +733,8 @@ F-statistic: 222.1 on 1 and 724 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>This is interesting by itself; however, there is good reason to believe there are some omitted variables here. Specifically, we might think that certain types of candidates are likely to both raise a lot of money and perform well electorally. This would make it appear that the spending is leading to the voteshare, when really it is the confounding variable that is generating this relationship. One such confounding variable is incumbency.</p>
 <p>We can account for incumbency status by adding it into our regression.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mod2_house <span class="ot">&lt;-</span> <span class="fu">lm</span>(voteshare<span class="sc">~</span><span class="fu">log</span>(disbursements)<span class="sc">+</span>incumbent_challenge_full, <span class="at">data =</span> house)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2_house)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mod2_house <span class="ot">&lt;-</span> <span class="fu">lm</span>(voteshare<span class="sc">~</span><span class="fu">log</span>(disbursements)<span class="sc">+</span>incumbent_challenge_full, <span class="at">data =</span> house)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2_house)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -771,8 +762,8 @@ F-statistic: 304.6 on 3 and 722 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Indeed, we can see that our intuitions about incumbency status were likely pretty good: the coefficient estimate for campaign spending decreased by a lot once we include incumbency status.</p>
 <p>The election in 2020 was a fairly good one for Republican House candidates, so we might think that party is also an important potential confounder: Republicans might have been both able to raise more money and performed better in the election.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mod3_house <span class="ot">&lt;-</span> <span class="fu">lm</span>(voteshare<span class="sc">~</span><span class="fu">log</span>(disbursements)<span class="sc">+</span>incumbent_challenge_full <span class="sc">+</span> party, <span class="at">data =</span> house)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3_house)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mod3_house <span class="ot">&lt;-</span> <span class="fu">lm</span>(voteshare<span class="sc">~</span><span class="fu">log</span>(disbursements)<span class="sc">+</span>incumbent_challenge_full <span class="sc">+</span> party, <span class="at">data =</span> house)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3_house)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -800,10 +791,10 @@ F-statistic: 232.4 on 4 and 721 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>It does not appear that party was a big confounding variable (the coefficient estimate for spending didn’t change much after we included party). That said, we do see that Republican candidates did perform better electorally than Democratic candidates in 2020.</p>
 <p>Finally, let’s put all of these regression models together:</p>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mod1_house, mod2_house, mod3_house, <span class="at">type =</span> <span class="st">"html"</span>, </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"ser"</span>, <span class="st">"f"</span>), </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels =</span> <span class="fu">c</span>(<span class="st">"log(Spending)"</span>, <span class="st">"Incumbent"</span>, <span class="st">"Open-Seat"</span>, <span class="st">"Republican"</span>, <span class="st">"Intercept"</span>), </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels =</span> <span class="fu">c</span>(<span class="st">"Vote Share"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mod1_house, mod2_house, mod3_house, <span class="at">type =</span> <span class="st">"html"</span>, </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"ser"</span>, <span class="st">"f"</span>), </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">covariate.labels =</span> <span class="fu">c</span>(<span class="st">"log(Spending)"</span>, <span class="st">"Incumbent"</span>, <span class="st">"Open-Seat"</span>, <span class="st">"Republican"</span>, <span class="st">"Intercept"</span>), </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels =</span> <span class="fu">c</span>(<span class="st">"Vote Share"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <table style="text-align:center">
 <tbody><tr>
@@ -1089,14 +1080,14 @@ Adjusted R<sup>2</sup>
 <h1>Weighted Linear Regression</h1>
 <p>The last thing to note is that when we are using data with weights, we want to conduct weighted regressions. We can do this using the <code>weights</code> argument in the <code>lm()</code> function.</p>
 <p>For example, if we go back to the CES dataset we worked with last section:</p>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ces <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ces2020_example.csv"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ideo5<span class="sc">%in%</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span><span class="sc">&amp;</span>pid3<span class="sc">%in%</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>mod1_ces <span class="ot">&lt;-</span> <span class="fu">lm</span>(ideo5<span class="sc">~</span><span class="fu">factor</span>(pid3), <span class="at">data =</span> ces)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>mod2_ces <span class="ot">&lt;-</span> <span class="fu">lm</span>(ideo5<span class="sc">~</span><span class="fu">factor</span>(pid3), <span class="at">data =</span> ces, <span class="at">weights =</span> commonweight)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mod1_ces, mod2_ces, <span class="at">type =</span> <span class="st">"html"</span>, </span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>), </span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels =</span> <span class="fu">c</span>(<span class="st">"Unweighted"</span>, <span class="st">"Weighted"</span>), </span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels =</span> <span class="fu">c</span>(<span class="st">"Vote Share"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ces <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ces2020_example.csv"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ideo5<span class="sc">%in%</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span><span class="sc">&amp;</span>pid3<span class="sc">%in%</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>mod1_ces <span class="ot">&lt;-</span> <span class="fu">lm</span>(ideo5<span class="sc">~</span><span class="fu">factor</span>(pid3), <span class="at">data =</span> ces)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>mod2_ces <span class="ot">&lt;-</span> <span class="fu">lm</span>(ideo5<span class="sc">~</span><span class="fu">factor</span>(pid3), <span class="at">data =</span> ces, <span class="at">weights =</span> commonweight)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mod1_ces, mod2_ces, <span class="at">type =</span> <span class="st">"html"</span>, </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>), </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels =</span> <span class="fu">c</span>(<span class="st">"Unweighted"</span>, <span class="st">"Weighted"</span>), </span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels =</span> <span class="fu">c</span>(<span class="st">"Vote Share"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <table style="text-align:center">
 <tbody><tr>

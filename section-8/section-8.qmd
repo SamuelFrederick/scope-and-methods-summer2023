@@ -233,7 +233,7 @@ Let's take a look at an example of confounding and how that affects our regressi
 
 These are fake data that come from a true model of $y_i = 4+2*x_i+5*confound_i + var1_i + \varepsilon_i$ and $x_i = 2 + 2*confound_i + \gamma_i$. 
 
-```{r}
+```{r, message = F}
 confound <- read_csv("section-8/confound.csv")
 mod1 <- lm(y~x, data = confound)
 summary(mod1)
