@@ -1,5 +1,5 @@
 ---
-title: "Section 9. Interactions and Marginal Effects"
+title: "Section 10. Interactions and Marginal Effects"
 author: "Sam Frederick"
 date: "June 21, 2023"
 format: 
