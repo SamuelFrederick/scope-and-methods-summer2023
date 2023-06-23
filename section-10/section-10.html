@@ -162,9 +162,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Last time, we worked through dummy variables which allow us to fit lines with different intercepts for different groups. For example, the relationship between campaign spending and vote share has the same slope for incumbents, challengers, and open-seat candidates; however, by adding dummy variables for incumbents and open-seat candidates, we allow incumbents and open-seat candidates to start with higher vote shares, on average, than challengers.</p>
 <p>However, sometimes we want there to be different <strong><em>slopes</em></strong> for different groups. We might think that challengers get more benefits from campaign spending because they are relatively unknown to the public: campaign spending, therefore, should help them get their names out to the public. On the other hand, incumbents are relatively better known than challengers, so the slope of campaign spending in a regression of vote share on campaign spending should be smaller for incumbents than challengers or open-seat candidates.</p>
 <p>To estimate separate slopes for different groups, we use what is known as an interaction term. In our example above, we would estimate a model like the following:</p>
-<p><span class="math display">\[
-voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2*incumbent + \beta_3 * openseat + \\ \beta_4 * incumbent*log(spending) + \beta_5 * openseat*log(spending) + \varepsilon
-\]</span></p>
+<p><span class="math display">\[\begin{align*}
+voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2*incumbent + \beta_3 * openseat + \\  \beta_4 * incumbent*log(spending) + \beta_5 * openseat*log(spending) + \varepsilon
+\end{align*}\]</span></p>
 <p>This allows the relationship between spending and voteshare to vary by incumbency status.</p>
 <section id="estimating-interactions-in-r" class="level2">
 <h2 class="anchored" data-anchor-id="estimating-interactions-in-r">Estimating Interactions in R</h2>
@@ -388,18 +388,18 @@ Adjusted R<sup>2</sup>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p><em>1. What is the association between campaign spending and vote share for Challengers?</em></p>
-<p><span class="math display">\[
+<p><span class="math display">\[\begin{align*}
 voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * Incumbent + \\
-\beta_3 * Open Seat + \beta_4 * log(spending)*Incumbent + \\
-\beta_5*log(spending)*OpenSeat + \varepsilon
-\]</span></p>
+  \beta_3 * Open Seat + \beta_4 * log(spending)*Incumbent + \\
+  \beta_5*log(spending)*OpenSeat + \varepsilon
+\end{align*}\]</span></p>
 <p>Plugging in values of 0 for incumbents and open-seat candidates, we get:</p>
-<p><span class="math display">\[
+<p><span class="math display">\[\begin{align*}
 voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * 0 + \\
 \beta_3 * 0 + \beta_4 * log(spending)*0 + \\
 \beta_5*log(spending)*0 + \varepsilon\\
 = \beta_0 + \beta_1*log(spending) + \varepsilon
-\]</span></p>
+\end{align*}\]</span></p>
 <p>Therefore, <span class="math inline">\(\beta_1\)</span>, the slope of <code>log(Spending)</code>, can be interpreted as the association between campaign spending and vote share for challenger candidates. Among challengers, for every one unit increase in spending on the log scale, we would expect vote share to increase by about 3 percentage points, on average.</p>
 </div>
 </div>
@@ -412,18 +412,18 @@ voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * 0 + \\
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p><em>2. What is the association between campaign spending and vote share for Incumbents?</em></p>
-<p><span class="math display">\[
+<p><span class="math display">\[\begin{align*}
 voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * Incumbent + \\
-\beta_3 * Open Seat + \beta_4 * log(spending)*Incumbent + \\
-\beta_5*log(spending)*OpenSeat + \varepsilon
-\]</span></p>
+  \beta_3 * Open Seat + \beta_4 * log(spending)*Incumbent + \\
+  \beta_5*log(spending)*OpenSeat + \varepsilon
+\end{align*}\]</span></p>
 <p>Plugging in a value of 0 for open-seat candidates and 1 for incumbent candidates, we get:</p>
-<p><span class="math display">\[
+<p><span class="math display">\[\begin{align*}
 voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * 1 + \\
 \beta_3 * 0 + \beta_4 * log(spending)*1 + \\
 \beta_5*log(spending)*0 + \varepsilon\\
 = \beta_0 + \beta_1*log(spending) + \beta_2 + \beta_4*log(spending) + \varepsilon
-\]</span></p>
+\end{align*}\]</span></p>
 <p>Therefore, <span class="math inline">\(\beta_1 + \beta_4\)</span>, the slopes of <code>log(Spending)</code>, can be interpreted as the association between campaign spending and vote share for incumbent candidates. Among incumbent candidates, for every one unit increase in spending on the log scale, we would expect vote share to <em>decrease</em> by about 6.23 percentage points, on average.</p>
 </div>
 </div>
@@ -436,20 +436,18 @@ voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * 1 + \\
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p><em>3. What is the association between campaign spending and vote share for Open-Seat Candidates?</em></p>
-<p><span class="math display">\[
+<p><span class="math display">\[\begin{align*}
 voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * Incumbent + \\
-\beta_3 * Open Seat + \beta_4 * log(spending)*Incumbent + \\
-\beta_5*log(spending)*OpenSeat + \varepsilon
-\]</span></p>
+  \beta_3 * Open Seat + \beta_4 * log(spending)*Incumbent + \\
+  \beta_5*log(spending)*OpenSeat + \varepsilon
+\end{align*}\]</span></p>
 <p>Plugging in a value of 0 for incumbent candidates and 1 for open-seat candidates, we get:</p>
-<p><span class="math display">\[
+<p><span class="math display">\[\begin{align*}
 voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * 0 + \\
-\beta_3 * 1 + \beta_4 * log(spending)*1 +
-\\
-\beta_5*log(spending)*1 + \varepsilon
-\\
+\beta_3 * 1 + \beta_4 * log(spending)*1 + \\
+\beta_5*log(spending)*1 + \varepsilon \\
 = \beta_0 + \beta_1*log(spending) + \beta_3 + \beta_5*log(spending)+  \varepsilon
-\]</span></p>
+\end{align*}\]</span></p>
 <p>Therefore, <span class="math inline">\(\beta_1 + \beta_5\)</span>, the slopes of <code>log(Spending)</code>, can be interpreted as the association between campaign spending and vote share for open-seat candidates. Among incumbent candidates, for every one unit increase in spending on the log scale, we would expect vote share to <em>increase</em> by about 6.73 percentage points, on average.</p>
 </div>
 </div>
@@ -487,10 +485,13 @@ voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * 0 + \\
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(inter_mod)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(inter_mod)[<span class="dv">4</span>], </span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">slope =</span> <span class="fu">coef</span>(inter_mod)[<span class="dv">2</span>] <span class="sc">+</span> <span class="fu">coef</span>(inter_mod)[<span class="dv">6</span>], </span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log(Spending)"</span>, <span class="at">y =</span> <span class="st">"Vote Share"</span>, </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Relationship between Spending and Vote Share (2020 House Elections)"</span>) <span class="sc">+</span> </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">"Incumbency Status"</span>)) <span class="sc">+</span> </span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set the labels of the axes and the title</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log(Spending)"</span>, <span class="at">y =</span> <span class="st">"Vote Share"</span>, </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Relationship between Spending and Vote Share (2020 House Elections)"</span>) <span class="sc">+</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># change the legend title to be more meaningful</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">"Incumbency Status"</span>)) <span class="sc">+</span> </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># give the plot a black-and-white theme</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="section-10_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -501,11 +502,15 @@ voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * 0 + \\
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">log</span>(disbursements), voteshare, </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> incumbent_challenge_full)) <span class="sc">+</span> </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)<span class="sc">+</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log(Spending)"</span>, <span class="at">y =</span> <span class="st">"Vote Share"</span>, </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Relationship between Spending and Vote Share (2020 House Elections)"</span>) <span class="sc">+</span> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">"Incumbency Status"</span>)) <span class="sc">+</span> </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># adds linear regression lines, colored and grouped by incumbency</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)<span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#update axis titles and plot title</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log(Spending)"</span>, <span class="at">y =</span> <span class="st">"Vote Share"</span>, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Relationship between Spending and Vote Share (2020 House Elections)"</span>) <span class="sc">+</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#update legend title</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">"Incumbency Status"</span>)) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#change the theme to black and white</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="section-10_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -530,12 +535,14 @@ voteshare_i = \beta_0 + \beta_1 * log(spending) + \beta_2 * 0 + \\
 </div>
 <section id="extracting-slopes-from-regression-models" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-slopes-from-regression-models">Extracting Slopes from Regression Models</h3>
-<p>First, we are usually interested in the slope of our variable of interest among different groups. This is known as the “marginal effect” of our variable of interest.</p>
+<p>First, we are usually interested in the slope of our variable of interest among different groups. This is known as the grouped “marginal effect” of our variable of interest.</p>
 <p>We can calculate these slopes using the <code>emtrends()</code> function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emtrends</span>(inter_mod, </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"incumbent_challenge_full"</span>, </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">var =</span> <span class="st">"lndisbursements"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>         <span class="co">#tells function what grouping variable we want</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"incumbent_challenge_full"</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="co"># tells function what slope we are interested in</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">var =</span> <span class="st">"lndisbursements"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> incumbent_challenge_full lndisbursements.trend    SE  df lower.CL upper.CL
  Challenger                                2.97 0.301 720     2.38     3.56
@@ -550,13 +557,17 @@ Confidence level used: 0.95 </code></pre>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emtrends</span>(inter_mod, </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"incumbent_challenge_full"</span>, </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">var =</span> <span class="st">"lndisbursements"</span>) <span class="sc">%&gt;%</span><span class="fu">as_tibble</span>()<span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(incumbent_challenge_full, lndisbursements.trend)) <span class="sc">+</span> </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x =</span> incumbent_challenge_full, </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin =</span> lower.CL, <span class="at">ymax =</span> upper.CL), </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"log(Spending) Slope"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(incumbent_challenge_full, lndisbursements.trend)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add dots corresponding to slope estimates</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add whiskers to the dot and whisker plot, corresponding to 95% Confidence Intervals around slope estimates</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x =</span> incumbent_challenge_full, </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin =</span> lower.CL, <span class="at">ymax =</span> upper.CL), </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add a horizontal line to display statistical significance</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># change the axis labels</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"log(Spending) Slope"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="section-10_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -603,8 +614,12 @@ Confidence level used: 0.95 </code></pre>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>(inter_mod, <span class="sc">~</span>lndisbursements<span class="sc">*</span>incumbent_challenge_full, </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">at =</span> <span class="fu">list</span>(<span class="at">lndisbursements =</span> <span class="fu">c</span>(<span class="fu">min</span>(house<span class="sc">$</span>lndisbursements), </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="fu">max</span>(house<span class="sc">$</span>lndisbursements))))<span class="sc">%&gt;%</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">emmip</span>( <span class="sc">~</span>lndisbursements<span class="sc">|</span>incumbent_challenge_full, </span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">PIs =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">emmip</span>( </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># displays predictions for lndisbursements, faceting by incumbent_challenge_full</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>lndisbursements<span class="sc">|</span>incumbent_challenge_full, </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>       <span class="co"># adds prediction intervals</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">PIs =</span> T</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="section-10_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
